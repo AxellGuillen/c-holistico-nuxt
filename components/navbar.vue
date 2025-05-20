@@ -1,18 +1,18 @@
 <script setup>
 const baseLinks = [
   {
-    label: "Inicio",
+    label: "Home",
     path: "/",
   },
   {
-    label: "proyectos",
-    path: "/proyectos",
+    label: "Statement",
+    path: "/statement",
     hasDropdown: true,
     options: [],
   },
   {
-    label: "publicaciones",
-    path: "/publicaciones",
+    label: "Store",
+    path: "/store",
     hasDropdown: true,
     options: [
       {
@@ -25,20 +25,24 @@ const baseLinks = [
       },
     ],
   },
-  {
-    label: "bio",
-    path: "/bio",
-  },
 ];
 </script>
 
 <template>
-  <div class="w-full">
-    <div
-      v-for="link in baseLinks"
-      class="flex justify-between w-full font-bold"
-    >
-      {{ link.label }}
+  <div class="w-full flex h-[100px] mt-[10px]">
+    <div class="w-[200px] md:flex flex-col gap-[5px] ml-5 mt-[5px]">
+      <nuxt-link
+        :to="link.path"
+        :key="link.label"
+        v-for="link in baseLinks"
+        class="text-sm md:text-lg"
+        >{{ link.label }}
+      </nuxt-link>
+    </div>
+    <div class="md:w-[500px] h-[100px] flex justify-end md:justify-center">
+      <p class="font-headlines text-7xl md:text-9xl mt-[10px] font-medium">
+        Ternurx
+      </p>
     </div>
   </div>
 </template>
