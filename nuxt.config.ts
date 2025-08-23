@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
-      title: "Ternurx",
+      title: "Artist-LAYOUT",
       htmlAttrs: {
         lang: "en",
       },
@@ -13,7 +13,7 @@ export default defineNuxtConfig({
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           name: "description",
-          content: "Fashion",
+          content: "Art",
         },
         { name: "format-detection", content: "telephone=no" },
       ],
@@ -26,7 +26,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@nuxt/image", "@nuxtjs/sanity"],
+  modules: ["@nuxt/image", "@nuxtjs/sanity", "@pinia/nuxt"],
   sanity: {
     projectId: process.env.NUXT_SANITY_PROJECT_ID,
     dataset: process.env.NUXT_SANITY_DATASET,

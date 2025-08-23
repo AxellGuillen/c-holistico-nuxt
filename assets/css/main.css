@@ -3,3 +3,120 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+*::selection {
+  background-color: black;
+  color: white;
+}
+
+html,
+body {
+  background-color: transparent;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::after {
+  animation: grain 2s steps(10) infinite;
+  background-image: url(../static/bg/grain.png);
+  background-repeat: repeat;
+  content: "";
+  height: 300%;
+  left: -100%;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  top: -100%;
+  width: 300%;
+  will-change: transform;
+  z-index: 50;
+}
+
+@keyframes grain {
+  0% {
+    transform: translate(20%, -15%);
+  }
+
+  10% {
+    transform: translate(-20%, -15%);
+  }
+
+  20% {
+    transform: translate(20%, -5%);
+  }
+
+  30% {
+    transform: translate(-20%, -5%);
+  }
+
+  40% {
+    transform: translate(20%, 5%);
+  }
+
+  50% {
+    transform: translate(-20%, 5%);
+  }
+
+  60% {
+    transform: translate(20%, 15%);
+  }
+
+  70% {
+    transform: translate(-20%, 15%);
+  }
+
+  80% {
+    transform: translate(20%, 5%);
+  }
+
+  90% {
+    transform: translate(-20%, 5%);
+  }
+
+  to {
+    transform: translate(20%, -5%);
+  }
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

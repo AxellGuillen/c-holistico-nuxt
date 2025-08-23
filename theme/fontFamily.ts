@@ -1,5 +1,5 @@
 export const fontFamily = {
-  sans: ["Writer", "sans"],
-  body: ["Writer", "sans"],
+  sans: ["Model", "sans"],
+  body: ["Model", "sans"],
   headlines: ["Playground", "sans"],
 };
