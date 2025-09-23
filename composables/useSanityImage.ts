@@ -6,16 +6,19 @@ export function useSanityImage() {
   const builder = imageUrlBuilder(sanity.client);
 
   const urlFor = (source: Image) => {
-    return builder.image(source).format("webp");
+    if (!source?._ref) return "";
+    return builder.image(source).format("webp").url(); // ⚠️ <--- .url() convierte a string
   };
 
   const urlForPlaceholder = (source: Image) => {
+    if (!source?._ref) return "";
     return builder
       .image(source)
       .width(500)
       .quality(100)
       .blur(250)
-      .format("webp");
+      .format("webp")
+      .url(); // ⚠️ <--- .url() convierte a string
   };
 
   return { urlFor, urlForPlaceholder };

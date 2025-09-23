@@ -1,5 +1,5 @@
 <script setup>
-const pageTitle = computed(() => `Ternurx - Statement`);
+const pageTitle = computed(() => `Artist - Statement`);
 
 useHead({
   title: pageTitle,
