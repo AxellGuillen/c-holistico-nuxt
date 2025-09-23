@@ -50,22 +50,25 @@ watch(
   <div
     id="app-shell"
     style="--drawer-w: 360px"
-    class="min-h-dvh bg-black text-neutral-100 antialiased"
+    class="min-h-dvh text-neutral-100 antialiased bg-black"
   >
     <main>
       <button
-        class="fixed top-4 left-4 z-[80] bg-white/10 hover:bg-white/20 px-3 h-9 rounded-md"
+        class="fixed top-4 left-4 z-[80] bg-white/10 hover:bg-white/20 px-3 h-9 rounded-md uppercase"
         @click="store.toggle()"
       >
-        clic
+        Artists
       </button>
+
       <div
         id="main-wrapper"
         class="min-h-dvh transform-gpu will-change-transform transition-none"
       >
-        <FloatingFooter :links="links" />
+        <NuxtPage />
       </div>
-      <OffCanvas />
+      <FloatingFooter :links="links" />
+
+      <OffPush />
     </main>
   </div>
 </template>

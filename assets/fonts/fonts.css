@@ -1,27 +1,6 @@
 @font-face {
-  font-family: "Playground";
-  src: url("./playground/PPPlayground-Light.otf") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Playground";
-  src: url("./playground/PPPlayground-Medium.otf") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Playground";
-  src: url("./playground/PPPlayground-Thin.otf") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Model";
-  src: url("./model/PPModelMono-Medium.otf") format("woff2");
+  font-family: "Mori";
+  src: url("./mori/PPMori-Regular.otf") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
