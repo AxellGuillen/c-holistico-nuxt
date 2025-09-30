@@ -1,10 +1,8 @@
 <script setup>
-import groq from "groq";
 import { ref, watch, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { gsap } from "gsap";
 import ArtistList from "./sidebar/ArtistList.vue";
-import { list } from "postcss";
 
 const router = useRouter();
 
