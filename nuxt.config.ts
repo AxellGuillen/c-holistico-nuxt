@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
-      title: "Artist-LAYOUT",
+      title: "Centro Holístico CDMX",
       htmlAttrs: {
         lang: "en",
       },
@@ -16,6 +16,36 @@ export default defineNuxtConfig({
           content: "Art",
         },
         { name: "format-detection", content: "telephone=no" },
+      ],
+      link: [
+        {
+          rel: "preload",
+          href: "/cirka/PPCirka-Bold.otf",
+          as: "font",
+          type: "font/otf",
+          crossorigin: "anonymous",
+        },
+        {
+          rel: "preload",
+          href: "/cirka/PPCirka-Light.otf",
+          as: "font",
+          type: "font/otf",
+          crossorigin: "anonymous",
+        },
+        {
+          rel: "preload",
+          href: "/cirka/PPCirka-Variable.ttf",
+          as: "font",
+          type: "font/ttf",
+          crossorigin: "anonymous",
+        },
+        {
+          rel: "preload",
+          href: "/writer/PPWriter-Regular.otf",
+          as: "font",
+          type: "font/otf",
+          crossorigin: "anonymous",
+        },
       ],
     },
   },

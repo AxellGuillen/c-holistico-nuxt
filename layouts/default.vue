@@ -4,7 +4,6 @@ import { watch } from "vue";
 
 const route = useRoute(); // Accedemos
 let isHome = route.path === "/"; // accedemos a la propiedad path que nos permite saber en donde esta el usuario
-const store = useOffCanvasStore();
 
 // watch(() => route.path,) paso 1: observa la ruta actual.
 // si route cambia se ejecuta una nueva funcion. newPath  es nuevo (parametro).
@@ -13,17 +12,17 @@ const store = useOffCanvasStore();
 // Esto asegura que isHome siempre se actualiza dinámicamente conforme te mueves por el sitio.
 const links = [
   {
-    label: "Home",
+    label: "Inicio",
     path: "/",
   },
   {
-    label: "Statement",
+    label: "Servicios",
     path: "/statement",
     hasDropdown: true,
     options: [],
   },
   {
-    label: "Store",
+    label: "Viajes Terapéuticos",
     path: "/store",
     hasDropdown: true,
     options: [
@@ -53,12 +52,7 @@ watch(
     class="min-h-dvh text-neutral-100 antialiased bg-black"
   >
     <main>
-      <button
-        class="fixed top-4 left-4 z-[80] bg-white/10 hover:bg-white/20 px-3 h-9 rounded-md uppercase"
-        @click="store.toggle()"
-      >
-        Artists
-      </button>
+      <FloatingFooter :links="links" />
 
       <div
         id="main-wrapper"
@@ -66,9 +60,6 @@ watch(
       >
         <NuxtPage />
       </div>
-      <FloatingFooter :links="links" />
-
-      <OffPush />
     </main>
   </div>
 </template>

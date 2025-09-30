@@ -1,5 +1,5 @@
 export const fontFamily = {
-  sans: ["Mori", "sans"],
-  body: ["Mori", "sans"],
-  headlines: ["Playground", "sans"],
+  sans: ["PPWriter", "sans"], // fuente principal general
+  body: ["PPWriter", "serif"], // para textos de cuerpo
+  headlines: ["PPCirka", "sans"], // para títulos y encabezados
 };
