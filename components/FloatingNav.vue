@@ -126,14 +126,16 @@ onBeforeUnmount(() => {
     @mouseleave="queueHide"
   >
     <div>
-      <div class="flex items-center md:gap-20">
+      <div
+        class="flex justify-center items-center gap-6 md:gap-20 md:justify-start"
+      >
         <NuxtLink
           v-for="link in links"
           :key="link.path"
           :to="link.path"
-          class="inline-flex items-center justify-center h-10 px-4 rounded-full text-sm md:text-base font-sans uppercase outline-none transition-colors duration-200 ease-out text-white hover:text-black hover:bg-white focus:bg-white focus-visible:ring-2 focus-visible:ring-white/60 focus:text-black"
+          class="inline-flex items-center justify-center h-10 px-4 rounded-full text-sm md:text-base font-sans uppercase outline-none transition-colors duration-200 ease-out text-white hover:text-black hover:bg-pink-300 focus:bg-pink-300 focus-visible:ring-2 focus-visible:ring-pink-300 focus:text-black"
         >
-          <span class="translate-y-[0.5px]">{{ link.label }}</span>
+          <span class="translate-y-[0.5px] text-white">{{ link.label }}</span>
         </NuxtLink>
       </div>
     </div>

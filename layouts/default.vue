@@ -17,24 +17,11 @@ const links = [
   },
   {
     label: "Servicios",
-    path: "/statement",
-    hasDropdown: true,
-    options: [],
+    path: "/servicios",
   },
   {
-    label: "Viajes Terapéuticos",
-    path: "/store",
-    hasDropdown: true,
-    options: [
-      {
-        label: "El mar",
-        path: "/publicaciones/el-mar",
-      },
-      {
-        label: "Crónicas nocturnas",
-        path: "/publicaciones/cronicas-nocturnas",
-      },
-    ],
+    label: "Viajes",
+    path: "/viajesTerapeuticos",
   },
 ];
 watch(
@@ -52,7 +39,7 @@ watch(
     class="min-h-dvh text-neutral-100 antialiased bg-black"
   >
     <main>
-      <FloatingFooter :links="links" />
+      <FloatingNav :links="links" />
 
       <div
         id="main-wrapper"
