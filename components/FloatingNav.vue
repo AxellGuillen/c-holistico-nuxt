@@ -7,13 +7,12 @@ const props = defineProps({
   links: { type: Array, required: true },
 });
 
-const dock = ref(null); // elemento del nav
-const VISIBLE_INIT = true; // visible al cargar
-const HIDE_AFTER_MS = 2400; // tiempo de inactividad antes de ocultar
-let hideTimer = null; // id del timeout
-let isVisible = VISIBLE_INIT; // estado interno (sin reactividad, lo controla GSAP)
+const dock = ref(null);
+const VISIBLE_INIT = true;
+const HIDE_AFTER_MS = 2400;
+let hideTimer = null;
+let isVisible = VISIBLE_INIT;
 
-// Animaciones GSAP (show/hide)
 function showDock() {
   if (isVisible) return;
   isVisible = true;
@@ -36,7 +35,6 @@ function hideDock() {
   });
 }
 
-// Timers
 function clearHideTimer() {
   if (hideTimer) {
     clearTimeout(hideTimer);
@@ -47,7 +45,6 @@ function clearHideTimer() {
 function queueHide() {
   clearHideTimer();
   hideTimer = setTimeout(() => {
-    // Si el foco está dentro del dock (teclado), no ocultar
     const active = document.activeElement;
     if (active && active.closest && active.closest("nav") === dock.value) {
       queueHide();
@@ -61,14 +58,12 @@ function pauseHide() {
   clearHideTimer();
 }
 
-// Listeners de interacción
 function onMouseMove() {
   showDock();
   queueHide();
 }
 
 function onKeyDown(e) {
-  // Tab => mostrar (accesibilidad), Escape => ocultar
   if (e.key === "Tab") {
     showDock();
     queueHide();
@@ -82,13 +77,11 @@ function onTouchStart() {
 }
 
 onMounted(() => {
-  // Estado inicial: visible u oculto
   gsap.set(dock.value, {
     autoAlpha: VISIBLE_INIT ? 1 : 0,
     y: VISIBLE_INIT ? 0 : 12,
   });
 
-  // Respeta prefers-reduced-motion
   const prefersReduce = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
@@ -98,12 +91,10 @@ onMounted(() => {
     return;
   }
 
-  // Eventos globales
   window.addEventListener("mousemove", onMouseMove, { passive: true });
   window.addEventListener("keydown", onKeyDown);
   window.addEventListener("touchstart", onTouchStart, { passive: true });
 
-  // Programa ocultamiento inicial si arrancó visible
   if (VISIBLE_INIT) queueHide();
 });
 
@@ -116,7 +107,6 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <!-- role=navigation para accesibilidad -->
   <nav
     ref="dock"
     role="navigation"
@@ -133,9 +123,11 @@ onBeforeUnmount(() => {
           v-for="link in links"
           :key="link.path"
           :to="link.path"
-          class="inline-flex items-center justify-center h-10 px-4 rounded-full text-sm md:text-base font-sans uppercase outline-none transition-colors duration-200 ease-out text-white hover:text-black hover:bg-pink-300 focus:bg-pink-300 focus-visible:ring-2 focus-visible:ring-pink-300 focus:text-black"
+          class="inline-flex items-center justify-center h-10 px-4 rounded-full text-sm md:text-base font-sans uppercase outline-none bg-gradient-to-br from-brand-accent1/90 via-brand-accent2/80 to-brand-secondary/80"
         >
-          <span class="translate-y-[0.5px] text-white">{{ link.label }}</span>
+          <span class="translate-y-[0.5px] text-brand-background">
+            {{ link.label }}
+          </span>
         </NuxtLink>
       </div>
     </div>
@@ -143,7 +135,6 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* Evita reflujo en tooltips/blur y mejora rendimiento */
 nav {
   contain: layout style;
   will-change: transform, opacity;

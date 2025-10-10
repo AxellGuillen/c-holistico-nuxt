@@ -30,14 +30,18 @@ watch(
     isHome = newPath === "/";
   }
 );
+const menuItems = [
+  { id: "hero", label: "Inicio", path: "/" },
+  { id: "month-service", label: "Servicio del Mes", path: "✨" },
+  { id: "therapies", label: "Terapias", path: "/therapies" },
+  { id: "about", label: "Nosotros", path: "/nosotros" },
+  { id: "testimonials", label: "Testimonios", path: "/Testimonios" },
+  { id: "contact", label: "Contacto", path: "/contacto" },
+];
 </script>
 
 <template>
-  <div
-    id="app-shell"
-    style="--drawer-w: 360px"
-    class="min-h-dvh text-neutral-100 antialiased bg-black"
-  >
+  <div>
     <main>
       <FloatingNav :links="links" />
 
