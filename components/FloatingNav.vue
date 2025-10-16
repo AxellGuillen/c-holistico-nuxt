@@ -1,142 +1,141 @@
-<!-- components/FloatingFooter.vue -->
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import Logo from "~/assets/icons/logo.svg?component";
 import { gsap } from "gsap";
 
-const props = defineProps({
-  links: { type: Array, required: true },
-});
+const { links } = useNavigation();
+const nav = ref(null);
+const logo = ref(null);
 
-const dock = ref(null);
-const VISIBLE_INIT = true;
-const HIDE_AFTER_MS = 2400;
-let hideTimer = null;
-let isVisible = VISIBLE_INIT;
+let lastScroll = 0;
 
-function showDock() {
-  if (isVisible) return;
-  isVisible = true;
-  gsap.killTweensOf(dock.value);
-  gsap.to(dock.value, {
-    autoAlpha: 1,
-    duration: 0.45,
-    ease: "power2.out",
-  });
-}
-
-function hideDock() {
-  if (!isVisible) return;
-  isVisible = false;
-  gsap.killTweensOf(dock.value);
-  gsap.to(dock.value, {
-    autoAlpha: 0,
-    duration: 0.35,
-    ease: "power2.inOut",
-  });
-}
-
-function clearHideTimer() {
-  if (hideTimer) {
-    clearTimeout(hideTimer);
-    hideTimer = null;
+function handleScroll() {
+  const currentScroll = window.scrollY;
+  if (currentScroll > lastScroll && currentScroll > 50) {
+    // Scroll hacia abajo → ocultar navbar
+    gsap.to(nav.value, {
+      y: -100,
+      opacity: 0,
+      duration: 1.2,
+      ease: "power1.out",
+      overwrite: "auto",
+    });
+  } else {
+    gsap.to(nav.value, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" });
   }
-}
-
-function queueHide() {
-  clearHideTimer();
-  hideTimer = setTimeout(() => {
-    const active = document.activeElement;
-    if (active && active.closest && active.closest("nav") === dock.value) {
-      queueHide();
-      return;
-    }
-    hideDock();
-  }, HIDE_AFTER_MS);
-}
-
-function pauseHide() {
-  clearHideTimer();
-}
-
-function onMouseMove() {
-  showDock();
-  queueHide();
-}
-
-function onKeyDown(e) {
-  if (e.key === "Tab") {
-    showDock();
-    queueHide();
-  }
-  if (e.key === "Escape") hideDock();
-}
-
-function onTouchStart() {
-  showDock();
-  queueHide();
+  lastScroll = currentScroll;
 }
 
 onMounted(() => {
-  gsap.set(dock.value, {
-    autoAlpha: VISIBLE_INIT ? 1 : 0,
-    y: VISIBLE_INIT ? 0 : 12,
+  // Animación inicial al cargar
+  gsap.from(nav.value, {
+    y: -100,
+    opacity: 0,
+    duration: 1.2,
+    ease: "power1.out",
+    overwrite: "auto",
   });
 
-  const prefersReduce = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-  if (prefersReduce) {
-    gsap.set(dock.value, { clearProps: "all", opacity: 1, y: 0 });
-    isVisible = true;
-    return;
-  }
+  const logoEl = document.querySelector("#logo-root");
+  gsap.from(logoEl, {
+    rotation: 360,
+    transformOrigin: "50% 50%",
+    duration: 6,
+    repeat: -1,
+    ease: "none",
+  });
 
-  window.addEventListener("mousemove", onMouseMove, { passive: true });
-  window.addEventListener("keydown", onKeyDown);
-  window.addEventListener("touchstart", onTouchStart, { passive: true });
-
-  if (VISIBLE_INIT) queueHide();
+  window.addEventListener("scroll", handleScroll, { passive: true });
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("mousemove", onMouseMove);
-  window.removeEventListener("keydown", onKeyDown);
-  window.removeEventListener("touchstart", onTouchStart);
-  clearHideTimer();
+  window.removeEventListener("scroll", handleScroll);
 });
 </script>
 
 <template>
-  <nav
-    ref="dock"
-    role="navigation"
-    class="fixed left-1/2 -translate-x-1/2 z-50"
-    :style="{ top: 'calc(env(safe-area-inset-top, 0px) + 16px)' }"
-    @mouseenter="pauseHide"
-    @mouseleave="queueHide"
+  <header
+    ref="nav"
+    class="fixed inset-x-0 top-0 z-50 backdrop-blur-md border-b border-white bg-white/10"
   >
-    <div>
-      <div
-        class="flex justify-center items-center gap-6 md:gap-20 md:justify-start"
-      >
+    <nav
+      class="relative flex items-center px-6 sm:px-10 py-[15px] text-sm text-white tracking-wide w-full"
+    >
+      <!-- 🧭 Links izquierda -->
+      <div class="flex gap-8 md:gap-14 justify-end items-end w-[600px]">
         <NuxtLink
-          v-for="link in links"
+          v-for="link in links.slice(0, 2)"
           :key="link.path"
           :to="link.path"
-          class="inline-flex items-center justify-center h-10 px-4 rounded-full text-sm md:text-base font-sans uppercase outline-none bg-gradient-to-br from-brand-accent1/90 via-brand-accent2/80 to-brand-secondary/80"
+          class="hover:text-brand-sand transition-colors duration-300"
         >
-          <span class="translate-y-[0.5px] text-brand-background">
-            {{ link.label }}
-          </span>
+          {{ link.label }}
         </NuxtLink>
       </div>
-    </div>
-  </nav>
+
+      <div class="absolute left-1/2 -translate-x-1/2 z-10">
+        <NuxtLink to="/" class="font-serif text-base md:text-lg tracking-wider">
+          <Logo ref="logo" class="h-8 fill-current text-brand-primary" />
+        </NuxtLink>
+      </div>
+
+      <div
+        class="flex gap-6 md:gap-10 ml-auto w-[300px] items-start justify-between pl-14"
+      >
+        <NuxtLink
+          v-for="link in links.slice(2)"
+          :key="link.path"
+          :to="link.path"
+          class="hover:text-brand-sand transition-colors duration-300"
+        >
+          {{ link.label }}
+        </NuxtLink>
+      </div>
+
+      <div class="ml-auto">
+        <NuxtLink
+          to="/contact"
+          class="btn-fill-hover border-2 relative overflow-hidden inline-flex justify-end items-center h-8 md:h-10 px-5 md:px-6 rounded-full text-white font-medium tracking-wide transition duration-300"
+        >
+          <span> Agenda tu encuentro </span>
+        </NuxtLink>
+      </div>
+    </nav>
+  </header>
 </template>
 
 <style scoped>
-nav {
-  contain: layout style;
+header {
   will-change: transform, opacity;
+}
+.btn-fill-hover {
+  background-color: transparent; /* fondo inicial */
+  color: white; /* texto inicial */
+}
+
+.btn-fill-hover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0%;
+  background-color: #f6ccc4; /* color que “llena” el botón */
+  z-index: 0;
+  transition: height 0.4s ease;
+}
+
+.btn-fill-hover:hover::before {
+  height: 100%; /* llena todo el botón desde abajo hacia arriba */
+}
+
+.btn-fill-hover span {
+  position: relative;
+  z-index: 10; /* que el texto esté arriba del pseudo-elemento */
+  transition: color 0.4s ease;
+}
+
+.btn-fill-hover:hover span {
+  color: #a54f36; /* o color oscuro según contraste */
 }
 </style>

@@ -100,7 +100,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
               Próxima Sesión
             </p>
             <div class="flex items-center gap-2">
-              <span class="text-base font-semibold text-brand-neutralDark">
+              <span class="text-lg font-bold text-black">
                 {{
                   new Date(block.date).toLocaleDateString("es-MX", {
                     year: "numeric",
@@ -123,11 +123,14 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
             class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"
           ></span>
 
-          <span class="relative z-10 tracking-wide text-black">
-            {{ block.ctaLabel }}</span
-          >
           <span
-            class="relative z-10 transform group-hover:translate-x-1 transition-transform duration-300"
+            class="relative z-10 flex items-center justify-center gap-2 text-black"
+          >
+            {{ block.ctaLabel }}
+          </span>
+
+          <span
+            class="transform group-hover:translate-x-1 transition-transform duration-300"
           >
             →
           </span>
