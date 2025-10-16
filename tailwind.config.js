@@ -16,12 +16,13 @@ module.exports = {
 
       colors: {
         brand: {
-          primary: "#7A9B8B", // Verde Eucalipto — calma, equilibrio
-          secondary: "#B87F6E", // Arcilla — conexión, calidez
-          accent1: "#D9A96F", // Sol Desértico — energía suave
-          accent2: "#C9D5D3", // Piedra Lunar — serenidad
-          neutralLight: "#FDFBF7", // Fondo cálido, limpio
-          neutralDark: "#344036", // Profundidad y contraste
+          base: "#fcf2ed", // Base clara – fondo principal, sensación de calma
+          soft: "#f0e7da", // Fondo alterno o contenedor suave
+          sand: "#e1cfba", // Tonalidad media para secciones o overlays
+          clay: "#d3b093", // Calidez natural – títulos secundarios o bordes
+          earth: "#bf9770", // Tierra – botones, énfasis visual
+          blush: "#f6ccc4", // Rosa cálido – acento emocional o detalles suaves
+          terracotta: "#a54f36", // Terracota intensa – CTA principal, contraste
         },
       },
     },
