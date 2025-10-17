@@ -1,3 +1,4 @@
+<!-- components/Navbar.vue -->
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import Logo from "~/assets/icons/logo.svg?component";
@@ -21,21 +22,18 @@ function handleScroll() {
       overwrite: "auto",
     });
   } else {
-    gsap.to(nav.value, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" });
+    gsap.to(nav.value, {
+      y: 0,
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out",
+    });
   }
   lastScroll = currentScroll;
 }
 
 onMounted(() => {
   // Animación inicial al cargar
-  gsap.from(nav.value, {
-    y: -100,
-    opacity: 0,
-    duration: 1.2,
-    ease: "power1.out",
-    overwrite: "auto",
-  });
-
   const logoEl = document.querySelector("#logo-root");
   gsap.from(logoEl, {
     rotation: 360,
@@ -54,51 +52,60 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header
-    ref="nav"
-    class="fixed inset-x-0 top-0 z-50 backdrop-blur-md border-b border-white bg-white/10"
-  >
+  <header ref="nav" class="fixed inset-x-0 top-0 z-50 font-sans">
     <nav
-      class="relative flex items-center px-6 sm:px-10 py-[15px] text-sm text-white tracking-wide w-full"
+      class="relative flex items-center px-4 sm:px-6 md:px-8 lg:px-15 xl:px-16 py-3 sm:py-3 text-xs sm:text-sm text-white tracking-wide w-full backdrop-blur-md bg-white/[0.02] border-b border-white/10"
     >
-      <!-- 🧭 Links izquierda -->
-      <div class="flex gap-8 md:gap-14 justify-end items-end w-[600px]">
-        <NuxtLink
-          v-for="link in links.slice(0, 2)"
-          :key="link.path"
-          :to="link.path"
-          class="hover:text-brand-sand transition-colors duration-300"
+      <div class="flex justify-end w-[600px]">
+        <div
+          class="hidden md:flex gap-6 lg:pl-10 justify-between w-[200px] lg:w-[300px] md:pr-10"
         >
-          {{ link.label }}
-        </NuxtLink>
+          <NuxtLink
+            v-for="link in links.slice(0, 2)"
+            :key="link.path"
+            :to="link.path"
+            class="text-xs lg:text-sm hover:text-brand-blush transition-colors duration-300 whitespace-nowrap"
+          >
+            {{ link.label }}
+          </NuxtLink>
+        </div>
       </div>
 
+      <!-- Center Logo -->
       <div class="absolute left-1/2 -translate-x-1/2 z-10">
-        <NuxtLink to="/" class="font-serif text-base md:text-lg tracking-wider">
-          <Logo ref="logo" class="h-8 fill-current text-brand-primary" />
+        <NuxtLink to="/" class="inline-flex items-center justify-center">
+          <Logo
+            ref="logo"
+            class="h-6 sm:h-7 lg:h-8 fill-current text-brand-primary ml-auto md:ml-1"
+          />
         </NuxtLink>
       </div>
 
       <div
-        class="flex gap-6 md:gap-10 ml-auto w-[300px] items-start justify-between pl-14"
+        class="flex gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 items-center flex-1 justify-end"
       >
-        <NuxtLink
-          v-for="link in links.slice(2)"
-          :key="link.path"
-          :to="link.path"
-          class="hover:text-brand-sand transition-colors duration-300"
+        <div
+          class="hidden md:flex gap-6 lg:gap-10 xl:gap-14 justify-start w-[200px] lg:w-[300px]"
         >
-          {{ link.label }}
-        </NuxtLink>
-      </div>
+          <NuxtLink
+            v-for="link in links.slice(2)"
+            :key="link.path"
+            :to="link.path"
+            class="text-xs lg:text-sm t hover:text-brand-blush transition-colors duration-300 whitespace-nowrap"
+          >
+            {{ link.label }}
+          </NuxtLink>
+        </div>
 
-      <div class="ml-auto">
-        <NuxtLink
-          to="/contact"
-          class="btn-fill-hover border-2 relative overflow-hidden inline-flex justify-end items-center h-8 md:h-10 px-5 md:px-6 rounded-full text-white font-medium tracking-wide transition duration-300"
-        >
-          <span> Agenda tu encuentro </span>
-        </NuxtLink>
+        <!-- CTA  -->
+        <div class="">
+          <NuxtLink
+            to="/contact"
+            class="font-sans btn-fill-hover relative overflow-hidden inline-flex justify-center items-center h-8 sm:h-9 md:h-10 px-4 sm:px-5 md:px-6 rounded-full text-white text-xs sm:text-sm tracking-wide transition duration-300 flex-shrink-0"
+          >
+            <span class="hidden sm:inline">Agenda tu encuentro</span>
+          </NuxtLink>
+        </div>
       </div>
     </nav>
   </header>
@@ -108,9 +115,13 @@ onBeforeUnmount(() => {
 header {
   will-change: transform, opacity;
 }
+
+/* Button Fill Hover Effect */
 .btn-fill-hover {
-  background-color: transparent; /* fondo inicial */
-  color: white; /* texto inicial */
+  background-color: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
 }
 
 .btn-fill-hover::before {
@@ -120,22 +131,49 @@ header {
   bottom: 0;
   width: 100%;
   height: 0%;
-  background-color: #f6ccc4; /* color que “llena” el botón */
+  background: linear-gradient(135deg, #f6ccc4 0%, #f0b5a3 100%);
   z-index: 0;
-  transition: height 0.4s ease;
+  transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 9999px;
+}
+
+.btn-fill-hover:hover {
+  border-color: #f6ccc4;
+  box-shadow: 0 8px 24px rgba(246, 204, 196, 0.2);
 }
 
 .btn-fill-hover:hover::before {
-  height: 100%; /* llena todo el botón desde abajo hacia arriba */
+  height: 100%;
 }
 
 .btn-fill-hover span {
   position: relative;
-  z-index: 10; /* que el texto esté arriba del pseudo-elemento */
-  transition: color 0.4s ease;
+  z-index: 10;
+  transition: color 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-fill-hover:hover span {
-  color: #a54f36; /* o color oscuro según contraste */
+  color: #050000;
+}
+
+/* Border bottom elegante */
+@supports (backdrop-filter: blur(1px)) {
+  nav {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  nav {
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  nav {
+    padding: 0.5rem 1rem;
+  }
 }
 </style>

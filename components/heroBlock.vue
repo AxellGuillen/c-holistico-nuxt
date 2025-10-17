@@ -30,12 +30,6 @@ const splitTitle = computed(() => props.block?.title?.split("") || []);
       class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60 flex flex-col justify-between py-8 sm:py-12 lg:py-16 px-6 sm:px-10 lg:px-20 z-10"
     >
       <!-- Subtítulo -->
-      <p
-        v-if="block.subtitle"
-        class="text-sans sm:text-lg md:text-xl lg:text-2xl font-light text-white/90 max-w-2xl"
-      >
-        {{ block.subtitle }}
-      </p>
 
       <!-- Título -->
       <div class="w-full flex items-center justify-center mb-12 sm:mb-16">
