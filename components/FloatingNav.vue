@@ -1,10 +1,10 @@
-<!-- components/Navbar.vue -->
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import Logo from "~/assets/icons/logo.svg?component";
 import { gsap } from "gsap";
 
 const { links } = useNavigation();
+
 const nav = ref(null);
 const logo = ref(null);
 
@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header ref="nav" class="fixed inset-x-0 top-0 z-50 font-sans">
+  <header ref="nav" class="fixed inset-x-0 top-0 z-50 font-sans font-bold">
     <nav
       class="relative flex items-center px-4 sm:px-6 md:px-8 lg:px-15 xl:px-16 py-3 sm:py-3 text-xs sm:text-sm text-white tracking-wide w-full backdrop-blur-md bg-white/[0.02] border-b border-white/10"
     >
@@ -64,7 +64,7 @@ onBeforeUnmount(() => {
             v-for="link in links.slice(0, 2)"
             :key="link.path"
             :to="link.path"
-            class="text-xs lg:text-sm hover:text-brand-blush transition-colors duration-300 whitespace-nowrap"
+            class="text-xs hover:text-brand-blush transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
           >
             {{ link.label }}
           </NuxtLink>
@@ -73,7 +73,7 @@ onBeforeUnmount(() => {
 
       <!-- Center Logo -->
       <div class="absolute left-1/2 -translate-x-1/2 z-10">
-        <NuxtLink to="/" class="inline-flex items-center justify-center">
+        <NuxtLink to="" class="inline-flex items-center justify-center">
           <Logo
             ref="logo"
             class="h-6 sm:h-7 lg:h-8 fill-current text-brand-primary ml-auto md:ml-1"
@@ -84,28 +84,22 @@ onBeforeUnmount(() => {
       <div
         class="flex gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 items-center flex-1 justify-end"
       >
-        <div
-          class="hidden md:flex gap-6 lg:gap-10 xl:gap-14 justify-start w-[200px] lg:w-[300px]"
-        >
-          <NuxtLink
-            v-for="link in links.slice(2)"
-            :key="link.path"
-            :to="link.path"
-            class="text-xs lg:text-sm t hover:text-brand-blush transition-colors duration-300 whitespace-nowrap"
+        <div class="w-[600px] pl-10">
+          <div
+            class="hidden md:flex gap-6 lg:gap-10 xl:gap-14 justify-start w-[200px lg:w-[300px]"
           >
-            {{ link.label }}
-          </NuxtLink>
+            <NuxtLink
+              v-for="link in links.slice(2)"
+              :key="link.path"
+              :to="link.path"
+              class="text-xs hover:text-brand-blush transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
+            >
+              {{ link.label }}
+            </NuxtLink>
+          </div>
         </div>
 
         <!-- CTA  -->
-        <div class="">
-          <NuxtLink
-            to="/contact"
-            class="font-sans btn-fill-hover relative overflow-hidden inline-flex justify-center items-center h-8 sm:h-9 md:h-10 px-4 sm:px-5 md:px-6 rounded-full text-white text-xs sm:text-sm tracking-wide transition duration-300 flex-shrink-0"
-          >
-            <span class="hidden sm:inline">Agenda tu encuentro</span>
-          </NuxtLink>
-        </div>
       </div>
     </nav>
   </header>

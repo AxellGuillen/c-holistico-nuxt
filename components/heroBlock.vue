@@ -1,12 +1,37 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref, onMounted, nextTick } from "vue";
+import { gsap } from "gsap";
+
 const props = defineProps(["block", "urlFor", "urlForPlaceholder"]);
 
-const splitTitle = computed(() => props.block?.title?.split("") || []);
+const title = computed(() => props.block?.title || "");
+const chars = computed(() => title.value.split(""));
+
+const titleRefs = ref([]);
+
+const isHovering = ref(false);
+
+// animación de entrada de letras
+onMounted(async () => {
+  await nextTick();
+  gsap.from(titleRefs.value, {
+    opacity: 0,
+    y: 40,
+    stagger: 0.04,
+    ease: "power3.out",
+    duration: 1.2,
+  });
+});
 </script>
 
 <template>
-  <div class="hero-wrapper relative w-full h-screen overflow-hidden">
+  <div
+    :class="[
+      'hero-wrapper relative max-w-[1600px] mx-auto  overflow-hidden shadow-lg',
+      isHovering ? 'blur-active' : '',
+    ]"
+    style="height: calc(100vh - 2px)"
+  >
     <!-- Background -->
     <video
       v-if="block.backgroundVideo?.url"
@@ -18,6 +43,7 @@ const splitTitle = computed(() => props.block?.title?.split("") || []);
     >
       <source :src="block.backgroundVideo.url" type="video/webm" />
     </video>
+
     <NuxtImg
       v-else-if="block.backgroundImage?.url"
       :src="block.backgroundImage.url"
@@ -25,27 +51,132 @@ const splitTitle = computed(() => props.block?.title?.split("") || []);
       loading="eager"
     />
 
-    <!-- Overlay -->
-    <div
-      class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60 flex flex-col justify-between py-8 sm:py-12 lg:py-16 px-6 sm:px-10 lg:px-20 z-10"
-    >
-      <!-- Subtítulo -->
+    <div class="hero-blur-layer absolute inset-0 z-10 pointer-events-none">
+      .
+    </div>
 
-      <!-- Título -->
-      <div class="w-full flex items-center justify-center mb-12 sm:mb-16">
+    <!-- Content (arriba del blur layer) -->
+    <div
+      class="absolute inset-0 flex flex-col justify-center z-20 px-8 sm:px-16 lg:px-24 text-left pt-20"
+    >
+      <div class="max-w-screen">
         <h1
-          v-if="block.title"
-          class="font-headlines font-black text-white flex items-center justify-center w-full px-4 absolute bottom-10"
+          class="font-headlines font-black text-white leading-[0.9] text-left text-[12vw] sm:text-[9vw] md:text-[110px]"
         >
           <span
-            v-for="(char, i) in splitTitle"
-            :key="i"
-            class="inline-block sm:text-[10vw] md:text-[9vw] lg:text-[400px] leading-none uppercase"
+            v-for="(char, index) in chars"
+            :key="index"
+            ref="titleRefs"
+            class="inline-block will-change-transform"
           >
             {{ char === " " ? "\u00A0" : char }}
           </span>
         </h1>
+
+        <p
+          v-if="block.subtitle"
+          class="mt-6 text-white/80 font-sans text-base sm:text-lg md:text-xl max-w-[600px] md:text-left"
+        >
+          {{ block.subtitle }}
+        </p>
+
+        <div class="mt-10 flex justify-start w-[600px]">
+          <NuxtLink
+            to="/contact"
+            class="btn-fill-hover relative overflow-hidden inline-flex justify-center items-center h-12 px-10 rounded-full text-white text-base tracking-wide transition duration-300"
+            @mouseenter="isHovering = true"
+            @mouseleave="isHovering = false"
+            @touchstart.prevent="isHovering = true"
+            @touchend.prevent="isHovering = false"
+            @blur="isHovering = false"
+          >
+            <span>Agenda tu encuentro</span>
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.hero-wrapper {
+  will-change: transform, opacity;
+  /* fallback gradient */
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  position: relative;
+}
+
+/* BLUR LAYER - inicia sin blur */
+.hero-blur-layer {
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  background: rgba(0, 0, 0, 0); /* transparente inicial */
+  transition: backdrop-filter 0.8s ease, -webkit-backdrop-filter 0.8s ease,
+    background 0.6s ease;
+}
+
+/* CUANDO isHovering = true se activa esta regla porque se agregó la clase .blur-active al wrapper */
+.hero-wrapper.blur-active .hero-blur-layer {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* overlay ligero para contraste */
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* H1 y botón como antes */
+h1 {
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  letter-spacing: -0.02em;
+}
+
+/* Botón fill */
+.btn-fill-hover {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  position: relative;
+  font-weight: 500;
+  z-index: 30; /* por encima del blur */
+}
+
+.btn-fill-hover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(135deg, #f6ccc4 0%, #f0b5a3 100%);
+  z-index: -1;
+  transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 9999px;
+}
+
+.btn-fill-hover:hover {
+  border-color: #f6ccc4;
+  box-shadow: 0 12px 32px rgba(246, 204, 196, 0.3);
+}
+
+.btn-fill-hover:hover::before {
+  height: 100%;
+}
+
+/* color del texto en hover */
+.btn-fill-hover span {
+  position: relative;
+  z-index: 10;
+  transition: color 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-fill-hover:hover span {
+  color: black;
+}
+
+/* para accesibilidad: si reduce motion, desacopla transiciones fuertes */
+@media (prefers-reduced-motion: reduce) {
+  .hero-blur-layer,
+  .btn-fill-hover::before,
+  .btn-fill-hover span {
+    transition: none !important;
+  }
+}
+</style>
