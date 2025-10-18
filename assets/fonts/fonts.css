@@ -1,34 +1,53 @@
-/* assets/css/fonts.css */
-
-/* Importar fuentes locales (PPModel) */
+/* ==============================
+   PPPangaia - Headlines
+   ============================== */
 @font-face {
-  font-family: "PPCirka";
-  src: url("./cirka/PPCirka-Bold.otf") format("opentype");
+  font-family: "PPPangaia";
+  src: url("./pangaia/PPPangaia-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPPangaia";
+  src: url("./pangaia/PPPangaia-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPPangaia";
+  src: url("./pangaia/PPPangaia-Ultralight.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==============================
+   PPMori - Body / Navbar / Buttons
+   ============================== */
+@font-face {
+  font-family: "PPMori";
+  src: url("./mori/PPMori-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "PPCirka";
-  src: url("./cirka/PPCirka-Light.otf") format("opentype");
-  font-weight: 700; /* puedes usar 700 para Super si es más gruesa */
+  font-family: "PPMori";
+  src: url("./mori/PPMori-Extralight.otf") format("opentype");
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "PPCirka";
-  src: url("./cirka/PPCirka-Variable.ttf") format("opentype");
-  font-weight: 700; /* puedes usar 700 para Super si es más gruesa */
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "PPWriter";
-  src: url("./writer/PPWriter-Regular.otf") format("opentype");
-  font-weight: 700; /* puedes usar 700 para Super si es más gruesa */
+  font-family: "PPMori";
+  src: url("./mori/PPMori-SemiBold.otf") format("opentype");
+  font-weight: 200;
   font-style: normal;
   font-display: swap;
 }

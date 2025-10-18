@@ -20,30 +20,48 @@ export default defineNuxtConfig({
         { name: "format-detection", content: "telephone=no" },
       ],
       link: [
+        /* ==============================
+     PPPangaia - Headlines
+     ============================== */
         {
           rel: "preload",
-          href: "/cirka/PPCirka-Bold.otf",
+          href: "/pangaia/PPPangaia-Bold.otf",
           as: "font",
           type: "font/otf",
           crossorigin: "anonymous",
         },
         {
           rel: "preload",
-          href: "/cirka/PPCirka-Light.otf",
+          href: "/pangaia/PPPangaia-Medium.otf",
           as: "font",
           type: "font/otf",
           crossorigin: "anonymous",
         },
         {
           rel: "preload",
-          href: "/cirka/PPCirka-Variable.ttf",
+          href: "/pangaia/PPPangaia-Ultralight.otf",
           as: "font",
-          type: "font/ttf",
+          type: "font/otf",
+          crossorigin: "anonymous",
+        },
+
+        {
+          rel: "preload",
+          href: "/mori/PPMori-Regular.otf",
+          as: "font",
+          type: "font/otf",
           crossorigin: "anonymous",
         },
         {
           rel: "preload",
-          href: "/writer/PPWriter-Regular.otf",
+          href: "/mori/PPMori-Semibold.otf",
+          as: "font",
+          type: "font/otf",
+          crossorigin: "anonymous",
+        },
+        {
+          rel: "preload",
+          href: "/mori/PPMori-Extralight.otf",
           as: "font",
           type: "font/otf",
           crossorigin: "anonymous",

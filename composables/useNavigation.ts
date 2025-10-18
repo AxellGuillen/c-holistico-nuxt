@@ -1,9 +1,9 @@
 export const useNavigation = () => {
   const links = [
-    { label: "Inicio", path: "/hero" },
+    { label: "Raíces", path: "/" },
     { label: "Nuestra Esencia", path: "/about" },
-    { label: "Rituales & Terapias", path: "/therapies" },
-    { label: "Historias ", path: "/testimonials" },
+    { label: "Rituales & Terapias", path: "/servicios" },
+    { label: "Viajes ", path: "/Viajes" },
   ];
 
   return { links };

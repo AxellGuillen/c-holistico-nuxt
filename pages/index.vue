@@ -17,7 +17,7 @@ useHead({
 </script>
 
 <template>
-  <main class="home-container">
+  <main class="home-container bg-brand-terracotta">
     <section
       v-for="block in blocks"
       :key="block._key"

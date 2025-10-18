@@ -15,7 +15,7 @@ useHead({
     <h1
       class="text-5xl md:text-8xl font-headlines text-black leading-tight md:leading-[1.1] text-center max-w-3xl"
     >
-      Viajes Terapéuticos
+      Viajes
     </h1>
 
     <!-- Subtítulo / descripción opcional -->
