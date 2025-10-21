@@ -61,7 +61,7 @@ onMounted(async () => {
     >
       <div class="max-w-screen">
         <h1
-          class="font-headlines font-black text-white leading-[0.9] text-left text-[12vw] sm:text-[9vw] md:text-[110px]"
+          class="font-headlines font-black text-white leading-[0.9] md:text-left text-[12vw] sm:text-[9vw] md:text-[110px] text-center"
         >
           <span
             v-for="(char, index) in chars"
@@ -75,22 +75,24 @@ onMounted(async () => {
 
         <p
           v-if="block.subtitle"
-          class="mt-6 text-white/80 font-sans text-base sm:text-lg md:text-xl max-w-[600px] md:text-left"
+          class="mt-6 text-white/80 font-sans text-sm text-center sm:text-lg md:text-xl max-w-[600px] md:text-left"
         >
           {{ block.subtitle }}
         </p>
 
-        <div class="mt-10 flex justify-start w-[600px]">
+        <div class="mt-10 flex md:justify-start md:w-[600px] justify-center">
           <NuxtLink
             to="/contact"
-            class="btn-fill-hover relative overflow-hidden inline-flex justify-center items-center h-12 px-10 rounded-full text-white text-base tracking-wide transition duration-300"
+            class="btn-fill-hover relative overflow-hidden inline-flex md:justify-center items-center h-12 px-10 rounded-full text-white text-base tracking-wide transition duration-300"
             @mouseenter="isHovering = true"
             @mouseleave="isHovering = false"
             @touchstart.prevent="isHovering = true"
             @touchend.prevent="isHovering = false"
             @blur="isHovering = false"
           >
-            <span>Agenda tu encuentro</span>
+            <span class="font-sans text-base text-white">
+              Agenda tu encuentro
+            </span>
           </NuxtLink>
         </div>
       </div>

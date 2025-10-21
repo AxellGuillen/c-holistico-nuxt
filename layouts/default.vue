@@ -22,7 +22,12 @@ watch(
 <template>
   <div>
     <main>
-      <FloatingNav />
+      <div class="hidden md:block">
+        <FloatingNav />
+      </div>
+      <div class="md:hidden">
+        <MenuMobile />
+      </div>
 
       <div>
         <NuxtPage />
