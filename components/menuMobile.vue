@@ -14,7 +14,6 @@ const logo = ref(null);
 
 const { links } = useNavigation();
 
-// Animación del hamburger icon
 const animateHamburger = (toOpen) => {
   if (toOpen) {
     gsap
@@ -33,7 +32,6 @@ const animateHamburger = (toOpen) => {
 
 // Animación del menú y overlay
 const animateMenuOpen = () => {
-  // ⬇️ CRITICAL: Establecer estados iniciales antes de animar
   gsap.set(overlay.value, { opacity: 0 });
   gsap.set(menuPanel.value, { y: -20, opacity: 0 });
   gsap.set(menuItems.value, { opacity: 0, x: -20 });
@@ -73,18 +71,26 @@ const animateMenuClose = () => {
         x: -20,
         duration: 0.3,
         stagger: 0.05,
-        ease: "power2.in",
+        ease: "power2.out",
       },
       0
     )
     // Menu panel slide out
     .to(
       menuPanel.value,
-      { y: -20, opacity: 0, duration: 0.3, ease: "power3.in" },
+      { y: -20, opacity: 0, duration: 0.5, ease: "power3.in" },
       0.1
     )
     // Overlay fade out
-    .to(overlay.value, { opacity: 0, duration: 0.2 }, 0.1);
+    .to(
+      overlay.value,
+      {
+        opacity: 0,
+        duration: 0.5,
+        ease: "sine.inOut",
+      },
+      0.4
+    );
 };
 
 const toggleMenu = () => {
@@ -92,7 +98,6 @@ const toggleMenu = () => {
   animateHamburger(isOpen.value);
 
   if (isOpen.value) {
-    // ⬇️ Esperar al siguiente frame para que el DOM esté listo
     requestAnimationFrame(() => {
       animateMenuOpen();
     });
@@ -153,15 +158,21 @@ onUnmounted(() => {
           <!-- Hamburger Icon -->
           <span
             ref="line1"
-            class="absolute w-6 h-0.5 bg-white top-1 transition-all"
+            :class="[
+              'absolute w-7 h-0.5 top-1 transition-all duration-300',
+              isOpen ? 'bg-brand-terracotta' : 'bg-white',
+            ]"
           />
           <span
             ref="line2"
-            class="absolute w-6 h-0.5 bg-white top-3 transition-all"
+            class="absolute w-7 h-0.5 bg-white top-3 transition-all"
           />
           <span
             ref="line3"
-            class="absolute w-6 h-0.5 bg-white top-5 transition-all"
+            :class="[
+              'absolute w-7 h-0.5 top-5 transition-all duration-300',
+              isOpen ? 'bg-brand-terracotta' : 'bg-white',
+            ]"
           />
         </div>
       </button>
@@ -194,7 +205,7 @@ onUnmounted(() => {
               v-for="(link, index) in links"
               :key="index"
               ref="menuItems"
-              class="text-3xl font-light text-terracota-sand font-headlines"
+              class="text-4xl font-regular text-brand-terracotta font-headlines"
               style="opacity: 0; transform: translateX(-20px)"
             >
               <NuxtLink
@@ -213,18 +224,20 @@ onUnmounted(() => {
           </ul>
 
           <!-- Separador -->
-          <div class="border-t border-zinc-800 my-8" />
+          <div class="border-t border-zinc-500 my-10" />
 
           <!-- Info Footer -->
-          <div class="space-y-4 text-sm text-zinc-400 text-right">
+          <div
+            class="space-y-4 text-sm text-zinc-400 text-right absolute bottom-10 right-10"
+          >
             <div>
-              <p class="text-zinc-500 mb-1">Email</p>
+              <p class="text-brand-terracotta mb-1">Email</p>
               <a href="mailto:info@raices.com" class="text-white transition">
                 info@raices.com
               </a>
             </div>
             <div>
-              <p class="text-zinc-500 mb-1">Teléfono</p>
+              <p class="text-brand-terracotta mb-1">Teléfono</p>
               <a href="tel:+5215551234567" class="text-white transition">
                 +52 (555) 123-4567
               </a>
