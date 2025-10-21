@@ -22,7 +22,7 @@ module.exports = {
           clay: "#d3b093", // Calidez natural – títulos secundarios o bordes
           earth: "#bf9770", // Tierra – botones, énfasis visual
           blush: "#f6ccc4", // Rosa cálido – acento emocional o detalles suaves
-          terracotta: "#a54f36", // Terracota intensa – CTA principal, contraste
+          terracotta: "#3e1404", // Terracota intensa – CTA principal, contraste
         },
       },
     },

@@ -11,7 +11,6 @@ const titleRefs = ref([]);
 
 const isHovering = ref(false);
 
-// animación de entrada de letras
 onMounted(async () => {
   await nextTick();
   gsap.from(titleRefs.value, {
@@ -57,17 +56,17 @@ onMounted(async () => {
 
     <!-- Content (arriba del blur layer) -->
     <div
-      class="absolute inset-0 flex flex-col justify-center z-20 px-8 sm:px-16 lg:px-24 text-left pt-20"
+      class="absolute inset-0 flex flex-col justify-center md:justify-center z-20 md:px-[100px] text-left md:pt-20 pt-[10px]"
     >
       <div class="max-w-screen">
         <h1
-          class="font-headlines font-black text-white leading-[0.9] md:text-left text-[12vw] sm:text-[9vw] md:text-[110px] text-center"
+          class="font-headlines font-black text-white leading-[0.9] md:text-left text-[9vw] md:text-[110px] text-center"
         >
           <span
             v-for="(char, index) in chars"
             :key="index"
             ref="titleRefs"
-            class="inline-block will-change-transform"
+            class="md:inline-block will-change-transform"
           >
             {{ char === " " ? "\u00A0" : char }}
           </span>
@@ -75,12 +74,14 @@ onMounted(async () => {
 
         <p
           v-if="block.subtitle"
-          class="mt-6 text-white/80 font-sans text-sm text-center sm:text-lg md:text-xl max-w-[600px] md:text-left"
+          class="md:mt-6 mt-4 text-white/80 font-sans text-sm text-center sm:text-lg md:text-xl md:max-w-[600px] md:text-left max-w-[250px] mx-auto md:mx-0"
         >
           {{ block.subtitle }}
         </p>
 
-        <div class="mt-10 flex md:justify-start md:w-[600px] justify-center">
+        <div
+          class="md:mt-10 md:flex md:justify-start md:w-[600px] justify-center mt-[60px] flex"
+        >
           <NuxtLink
             to="/contact"
             class="btn-fill-hover relative overflow-hidden inline-flex md:justify-center items-center h-12 px-10 rounded-full text-white text-base tracking-wide transition duration-300"
