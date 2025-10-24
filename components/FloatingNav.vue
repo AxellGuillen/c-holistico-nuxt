@@ -76,7 +76,7 @@ onBeforeUnmount(() => {
         <NuxtLink to="" class="inline-flex items-center justify-center">
           <Logo
             ref="logo"
-            class="h-6 sm:h-7 lg:h-8 fill-current text-brand-primary ml-auto md:ml-1"
+            class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1"
           />
         </NuxtLink>
       </div>

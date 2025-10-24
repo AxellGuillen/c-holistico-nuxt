@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import Logo from "~/assets/icons/logo.svg?component";
+import Logo from "~/assets/icons/logoMobile.svg?component";
 import gsap from "gsap";
 
 const isOpen = ref(false);
@@ -86,10 +86,10 @@ const animateMenuClose = () => {
       overlay.value,
       {
         opacity: 0,
-        duration: 0.5,
-        ease: "sine.inOut",
+        duration: 1.1, // antes 0.9
+        ease: "power1.inOut",
       },
-      0.4
+      0.3 // empieza más tarde, cuando ya los items desaparecieron
     );
 };
 
@@ -144,9 +144,9 @@ onUnmounted(() => {
 
 <template>
   <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm md:hidden">
-    <div class="px-4 py-4 flex items-center justify-between">
+    <div class="px-6 py-3 flex items-center justify-between">
       <div class="z-50 items-center">
-        <Logo ref="logo" class="w-6 h-6 text-brand-terracotta" />
+        <Logo ref="logo" class="w-8 h-8" />
       </div>
 
       <button
@@ -155,33 +155,32 @@ onUnmounted(() => {
         :aria-label="isOpen ? 'Cerrar menú' : 'Abrir menú'"
       >
         <div class="w-6 h-6 relative">
-          <!-- Hamburger Icon -->
           <span
             ref="line1"
             :class="[
               'absolute w-7 h-0.5 top-1 transition-all duration-300',
-              isOpen ? 'bg-brand-terracotta' : 'bg-white',
+              isOpen ? 'bg-brand-terracotta' : 'bg-brand-terracotta',
             ]"
           />
           <span
             ref="line2"
-            class="absolute w-7 h-0.5 bg-white top-3 transition-all"
+            class="absolute w-7 h-0.5 bg-brand-terracotta top-3 transition-all"
           />
           <span
             ref="line3"
             :class="[
               'absolute w-7 h-0.5 top-5 transition-all duration-300',
-              isOpen ? 'bg-brand-terracotta' : 'bg-white',
+              isOpen ? 'bg-brand-terracotta' : 'bg-brand-terracotta',
             ]"
           />
         </div>
       </button>
     </div>
 
-    <!-- Overlay (fondo oscuro) -->
+    <!-- OVERLAY  -->
     <Teleport to="body">
       <div
-        v-if="isOpen"
+        v-show="isOpen"
         ref="overlay"
         class="fixed inset-0 bg-black/50 z-40 md:hidden"
         style="opacity: 0"
@@ -189,23 +188,20 @@ onUnmounted(() => {
       />
     </Teleport>
 
-    <!-- Panel del Menú -->
     <Transition name="slide-menu">
       <div
         v-if="isOpen"
         ref="menuPanel"
-        class="fixed top-0 left-0 right-0 w-full h-screen bg-brand-sand md:hidden z-40"
+        class="fixed top-0 left-0 right-0 w-full h-screen bg-brand-base md:hidden z-40"
         style="opacity: 0; transform: translateY(-20px)"
       >
-        <!-- Contenido del menú con scroll -->
         <div class="px-6 py-20 max-h-screen overflow-y-auto">
-          <!-- Links del menú -->
           <ul class="space-y-6">
             <li
               v-for="(link, index) in links"
               :key="index"
               ref="menuItems"
-              class="text-4xl font-regular text-brand-terracotta font-headlines"
+              class="text-3xl font-regular text-brand-terracotta font-headlines"
               style="opacity: 0; transform: translateX(-20px)"
             >
               <NuxtLink
@@ -223,10 +219,9 @@ onUnmounted(() => {
             </li>
           </ul>
 
-          <!-- Separador -->
           <div class="border-t border-zinc-500 my-10" />
 
-          <!-- Info Footer -->
+          <!-- FOOTER -->
           <div
             class="space-y-4 text-sm text-zinc-400 text-right absolute bottom-10 right-10"
           >
@@ -250,7 +245,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* Transición del panel (fallback CSS si GSAP no funciona) */
 .slide-menu-enter-active,
 .slide-menu-leave-active {
   transition: all 0.3s ease;
