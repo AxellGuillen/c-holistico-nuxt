@@ -158,7 +158,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
     <!-- Right Side: Image / Video -->
     <!-- ========================================== -->
     <div
-      class="relative w-full h-[60vh] sm:h-[70vh] md:h-full min-h-[300px] lg:min-h-screen overflow-hidden"
+      class="relative w-full h-[60vh] sm:h-[70vh] md:h-full min-h-[300px] lg:min-h-screen overflow-hidden rounded-full"
     >
       <div class="relative w-full h-full">
         <video

@@ -7,11 +7,11 @@
   <defs>
     <style>
       .cls-1, .cls-2 {
-        fill: #ffffffff;
+        fill: #3e1404;
       }
 
       .cls-2 {
-        stroke: #ffffffff;
+        stroke: #3e1404;
         stroke-miterlimit: 10;
         stroke-width: 8px;
       }

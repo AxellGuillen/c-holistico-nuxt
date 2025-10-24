@@ -26,12 +26,11 @@ onMounted(async () => {
 <template>
   <div
     :class="[
-      'hero-wrapper relative max-w-[1600px] mx-auto  overflow-hidden shadow-lg',
+      ' hero-wrapper relative overflow-hidden',
+      'h-[calc(100vh-64px)] md:h-screen mt-16 md:mt-0',
       isHovering ? 'blur-active' : '',
     ]"
-    style="height: calc(100vh - 2px)"
   >
-    <!-- Background -->
     <video
       v-if="block.backgroundVideo?.url"
       class="absolute inset-0 w-full h-full object-cover"
@@ -54,13 +53,12 @@ onMounted(async () => {
       .
     </div>
 
-    <!-- Content (arriba del blur layer) -->
     <div
-      class="absolute inset-0 flex flex-col justify-center md:justify-center z-20 md:px-[100px] text-left md:pt-20 pt-[10px]"
+      class="absolute inset-0 flex flex-col justify-start md:justify-center z-20 md:px-[100px] text-left md:pt-20 pt-[100px]"
     >
       <div class="max-w-screen">
         <h1
-          class="font-headlines font-black text-white leading-[0.9] md:text-left text-[9vw] md:text-[110px] text-center"
+          class="font-headlines font-black text-white leading-[0.9] md:text-left text-[8vw] md:text-[110px] text-center"
         >
           <span
             v-for="(char, index) in chars"
@@ -84,7 +82,15 @@ onMounted(async () => {
         >
           <NuxtLink
             to="/contact"
-            class="btn-fill-hover relative overflow-hidden inline-flex md:justify-center items-center h-12 px-10 rounded-full text-white text-base tracking-wide transition duration-300"
+            class="btn-mobile md:hidden relative inline-flex items-center h-12 px-12 rounded-full tracking-wide bg-brand-base"
+          >
+            <span class="font-sans text-base text-brand-terracotta">
+              Agenda tu encuentro
+            </span>
+          </NuxtLink>
+          <NuxtLink
+            to="/contact"
+            class="btn-fill-hover hidden md:inline-flex relative items-center h-12 px-10 rounded-full text-white text-base tracking-wide overflow-hidden"
             @mouseenter="isHovering = true"
             @mouseleave="isHovering = false"
             @touchstart.prevent="isHovering = true"
