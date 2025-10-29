@@ -5,9 +5,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
 </script>
 
 <template>
-  <div
-    class="relative grid grid-cols-1 lg:grid-cols-2 h-screen overflow-hidden md:h-screen"
-  >
+  <div class="relative grid grid-cols-1 lg:grid-cols-2 overflow-visible py-20">
     <!-- ========================================== -->
     <!-- Left Side: Content -->
     <!-- ========================================== -->
@@ -16,7 +14,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
     >
       <div class="max-w-2xl mx-auto lg:mx-0 w-full py-8 lg:py-0">
         <!-- Small Label -->
-        <div class="mb-8">
+        <div class="mb-8 flex justify-center font-sans">
           <div
             class="inline-flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-brand-primary bg-brand-accent2 px-4 py-2 rounded-full"
           >
@@ -30,26 +28,19 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
         <!-- Title -->
         <h2
           v-if="block.title"
-          class="text-4xl sm:text-5xl lg:text-6xl font-headlines font-bold leading-[1.1] tracking-tight text-brand-neutralDark mb-6"
+          class="text-[100px] font-headlines font-bold leading-[1.1] tracking-tight text-brand-neutralDark mb-6 text-center"
           data-text-fade
         >
           {{ block.title }}
         </h2>
 
         <!-- Subtitle (Quote Style) -->
-        <blockquote
-          v-if="block.subtitle"
-          class="relative pl-6 border-l-4 border-brand-primary text-xl sm:text-2xl font-light italic leading-relaxed text-brand-neutralDark/80 mb-8"
-        >
-          <span
-            class="absolute -left-2 -top-2 text-6xl text-brand-accent2 font-headlines"
-            >"</span
-          >
-          {{ block.subtitle }}
-        </blockquote>
 
         <!-- Description -->
-        <div v-if="block.description" class="prose-brand max-w-none text-left">
+        <div
+          v-if="block.description"
+          class="prose-brand max-w-none text-center"
+        >
           <PortableText
             :value="block.description"
             class="text-base sm:text-lg leading-loose text-brand-neutralDark tracking-wide font-sans"
@@ -158,9 +149,11 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
     <!-- Right Side: Image / Video -->
     <!-- ========================================== -->
     <div
-      class="relative w-full h-[60vh] sm:h-[70vh] md:h-full min-h-[300px] lg:min-h-screen overflow-hidden rounded-full"
+      class="relative flex items-center justify-center h-full bg-transparent"
     >
-      <div class="relative w-full h-full">
+      <div
+        class="relative w-[70%] max-w-[850px] aspect-square rounded-md overflow-hidden flex items-center justify-center"
+      >
         <video
           v-if="block.video?.url"
           :src="block.video.url"
@@ -168,7 +161,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
           muted
           loop
           playsinline
-          class="absolute inset-0 w-full h-full object-cover object-center md:object-center"
+          class="absolute inset-0 w-full h-full object-cover object-center"
         ></video>
 
         <NuxtImg
@@ -183,29 +176,30 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
           v-else
           class="absolute inset-0 bg-gradient-to-br from-brand-accent2 via-brand-secondary to-brand-accent1"
         ></div>
-      </div>
 
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-brand-primary/30 via-transparent to-brand-neutralDark/40"
-      ></div>
+        <!-- Overlays -->
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-brand-primary/30 via-transparent to-brand-neutralDark/40"
+        ></div>
+        <div
+          class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-brand-neutralDark/40 to-transparent"
+        ></div>
 
-      <div
-        class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-brand-neutralDark/40 to-transparent"
-      ></div>
+        <!-- Floating Elements -->
+        <div
+          class="absolute top-8 right-8 w-20 h-20 bg-brand-accent2/20 backdrop-blur-md rounded-full animate-pulse"
+        ></div>
+        <div
+          class="absolute bottom-10 left-8 w-16 h-16 bg-brand-secondary/20 backdrop-blur-md rounded-full animate-bounce"
+          style="animation-duration: 3s"
+        ></div>
 
-      <div
-        class="absolute top-10 right-10 w-32 h-32 bg-brand-accent2/20 backdrop-blur-md rounded-full animate-pulse"
-      ></div>
-      <div
-        class="absolute bottom-20 left-10 w-24 h-24 bg-brand-secondary/20 backdrop-blur-md rounded-full animate-bounce"
-        style="animation-duration: 3s"
-      ></div>
-
-      <div
-        v-if="block.backgroundImage?.alt"
-        class="absolute bottom-6 right-6 text-brand-neutralLight/80 text-xs font-light backdrop-blur-sm bg-brand-neutralDark/40 px-3 py-1 rounded-full"
-      >
-        {{ block.backgroundImage.alt }}
+        <div
+          v-if="block.backgroundImage?.alt"
+          class="absolute bottom-4 right-4 text-brand-neutralLight/80 text-xs font-light backdrop-blur-sm bg-brand-neutralDark/40 px-3 py-1 rounded-full"
+        >
+          {{ block.backgroundImage.alt }}
+        </div>
       </div>
     </div>
   </div>
