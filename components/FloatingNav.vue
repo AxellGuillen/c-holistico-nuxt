@@ -13,7 +13,6 @@ let lastScroll = 0;
 function handleScroll() {
   const currentScroll = window.scrollY;
   if (currentScroll > lastScroll && currentScroll > 50) {
-    // Scroll hacia abajo → ocultar navbar
     gsap.to(nav.value, {
       y: -100,
       opacity: 0,
@@ -33,7 +32,6 @@ function handleScroll() {
 }
 
 onMounted(() => {
-  // Animación inicial al cargar
   const logoEl = document.querySelector("#logo-root");
   gsap.from(logoEl, {
     rotation: 360,
