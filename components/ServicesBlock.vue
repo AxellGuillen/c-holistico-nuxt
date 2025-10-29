@@ -26,9 +26,11 @@ onMounted(async () => {
         ease: "power2.out",
         scrollTrigger: {
           trigger: textTitle.value,
+          end: "top 20%",
           start: "top 80%",
+          once: true,
           toggleActions: "play none none none",
-          markers: true,
+          markers: false,
         },
       });
     }
@@ -43,7 +45,9 @@ onMounted(async () => {
         scrollTrigger: {
           trigger: card,
           start: "top 85%",
+          end: "top 20%",
           toggleActions: "play none none none",
+          once: true,
           markers: true,
         },
       });
@@ -63,12 +67,14 @@ onUnmounted(() => {
       <ClientOnly>
         <div class="md:hidden">
           <div class="text-center font-headlines mb-8">
-            <h2 class="text-6xl font-light mb-3" ref="textTitle">
+            <h2
+              class="text-6xl font-light mb-3 will-change-transform transform-gpu"
+              ref="textTitle"
+            >
               {{ block.title }}
             </h2>
           </div>
 
-          <!-- ✅ Flex con gap -->
           <div class="flex flex-col gap-6">
             <NuxtLink
               v-for="(cat, i) in block.categories"
@@ -76,7 +82,6 @@ onUnmounted(() => {
               :to="`/${cat.slug}`"
               class="block"
             >
-              <!-- ✅ Nota: agregué 'block' al NuxtLink -->
               <div
                 :ref="(el) => setBoxRef(el, i)"
                 class="relative h-[550px] overflow-hidden rounded-3xl group"
