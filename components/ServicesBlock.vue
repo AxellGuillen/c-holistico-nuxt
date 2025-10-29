@@ -65,49 +65,51 @@ onUnmounted(() => {
 <template>
   <section class="py-1 md:py-24">
     <div class="max-w-[1600px] mx-auto px-4">
-      <div class="md:hidden">
-        <div class="text-center font-headlines mb-8">
-          <h2 class="text-6xl font-light mb-3" ref="textTitle">
-            {{ block.title }}
-          </h2>
-        </div>
+      <ClientOnly>
+        <div class="md:hidden">
+          <div class="text-center font-headlines mb-8">
+            <h2 class="text-6xl font-light mb-3" ref="textTitle">
+              {{ block.title }}
+            </h2>
+          </div>
 
-        <!-- ✅ Flex con gap -->
-        <div class="flex flex-col gap-6">
-          <NuxtLink
-            v-for="(cat, i) in block.categories"
-            :key="cat._key"
-            :to="`/${cat.slug}`"
-            class="block"
-          >
-            <!-- ✅ Nota: agregué 'block' al NuxtLink -->
-            <div
-              :ref="(el) => setBoxRef(el, i)"
-              class="relative h-[550px] overflow-hidden rounded-3xl group"
+          <!-- ✅ Flex con gap -->
+          <div class="flex flex-col gap-6">
+            <NuxtLink
+              v-for="(cat, i) in block.categories"
+              :key="cat._key"
+              :to="`/${cat.slug}`"
+              class="block"
             >
-              <NuxtImg
-                v-if="cat.backgroundImage?.url"
-                :src="cat.backgroundImage.url"
-                :alt="cat.backgroundImage.alt || cat.title"
-                class="absolute inset-0 w-full h-full object-cover"
-              />
-
+              <!-- ✅ Nota: agregué 'block' al NuxtLink -->
               <div
-                class="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/30 group-hover:bg-black/40 transition-colors duration-500"
+                :ref="(el) => setBoxRef(el, i)"
+                class="relative h-[550px] overflow-hidden rounded-3xl group"
               >
-                <h3 class="text-2xl font-bold mb-3 font-sans">
-                  {{ cat.title }}
-                </h3>
-                <span
-                  class="border border-white px-4 py-2 rounded-full text-sm tracking-wide font-sans backdrop-blur-sm"
+                <NuxtImg
+                  v-if="cat.backgroundImage?.url"
+                  :src="cat.backgroundImage.url"
+                  :alt="cat.backgroundImage.alt || cat.title"
+                  class="absolute inset-0 w-full h-full object-cover"
+                />
+
+                <div
+                  class="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/30 group-hover:bg-black/40 transition-colors duration-500"
                 >
-                  {{ cat.ctaText }}
-                </span>
+                  <h3 class="text-2xl font-bold mb-3 font-sans">
+                    {{ cat.title }}
+                  </h3>
+                  <span
+                    class="border border-white px-4 py-2 rounded-full text-sm tracking-wide font-sans backdrop-blur-sm"
+                  >
+                    {{ cat.ctaText }}
+                  </span>
+                </div>
               </div>
-            </div>
-          </NuxtLink>
+            </NuxtLink>
+          </div>
         </div>
-      </div>
+      </ClientOnly>
     </div>
   </section>
 </template>
