@@ -67,10 +67,7 @@ onUnmounted(() => {
       <ClientOnly>
         <div class="md:hidden">
           <div class="text-center font-headlines mb-8">
-            <h2
-              class="text-6xl font-light mb-3 will-change-transform transform-gpu"
-              ref="textTitle"
-            >
+            <h2 class="text-6xl font-light mb-3 translate-z-0" ref="textTitle">
               {{ block.title }}
             </h2>
           </div>
@@ -84,7 +81,7 @@ onUnmounted(() => {
             >
               <div
                 :ref="(el) => setBoxRef(el, i)"
-                class="relative h-[550px] overflow-hidden rounded-3xl group"
+                class="relative min-h-[550px] overflow-hidden rounded-3xl group"
               >
                 <NuxtImg
                   v-if="cat.backgroundImage?.url"
