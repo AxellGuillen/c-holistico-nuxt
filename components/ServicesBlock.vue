@@ -1,17 +1,13 @@
 <script setup>
 import { ref, onMounted, nextTick, onUnmounted } from "vue";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 
 defineProps(["block", "urlFor", "urlForPlaceholder"]);
-
-gsap.registerPlugin(ScrollTrigger);
+const { $gsap } = useNuxtApp();
 
 const textTitle = ref(null);
 const boxes = ref([]); //
 let ctx = null;
 
-// ✅ Función para setear los refs
 const setBoxRef = (el, index) => {
   if (el) {
     boxes.value[index] = el;
@@ -21,10 +17,9 @@ const setBoxRef = (el, index) => {
 onMounted(async () => {
   await nextTick();
 
-  ctx = gsap.context(() => {
-    // Animación del título
+  ctx = $gsap.context(() => {
     if (textTitle.value) {
-      gsap.from(textTitle.value, {
+      $gsap.from(textTitle.value, {
         x: -40,
         opacity: 0,
         duration: 1,
@@ -39,7 +34,7 @@ onMounted(async () => {
     }
 
     boxes.value.forEach((card, index) => {
-      gsap.from(card, {
+      $gsap.from(card, {
         y: 60,
         opacity: 0,
         duration: 0.8,
