@@ -192,7 +192,7 @@ onUnmounted(() => {
       <div
         v-if="isOpen"
         ref="menuPanel"
-        class="fixed top-0 left-0 right-0 w-full h-screen bg-brand-base md:hidden z-40"
+        class="fixed top-0 left-0 right-0 w-full h-screen bg-brand-sand md:hidden z-40"
         style="opacity: 0; transform: translateY(-20px)"
       >
         <div class="px-6 py-20 max-h-screen overflow-y-auto">
