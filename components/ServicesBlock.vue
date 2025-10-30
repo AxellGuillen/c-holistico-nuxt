@@ -2,7 +2,7 @@
 import { ref, onMounted, nextTick, onUnmounted } from "vue";
 
 defineProps(["block", "urlFor", "urlForPlaceholder"]);
-const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { $gsap } = useNuxtApp();
 
 const textTitle = ref(null);
 const boxes = ref([]);
