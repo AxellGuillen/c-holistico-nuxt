@@ -2,10 +2,10 @@
 import { ref, onMounted, nextTick, onUnmounted } from "vue";
 
 defineProps(["block", "urlFor", "urlForPlaceholder"]);
-const { $gsap } = useNuxtApp();
+const { $gsap, $ScrollTrigger } = useNuxtApp();
 
 const textTitle = ref(null);
-const boxes = ref([]); //
+const boxes = ref([]);
 let ctx = null;
 
 const setBoxRef = (el, index) => {
@@ -26,31 +26,35 @@ onMounted(async () => {
         ease: "power2.out",
         scrollTrigger: {
           trigger: textTitle.value,
-          end: "top 20%",
-          start: "top 80%",
+          start: "top bottom-=100px",
+          end: "top top+=200px",
           once: true,
-          toggleActions: "play none none none",
-          markers: false,
+          markers: true,
+          invalidateOnRefresh: false,
+          refreshPriority: -1,
         },
       });
     }
 
     boxes.value.forEach((card, index) => {
-      $gsap.from(card, {
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        delay: index * 0.1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 85%",
-          end: "top 20%",
-          toggleActions: "play none none none",
-          once: true,
-          markers: false,
-        },
-      });
+      if (card) {
+        $gsap.from(card, {
+          y: 60,
+          opacity: 0,
+          duration: 0.8,
+          delay: index * 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top bottom-=50px",
+            end: "top top+=200px",
+            once: true,
+            markers: true,
+            invalidateOnRefresh: false,
+            refreshPriority: -1,
+          },
+        });
+      }
     });
   });
 });
