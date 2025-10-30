@@ -48,7 +48,7 @@ onMounted(async () => {
           end: "top 20%",
           toggleActions: "play none none none",
           once: true,
-          markers: true,
+          markers: false,
         },
       });
     });
@@ -66,8 +66,13 @@ onUnmounted(() => {
     <div class="max-w-[1600px] mx-auto px-4">
       <ClientOnly>
         <div class="md:hidden">
-          <div class="text-center font-headlines mb-8">
-            <h2 class="text-6xl font-light mb-3 translate-z-0" ref="textTitle">
+          <div
+            class="text-center font-headlines mb-8 relative min-h-[120px] bg-red-200"
+          >
+            <h2
+              class="absolute inset-0 flex items-center justify-center text-6xl font-light transform-gpu will-change-transform"
+              ref="textTitle"
+            >
               {{ block.title }}
             </h2>
           </div>
