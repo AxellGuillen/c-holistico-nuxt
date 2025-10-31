@@ -71,7 +71,7 @@ onUnmounted(() => {
       <ClientOnly>
         <div class="md:hidden">
           <div
-            class="text-center font-headlines mb-8 relative min-h-[120px] bg-red-200"
+            class="text-center font-headlines mb-8 relative min-h-[120px] bg-red-500"
           >
             <h2
               class="absolute inset-0 flex items-center justify-center text-6xl font-light transform-gpu will-change-transform"

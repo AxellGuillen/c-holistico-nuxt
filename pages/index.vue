@@ -29,7 +29,7 @@ useHead({
         'block-section relative w-full',
         {
           // Solo el Hero ocupa altura completa
-          'h-[100dvh] md:h-screen': block._type === 'heroBlock',
+          'h-screen md:h-screen': block._type === 'heroBlock',
           // Otros bloques usan padding natural
           ' md:py-20': block._type !== 'heroBlock',
         },
@@ -61,7 +61,7 @@ useHead({
 .home-container {
   position: relative;
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;
   overflow-x: hidden;
 }
 
