@@ -69,12 +69,11 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <!-- Center Logo -->
       <div class="absolute left-1/2 -translate-x-1/2 z-10">
         <NuxtLink to="" class="inline-flex items-center justify-center">
           <Logo
             ref="logo"
-            class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1"
+            class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1 text-white"
           />
         </NuxtLink>
       </div>
@@ -96,8 +95,6 @@ onBeforeUnmount(() => {
             </NuxtLink>
           </div>
         </div>
-
-        <!-- CTA  -->
       </div>
     </nav>
   </header>

@@ -58,7 +58,7 @@ onMounted(async () => {
     >
       <div class="max-w-screen">
         <h1
-          class="font-headlines font-black text-white leading-[0.9] md:text-left text-[8vw] md:text-[110px] text-center"
+          class="font-headlines font-black text-white leading-[0.9] md:text-left text-[9vw] md:text-[110px] text-center"
         >
           <span
             v-for="(char, index) in chars"
@@ -72,17 +72,17 @@ onMounted(async () => {
 
         <p
           v-if="block.subtitle"
-          class="md:mt-6 mt-4 text-white/80 font-sans text-sm text-center sm:text-lg md:text-xl md:max-w-[600px] md:text-left max-w-[250px] mx-auto md:mx-0"
+          class="md:mt-6 mt-[30px] text-white/80 font-sans text-sm text-center sm:text-lg md:text-xl md:max-w-[600px] md:text-left max-w-[250px] mx-auto md:mx-0"
         >
           {{ block.subtitle }}
         </p>
 
         <div
-          class="md:mt-10 md:flex md:justify-start md:w-[600px] justify-center mt-[60px] flex"
+          class="md:mt-10 md:flex md:justify-start md:w-[600px] justify-center mt-[80px] flex"
         >
           <NuxtLink
             to="/contact"
-            class="btn-mobile md:hidden relative inline-flex items-center h-12 px-12 rounded-full tracking-wide bg-brand-base"
+            class="btn-mobile md:hidden relative inline-flex items-center h-12 px-12 rounded-full tracking-wide bg-brand-sand"
           >
             <span class="font-sans text-base text-brand-terracotta">
               Agenda tu encuentro
@@ -154,7 +154,7 @@ h1 {
   bottom: 0;
   width: 100%;
   height: 0%;
-  background: linear-gradient(135deg, #f6ccc4 0%, #f0b5a3 100%);
+  background: linear-gradient(135deg, #fcf2ed 0%, #e1cfba 100%);
   z-index: -1;
   transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
   border-radius: 9999px;
@@ -177,7 +177,7 @@ h1 {
 }
 
 .btn-fill-hover:hover span {
-  color: black;
+  color: #3e1404;
 }
 
 /* para accesibilidad: si reduce motion, desacopla transiciones fuertes */
