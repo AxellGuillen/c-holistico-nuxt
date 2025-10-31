@@ -143,7 +143,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm md:hidden">
+  <nav
+    class="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm md:hidden bg-brand-sand/20"
+  >
     <div class="px-6 py-3 flex items-center justify-between">
       <div class="z-50 items-center">
         <Logo ref="logo" class="w-8 h-8" />

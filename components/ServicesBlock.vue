@@ -29,7 +29,7 @@ onMounted(async () => {
           start: "top bottom-=100px",
           end: "top top+=200px",
           once: true,
-          markers: true,
+          markers: false,
           invalidateOnRefresh: false,
           refreshPriority: -1,
         },
@@ -49,7 +49,7 @@ onMounted(async () => {
             start: "top bottom-=50px",
             end: "top top+=200px",
             once: true,
-            markers: true,
+            markers: false,
             invalidateOnRefresh: false,
             refreshPriority: -1,
           },
@@ -70,9 +70,7 @@ onUnmounted(() => {
     <div class="max-w-[1600px] mx-auto px-4">
       <ClientOnly>
         <div class="md:hidden">
-          <div
-            class="text-center font-headlines mb-8 relative min-h-[120px] bg-red-500"
-          >
+          <div class="text-center font-headlines mb-8 relative min-h-[120px]">
             <h2
               class="absolute inset-0 flex items-center justify-center text-6xl font-light transform-gpu will-change-transform"
               ref="textTitle"
@@ -100,15 +98,32 @@ onUnmounted(() => {
                 />
 
                 <div
-                  class="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/30 group-hover:bg-black/40 transition-colors duration-500"
+                  class="absolute inset-0 bg-black/25 text-white flex flex-col justify-end items-start px-6 pb-6 gap-5 group-hover:bg-black/40 transition-colors duration-500"
                 >
-                  <h3 class="text-2xl font-bold mb-3 font-sans">
+                  <h3
+                    class="text-4xl font-headlines tracking-wide drop-shadow-lg font-light text-left leading-tight w-[350px]"
+                  >
                     {{ cat.title }}
                   </h3>
+
                   <span
-                    class="border border-white px-4 py-2 rounded-full text-sm tracking-wide font-sans backdrop-blur-sm"
+                    class="border border-white/90 px-5 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-sand text-brand-terracotta flex items-start justify-start gap-3 w-[170px]"
                   >
-                    {{ cat.ctaText }}
+                    <span class="text-left">{{ cat.ctaText }}</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </span>
                 </div>
               </div>
