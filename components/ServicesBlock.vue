@@ -98,16 +98,16 @@ onUnmounted(() => {
                 />
 
                 <div
-                  class="absolute inset-0 bg-black/25 text-white flex flex-col justify-end items-start px-6 pb-6 gap-5 group-hover:bg-black/40 transition-colors duration-500"
+                  class="absolute inset-0 bg-black/25 text-white flex flex-col justify-end items-center px-6 pb-6 gap-5 group-hover:bg-black/40 transition-colors duration-500 mb-4 min-h-full"
                 >
                   <h3
-                    class="text-4xl font-headlines tracking-wide drop-shadow-lg font-light text-left leading-tight w-[350px]"
+                    class="text-4xl font-headlines tracking-wide drop-shadow-lg font-light text-center leading-tight w-[300px]"
                   >
                     {{ cat.title }}
                   </h3>
 
                   <span
-                    class="border border-white/90 px-5 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-sand text-brand-terracotta flex items-start justify-start gap-3 w-[170px]"
+                    class="border border-white/90 px-4 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-sand text-brand-terracotta flex items-start justify-center gap-3 w-[200px]"
                   >
                     <span class="text-left">{{ cat.ctaText }}</span>
                     <svg
