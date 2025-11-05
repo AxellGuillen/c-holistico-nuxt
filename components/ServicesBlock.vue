@@ -42,7 +42,7 @@ onMounted(async () => {
         y: -50,
         opacity: 0,
         duration: 1.2,
-        ease: "power3.out",
+        ease: "power2.out",
         scrollTrigger: {
           trigger: textTitleDesktop.value,
           start: "top 80%",
@@ -71,6 +71,22 @@ onMounted(async () => {
       }
     });
   });
+
+  if (import.meta.client && window.innerWidth >= 768) {
+    $gsap.from(boxes.value, {
+      opacity: 0,
+      y: 60,
+      duration: 1.1,
+      ease: "power2.out",
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: boxes.value[0],
+        start: "top 90%",
+        once: true,
+        markers: true,
+      },
+    });
+  }
 });
 
 onUnmounted(() => {
@@ -171,7 +187,7 @@ onUnmounted(() => {
              DESKTOP 
       -->
       <div
-        class="hidden md:flex relative w-full max-w-[1200px] h-[500px] mx-auto flex-col items-center justify-center mb-[20px]"
+        class="hidden md:flex relative w-full max-w-[1200px] h-[400px] mx-auto flex-col items-center justify-center mb-[10px]"
       >
         <!-- Título -->
         <div class="w-full px-6">
