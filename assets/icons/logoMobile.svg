@@ -7,18 +7,18 @@
   <defs>
     <style>
       .cls-1, .cls-2 {
-        fill: currentColor; /* ← Cambiado a currentColor */
+        fill: #ffffffff;
       }
 
       .cls-2 {
-        stroke: currentColor; /* ← Cambiado a currentColor */
+        stroke: #ffffffff;
         stroke-miterlimit: 10;
         stroke-width: 8px;
       }
     </style>
   </defs>
 
-  <circle class="cls-1" cx="37.89" cy="96.58" r="17.29"
+  <circle fill="currentColor" class="cls-1" cx="37.89" cy="96.58" r="17.29"
     transform="translate(-34.08 21.85) rotate(-22.5)" />
 
   <g id="oURKXH.tif">

@@ -1,5 +1,4 @@
 <script setup>
-import MonthService from "~/components/MonthService.vue";
 import ServicesBlock from "~/components/ServicesBlock.vue";
 import { query } from "~/lib/queries";
 
@@ -31,7 +30,7 @@ useHead({
           // Solo el Hero ocupa altura completa
           'h-screen md:h-screen': block._type === 'heroBlock',
           // Otros bloques usan padding natural
-          ' md:py-20': block._type !== 'heroBlock',
+          ' md:py-0': block._type !== 'heroBlock',
         },
       ]"
     >
@@ -47,12 +46,6 @@ useHead({
         :urlFor="urlFor"
         :urlForPlaceholder="urlForPlaceholder"
       />
-      <MonthService
-        v-else-if="block._type === 'monthServiceBlock'"
-        :block="block"
-        :urlFor="urlFor"
-        :urlForPlaceholder="urlForPlaceholder"
-      />
     </section>
   </main>
 </template>
@@ -63,6 +56,12 @@ useHead({
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
+  background-color: #e1cfba;
+  background-image: radial-gradient(
+    rgba(201, 20, 20, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 3px 3px;
 }
 
 .block-section {

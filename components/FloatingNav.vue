@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
 <template>
   <header ref="nav" class="fixed inset-x-0 top-0 z-50 font-sans font-bold">
     <nav
-      class="relative flex items-center px-4 sm:px-6 md:px-8 lg:px-15 xl:px-16 py-3 sm:py-3 text-xs sm:text-sm text-white tracking-wide w-full backdrop-blur-md bg-white/[0.02] border-b border-white/10"
+      class="relative flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-xs sm:text-sm text-white tracking-wide w-full backdrop-blur-md bg-white/[0.02] border-b border-white/10"
     >
       <div class="flex justify-end w-[600px]">
         <div
