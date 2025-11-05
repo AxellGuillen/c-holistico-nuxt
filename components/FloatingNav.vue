@@ -7,15 +7,20 @@ const { links } = useNavigation();
 
 const nav = ref(null);
 const logo = ref(null);
+const isScrolled = ref(false);
 
 let lastScroll = 0;
 
 function handleScroll() {
   const currentScroll = window.scrollY;
+
+  // Cambiar el estado de isScrolled basado en la posición
+  isScrolled.value = currentScroll > 50;
+
+  // Ocultar/mostrar navbar al hacer scroll
   if (currentScroll > lastScroll && currentScroll > 50) {
     gsap.to(nav.value, {
       y: -100,
-      opacity: 0,
       duration: 1.2,
       ease: "power1.out",
       overwrite: "auto",
@@ -23,11 +28,11 @@ function handleScroll() {
   } else {
     gsap.to(nav.value, {
       y: 0,
-      opacity: 1,
       duration: 0.4,
       ease: "power2.out",
     });
   }
+
   lastScroll = currentScroll;
 }
 
@@ -52,7 +57,12 @@ onBeforeUnmount(() => {
 <template>
   <header ref="nav" class="fixed inset-x-0 top-0 z-50 font-sans font-bold">
     <nav
-      class="relative flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-xs sm:text-sm text-white tracking-wide w-full backdrop-blur-md bg-white/[0.02] border-b border-white/10"
+      :class="[
+        'relative flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-xs sm:text-sm text-white tracking-wide w-full border-b transition-all duration-700 ease-out',
+        isScrolled
+          ? 'bg-brand-sand/80 backdrop-blur-xs border-brand-terracotta/20 shadow-lg'
+          : 'backdrop-blur-md bg-white/[0.02] border-white/10',
+      ]"
     >
       <div class="flex justify-end w-[600px]">
         <div
@@ -102,7 +112,11 @@ onBeforeUnmount(() => {
 
 <style scoped>
 header {
-  will-change: transform, opacity;
+  will-change: transform;
+}
+
+nav {
+  will-change: background-color, border-color;
 }
 
 /* Button Fill Hover Effect */
@@ -143,14 +157,6 @@ header {
 
 .btn-fill-hover:hover span {
   color: #050000;
-}
-
-/* Border bottom elegante */
-@supports (backdrop-filter: blur(1px)) {
-  nav {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.02);
-  }
 }
 
 /* Responsive adjustments */
