@@ -34,12 +34,14 @@ onMounted(async () => {
     <video
       v-if="block.backgroundVideo?.url"
       class="absolute inset-0 w-full h-full object-cover"
+      preload="none"
       autoplay
       muted
       loop
       playsinline
     >
       <source :src="block.backgroundVideo.url" type="video/webm" />
+      <source :src="block.backgroundVideo.url" type="video/mp4" />
     </video>
 
     <NuxtImg

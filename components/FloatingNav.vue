@@ -72,7 +72,7 @@ onBeforeUnmount(() => {
             v-for="link in links.slice(0, 2)"
             :key="link.path"
             :to="link.path"
-            class="text-xs hover:text-brand-blush transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
+            class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
           >
             {{ link.label }}
           </NuxtLink>
@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
               v-for="link in links.slice(2)"
               :key="link.path"
               :to="link.path"
-              class="text-xs hover:text-brand-blush transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
+              class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
             >
               {{ link.label }}
             </NuxtLink>
