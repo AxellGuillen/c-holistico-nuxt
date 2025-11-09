@@ -9,5 +9,5 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide("gsap", gsap);
-  nuxtApp.provide("SplitText", SplitText); // 👈 Provee SplitText
+  nuxtApp.provide("SplitText", SplitText);
 });
