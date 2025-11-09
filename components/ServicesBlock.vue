@@ -193,7 +193,7 @@ onUnmounted(() => {
         <div class="w-full px-6">
           <h2
             ref="textTitleDesktop"
-            class="text-[90px] font-bold leading-[0.95] tracking-normal text-brand-terracotta text-center font-headlines will-change-transform"
+            class="font-headlines text-5xl sm:text-7xl lg:text-9xl font-light leading-[0.95] tracking-tight text-brand-terracotta/90 text-center will-change-transform"
             style="text-shadow: 5px 2px 4px rgba(0, 0, 0, 0.1)"
           >
             {{ block.title }}
@@ -217,7 +217,6 @@ onUnmounted(() => {
           :to="`/${cat.slug}`"
           class="block flex-shrink-0 w-1/3"
         >
-          <!-- CADA CARD -->
           <div
             :ref="(el) => setBoxRef(el, i)"
             class="relative h-[650px] rounded-3xl overflow-hidden group will-change-transform"
@@ -266,7 +265,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* Estilos para caracteres splitteados */
 .char-sub {
   display: inline-block;
   will-change: transform, opacity;

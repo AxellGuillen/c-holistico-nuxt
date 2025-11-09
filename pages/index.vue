@@ -1,5 +1,6 @@
 <script setup>
 import ServicesBlock from "~/components/ServicesBlock.vue";
+import MonthService from "~/components/MonthService.vue";
 import { query } from "~/lib/queries";
 
 const { urlFor, urlForPlaceholder } = useSanityImage();
@@ -42,6 +43,12 @@ useHead({
       />
       <ServicesBlock
         v-else-if="block._type === 'servicesBlock'"
+        :block="block"
+        :urlFor="urlFor"
+        :urlForPlaceholder="urlForPlaceholder"
+      />
+      <MonthService
+        v-else-if="block._type === 'monthServiceBlock'"
         :block="block"
         :urlFor="urlFor"
         :urlForPlaceholder="urlForPlaceholder"
