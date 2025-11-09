@@ -194,7 +194,6 @@ onUnmounted(() => {
           <h2
             ref="textTitleDesktop"
             class="font-headlines text-5xl sm:text-7xl lg:text-9xl font-light leading-[0.95] tracking-tight text-brand-terracotta/90 text-center will-change-transform"
-            style="text-shadow: 5px 2px 4px rgba(0, 0, 0, 0.1)"
           >
             {{ block.title }}
           </h2>
