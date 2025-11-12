@@ -1,6 +1,7 @@
 <script setup>
 import ServicesBlock from "~/components/ServicesBlock.vue";
 import MonthService from "~/components/MonthService.vue";
+import GalleryMarquee from "~/components/GalleryMarquee.vue";
 import { query } from "~/lib/queries";
 
 const { urlFor, urlForPlaceholder } = useSanityImage();
@@ -49,6 +50,12 @@ useHead({
       />
       <MonthService
         v-else-if="block._type === 'monthServiceBlock'"
+        :block="block"
+        :urlFor="urlFor"
+        :urlForPlaceholder="urlForPlaceholder"
+      />
+      <GalleryMarquee
+        v-else-if="block._type === 'carouselBlock'"
         :block="block"
         :urlFor="urlFor"
         :urlForPlaceholder="urlForPlaceholder"
