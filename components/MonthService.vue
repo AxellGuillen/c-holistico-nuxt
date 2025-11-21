@@ -14,7 +14,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
       <!-- LEFT SIDE: IMAGE / VIDEO -->
       <!-- ========================================== -->
       <div
-        class="relative overflow-hidden flex items-center justify-center p-6 md:p-8 lg:p-12 bg-brand-sand order-2 lg:order-1"
+        class="relative overflow-hidden flex items-center justify-center p-6 md:p-8 lg:p-12 bg-brand-sand order-1 lg:order-1"
       >
         <div
           class="relative w-full max-w-[320px] md:max-w-[500px] aspect-[3/4] lg:aspect-square flex flex-col justify-between mx-auto max-h-[500px] md:max-h-[580px]"
@@ -106,7 +106,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
       <!-- RIGHT SIDE: TEXT -->
       <!-- ========================================== -->
       <div
-        class="relative flex flex-col items-center justify-center text-center px-6 sm:px-8 md:px-12 lg:px-[10px] py-8 md:py-12 lg:py-0 bg-brand-soft overflow-hidden order-1 lg:order-2"
+        class="relative flex flex-col items-center justify-center text-center px-6 sm:px-8 md:px-12 lg:px-[10px] py-8 md:py-12 lg:py-0 bg-brand-soft overflow-hidden order-2 lg:order-2"
       >
         <div class="flex flex-col items-center gap-4 md:gap-6 max-w-2xl w-full">
           <svg

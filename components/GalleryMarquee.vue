@@ -79,7 +79,7 @@ function closeModal() {
             :src="image.url"
             :alt="image.alt"
             :placeholder="image.lqip"
-            class="h-[400px] w-auto object-cover"
+            class="h-[400px] object-cover"
             loading="lazy"
           />
         </div>
