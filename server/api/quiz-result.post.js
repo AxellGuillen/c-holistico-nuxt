@@ -2,10 +2,10 @@
 import { createClient } from "@sanity/client";
 
 const sanityServer = createClient({
-  projectId: process.env.NUXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NUXT_PUBLIC_SANITY_DATASET || "production",
+  projectId: process.env.NUXT_SANITY_PROJECT_ID,
+  dataset: process.env.NUXT_SANITY_DATASET || "production",
   apiVersion: "2024-01-01",
-  token: process.env.NUXT_SANITY_TOKEN, // ← Token privado
+  token: process.env.NUXT_SANITY_TOKEN,
   useCdn: false,
 });
 
