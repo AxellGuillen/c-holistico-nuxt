@@ -16,7 +16,7 @@ export const useQuiz = () => {
   const answers = ref([]); // Array de respuestas del usuario
   const isLoading = ref(false);
   const error = ref(null);
-
+  const sessionStartTime = ref(null);
   // Scores acumulados por categoría
   const scores = ref({
     equilibrioEmocional: 0,
@@ -76,6 +76,57 @@ export const useQuiz = () => {
   });
 
   // ===== MÉTODOS =====
+
+  // Modificar startQuiz para trackear tiempo
+  // Modificar startQuiz para trackear tiempo
+  const startQuiz = () => {
+    sessionStartTime.value = Date.now();
+    currentView.value = "quiz";
+  };
+
+  const saveResult = async () => {
+    if (!recommendedService.value || !config.value) {
+      console.warn("⚠️ No hay resultado para guardar");
+      return;
+    }
+
+    try {
+      const sessionDuration = sessionStartTime.value
+        ? Math.round((Date.now() - sessionStartTime.value) / 1000)
+        : 0;
+
+      const payload = {
+        quizConfigId: config.value._id,
+        recommendedServiceId: recommendedService.value._id,
+
+        answers: answers.value,
+
+        scores: scores.value,
+
+        winningCategory: Object.keys(scores.value).reduce((a, b) =>
+          scores.value[a] > scores.value[b] ? a : b
+        ),
+
+        userTags: userTags.value,
+
+        userAgent: navigator.userAgent,
+
+        sessionDuration,
+      };
+
+      console.log("📤 Enviando resultado a servidor:", payload);
+
+      const response = await $fetch("/api/quiz-result", {
+        method: "POST",
+        body: payload,
+      });
+
+      console.log("✅ Resultado guardado en Sanity:", response.resultId);
+    } catch (err) {
+      console.error("❌ Error al guardar resultado:", err);
+      // No hacer fail del quiz si falla el guardado
+    }
+  };
 
   /**
    * Fetch configuración del quiz y categorías
@@ -288,6 +339,8 @@ export const useQuiz = () => {
 
       console.log(`GANADOR: ${winner.name} con score ${winner.finalScore}`);
 
+      await saveResult();
+
       return winner;
     } catch (err) {
       console.error("Error al calcular resultado:", err);
@@ -336,11 +389,13 @@ export const useQuiz = () => {
     progress,
 
     // Métodos
+    startQuiz,
     fetchQuizData,
     submitAnswer,
     nextQuestion,
     previousQuestion,
     calculateResult,
+    saveResult,
     resetQuiz,
   };
 };

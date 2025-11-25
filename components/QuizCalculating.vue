@@ -1,7 +1,4 @@
-<script setup>
-// Este componente es puramente visual y no requiere lógica
-// La transición automática a QuizResult se maneja en el componente padre
-</script>
+<script setup></script>
 
 <template>
   <div
