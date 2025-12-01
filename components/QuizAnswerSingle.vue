@@ -14,77 +14,42 @@ const isSelected = (answer) => {
 </script>
 
 <template>
-  <div class="answers-single">
+  <div class="flex flex-col gap-4">
     <button
       v-for="answer in answers"
       :key="answer.answerValue"
       @click="emit('select', answer)"
-      class="answer-option"
-      :class="{ 'answer-selected': isSelected(answer) }"
+      class="flex items-start gap-4 p-5 border-2 border-brand-terracotta rounded-full text-left cursor-pointer transition-all h-20 md:h-auto"
+      :class="{
+        'border-brand-terracotta bg-brand-sand': isSelected(answer),
+        'hover:shadow-md hover:shadow-blue-500/10': true,
+      }"
     >
-      <span class="answer-radio">
-        <span v-if="isSelected(answer)" class="radio-dot"></span>
+      <!-- Radio -->
+      <span
+        class="w-6 h-6 shrink-0 border-2 rounded-full flex items-center justify-center transition-all bg-white"
+        :class="{
+          'border-brand-terracotta ': isSelected(answer),
+        }"
+      >
+        <svg
+          v-if="isSelected(answer)"
+          class="w-4 h-4 text-brand-terracotta"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
       </span>
-      <span class="answer-text">{{ answer.answerText }}</span>
+
+      <!-- Texto -->
+      <span class="font-sans leading-relaxed">
+        {{ answer.answerText }}
+      </span>
     </button>
   </div>
 </template>
-
-<style scoped>
-.answers-single {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.answer-option {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem;
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.75rem;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.answer-option:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
-}
-
-.answer-selected {
-  border-color: #3b82f6;
-  background: #eff6ff;
-}
-
-.answer-radio {
-  width: 24px;
-  height: 24px;
-  border: 2px solid #d1d5db;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
-
-.answer-selected .answer-radio {
-  border-color: #3b82f6;
-}
-
-.radio-dot {
-  width: 12px;
-  height: 12px;
-  background: #3b82f6;
-  border-radius: 50%;
-}
-
-.answer-text {
-  font-size: 1rem;
-  line-height: 1.5;
-}
-</style>
