@@ -12,11 +12,9 @@ const props = defineProps({
 
 const emit = defineEmits(["answer", "back"]);
 
-// Estado local: respuesta seleccionada
 const selectedAnswer = ref(null);
 const selectedMultiple = ref([]);
 
-// ===== MÉTODOS =====
 const handleSingleSelect = (answer) => {
   selectedAnswer.value = answer;
 };
@@ -27,10 +25,8 @@ const handleMultipleSelect = (answer) => {
   );
 
   if (index > -1) {
-    // Ya está seleccionado, remover
     selectedMultiple.value.splice(index, 1);
   } else {
-    // No está, agregar
     selectedMultiple.value.push(answer);
   }
 };
@@ -48,7 +44,6 @@ const handleSubmit = () => {
 
   emit("answer", answer);
 
-  // Reset para siguiente pregunta
   selectedAnswer.value = null;
   selectedMultiple.value = [];
 };
@@ -63,18 +58,25 @@ const canSubmit = computed(() => {
 </script>
 
 <template>
-  <div class="quiz-question">
-    <!-- Texto de la pregunta -->
-    <div class="question-header">
-      <h2 class="question-text">{{ question.questionText }}</h2>
-      <p v-if="question.subtitle" class="question-subtitle">
+  <div class="p-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h2
+        class="md:text-5xl font-semibold mb-2 font-headlines text-brand-terracotta md:leading-relaxed text-center text-4xl"
+      >
+        {{ question.questionText }}
+      </h2>
+
+      <p
+        v-if="question.subtitle"
+        class="text-gray-600 text-sm leading-relaxed font-sans text-center flex justify-center"
+      >
         {{ question.subtitle }}
       </p>
     </div>
 
-    <!-- Opciones de respuesta -->
-    <div class="answers-container">
-      <!-- Pregunta de selección única -->
+    <!-- Respuestas -->
+    <div class="mb-8">
       <QuizAnswerSingle
         v-if="question.questionType === 'single'"
         :answers="question.answers"
@@ -82,7 +84,6 @@ const canSubmit = computed(() => {
         @select="handleSingleSelect"
       />
 
-      <!-- Pregunta de selección múltiple -->
       <QuizAnswerMultiple
         v-else-if="question.questionType === 'multiple'"
         :answers="question.answers"
@@ -92,79 +93,125 @@ const canSubmit = computed(() => {
     </div>
 
     <!-- Navegación -->
-    <div class="question-navigation">
-      <button v-if="!isFirst" @click="emit('back')" class="btn-back">
+    <div
+      class="flex items-center gap-4"
+      :class="isFirst ? 'justify-end' : 'justify-between'"
+    >
+      <button
+        v-if="!isFirst"
+        @click="emit('back')"
+        class="px-4 py-2 border-brand-terracotta/40 text-brand-terracotta/80 hover:bg-brand-terracotta/10 transition rounded-full text-[15px]"
+      >
         ← Atrás
       </button>
-
-      <button
-        @click="handleSubmit"
-        :disabled="!canSubmit"
-        class="btn-next"
-        :class="{ 'btn-submit': isLast }"
-      >
-        {{ isLast ? "Ver Resultado" : "Siguiente" }} →
-      </button>
+      <div class="w-[200px] flex justify-end pr-2">
+        <button
+          @click="handleSubmit"
+          :disabled="!canSubmit"
+          :class="[
+            'border border-brand-terracotta/40 py-2 rounded-full text-[15px] tracking-wider font-sans flex items-start justify-center gap-3 w-[170px] transition relative',
+            isLast && canSubmit
+              ? 'bg-brand-sand text-brand-terracotta hover:bg-brand-sand animate-pulse-glow'
+              : isLast
+              ? 'bg-brand-sand text-brand-terracotta'
+              : 'bg-brand-sand text-brand-terracotta hover:bg-brand-sand/80',
+            !canSubmit && 'opacity-50 cursor-not-allowed',
+          ]"
+        >
+          {{ isLast ? "Ver Resultado" : "Siguiente" }} →
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.quiz-question {
-  padding: 2rem;
+/* --- Glow suave en Terracotta --- */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 25px rgba(194, 123, 110, 0.45),
+      /* terracotta */ 0 0 50px rgba(194, 123, 110, 0.25),
+      0 0 75px rgba(194, 123, 110, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(194, 123, 110, 0.7),
+      0 0 70px rgba(194, 123, 110, 0.45), 0 0 105px rgba(194, 123, 110, 0.25);
+  }
 }
 
-.question-header {
-  margin-bottom: 2rem;
+/* --- Destello lateral (shimmer) --- */
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
 }
 
-.question-text {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+/* --- Aura giratoria Terracotta (más premium) --- */
+@keyframes rotating-aura {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.55;
+  }
 }
 
-.question-subtitle {
-  color: #666;
-  font-size: 0.95rem;
+/* --- Clase principal --- */
+.animate-pulse-glow {
+  animation: pulse-glow 2.2s ease-in-out infinite;
+  overflow: hidden;
+  position: relative;
 }
 
-.answers-container {
-  margin-bottom: 2rem;
+/* --- Shimmer en brand-sand >>> se ve más fino --- */
+.animate-pulse-glow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(246, 239, 232, 0.85),
+    /* sand */ transparent
+  );
+  transform: skewX(-25deg);
+  animation: shimmer 2.8s infinite;
+  z-index: 1;
 }
 
-.question-navigation {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
+/* --- Aura giratoria Terracotta --- */
+.animate-pulse-glow::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
 
-.btn-back,
-.btn-next {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(194, 123, 110, 0.6) 90deg,
+    rgba(194, 123, 110, 0.85) 180deg,
+    rgba(194, 123, 110, 0.6) 270deg,
+    transparent 360deg
+  );
 
-.btn-back {
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-}
-
-.btn-next {
-  background: #3b82f6;
-  color: white;
-  border: none;
-}
-
-.btn-next:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-submit {
-  background: #10b981;
+  border-radius: 9999px;
+  animation: rotating-aura 3s linear infinite;
+  z-index: -1;
+  filter: blur(18px);
 }
 </style>

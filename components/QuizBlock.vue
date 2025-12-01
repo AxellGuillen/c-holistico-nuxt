@@ -70,7 +70,7 @@ const handleAnswer = async (answer) => {
     currentView.value = "calculating";
 
     // Delay dramático de 1.5 segundos
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
       await calculateResult();

@@ -73,6 +73,7 @@ onBeforeUnmount(() => {
             :key="link.path"
             :to="link.path"
             class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
+            :class="[isScrolled ? 'text-brand-terracotta' : 'text-white']"
           >
             {{ link.label }}
           </NuxtLink>
@@ -100,6 +101,7 @@ onBeforeUnmount(() => {
               :key="link.path"
               :to="link.path"
               class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
+              :class="[isScrolled ? 'text-brand-terracotta' : 'text-white']"
             >
               {{ link.label }}
             </NuxtLink>

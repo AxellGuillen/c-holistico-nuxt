@@ -207,6 +207,9 @@ export const useQuiz = () => {
     if (!isLastQuestion.value) {
       currentQuestionIndex.value++;
     }
+    window.scrollTo({
+      behavior: "smooth",
+    });
   };
 
   /**
