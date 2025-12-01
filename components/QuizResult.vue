@@ -1,4 +1,6 @@
 <script setup>
+import { Icon } from "@iconify/vue";
+
 const props = defineProps({
   service: Object,
   config: Object,
@@ -9,68 +11,109 @@ const emit = defineEmits(["restart"]);
 const getCTAIcon = (ctaType) => {
   switch (ctaType) {
     case "whatsapp":
-      return "💬";
+      return "";
     case "calendar":
-      return "📅";
+      return "";
     case "contact":
-      return "📧";
+      return "";
     default:
-      return "✨";
+      return "";
   }
 };
 </script>
 
 <template>
-  <div class="quiz-result">
-    <!-- Badge de categoría -->
-
-    <div v-if="config?.resultScreen?.showCategoryBadge" class="category-badge">
-      {{ service.categoryInfo.name }}
-    </div>
+  <div class="max-w-[500px] mx-auto px-4 py-8">
+    <!-- Badge categoría -->
 
     <!-- Título -->
-    <h2 class="result-title">
+    <h2
+      class="text-2xl font-bold mb-8 text-center font-headlines text-brand-terracotta"
+    >
       {{ config?.resultScreen?.resultHeadline || "✨ Tu Servicio Ideal" }}
     </h2>
 
-    <!-- Tarjeta del servicio -->
-    <div class="service-card">
+    <!-- Tarjeta -->
+    <div
+      class="rounded-2xl overflow-hidden shadow-xl flex flex-col items-center"
+    >
       <!-- Imagen -->
-      <div v-if="service.thumbnail" class="service-image">
-        <img :src="service.thumbnail.asset.url" :alt="service.name" />
+      <div
+        v-if="service.thumbnail"
+        class="w-[200px] h-[200px] overflow-hidden rounded-t-2xl flex justify-center items-center"
+      >
+        <img
+          :src="service.thumbnail.asset.url"
+          :alt="service.name"
+          class="object-cover w-full"
+        />
       </div>
 
       <!-- Contenido -->
-      <div class="service-content">
-        <h3 class="service-name">{{ service.name }}</h3>
+      <div class="p-8">
+        <h3
+          class="md:text-5xl text-4xl font-bold mb-4 font-headlines w-full text-center text-brand-terracotta"
+        >
+          {{ service.name }}
+        </h3>
 
-        <p class="service-description">{{ service.shortDescription }}</p>
+        <p
+          class="text-lg text-brand-terracotta/60 leading-relaxed mb-6 font-sans"
+        >
+          {{ service.shortDescription }}
+        </p>
 
         <!-- Beneficios -->
-        <div class="service-benefits">
-          <h4 class="benefits-title">Beneficios:</h4>
-          <ul class="benefits-list">
-            <li v-for="(benefit, index) in service.benefits" :key="index">
-              ✨ {{ benefit }}
+        <div class="mb-6">
+          <h4
+            class="font-headlines mb-3 text-brand-terracotta font-semibold text-[23px]"
+          >
+            Beneficios:
+          </h4>
+
+          <ul class="space-y-2">
+            <li
+              v-for="(benefit, index) in service.benefits"
+              :key="index"
+              class="text-brand-terracotta/60 leading-snug font-sans"
+            >
+              • {{ benefit }}
             </li>
           </ul>
         </div>
 
         <!-- Ideal para -->
-        <div v-if="service.idealFor" class="service-ideal">
-          <h4 class="ideal-title">Ideal para:</h4>
-          <ul class="ideal-list">
-            <li v-for="(profile, index) in service.idealFor" :key="index">
+        <div v-if="service.idealFor" class="mb-6">
+          <h4
+            class="font-headlines mb-3 text-brand-terracotta font-semibold text-[23px]"
+          >
+            Ideal para:
+          </h4>
+
+          <ul class="space-y-2">
+            <li
+              v-for="(profile, index) in service.idealFor"
+              :key="index"
+              class="text-brand-terracotta/60 leading-snug font-sans"
+            >
               • {{ profile }}
             </li>
           </ul>
         </div>
 
         <!-- Metadata -->
-        <div class="service-metadata">
-          <span class="metadata-item"> ⏱️ {{ service.duration }} </span>
-          <span class="metadata-item">
-            📍
+        <div
+          class="flex flex-col gap-4 mb-6 p-4 rounded-lg text-sm text-brand-terracotta sm:flex-row sm:items-center sm:justify-between"
+        >
+          <!-- Duración -->
+          <span class="flex items-center gap-2 sm:w-1/3 sm:justify-center">
+            <Icon icon="weui:time-outlined" class="w-5 h-5 pb-1" />
+            {{ service.duration }}
+          </span>
+
+          <!-- Formato -->
+          <span class="flex items-center gap-2 sm:w-1/3 sm:justify-center">
+            <Icon icon="lucide:map-pin" class="w-5 h-5 pb-1" />
             {{
               service.format === "presencial"
                 ? "Presencial"
@@ -79,17 +122,15 @@ const getCTAIcon = (ctaType) => {
                 : "Presencial u Online"
             }}
           </span>
-          <span v-if="service.price" class="metadata-item">
-            💰 ${{ service.price }} {{ service.currency }}
-          </span>
-        </div>
 
-        <!-- Matching info (debug - remover en producción) -->
-        <div v-if="service.matchingTags?.length" class="service-match-info">
-          <p class="match-score">Score: {{ service.finalScore }} puntos</p>
-          <p class="match-tags">
-            Coincidencias: {{ service.matchingTags.join(", ") }}
-          </p>
+          <!-- Precio -->
+          <span
+            v-if="service.price"
+            class="flex items-center gap-2 sm:w-1/3 sm:justify-center"
+          >
+            <Icon icon="lucide:banknote" class="w-5 h-5 pb-1" />
+            ${{ service.price }} {{ service.currency }}
+          </span>
         </div>
 
         <!-- CTA -->
@@ -97,174 +138,61 @@ const getCTAIcon = (ctaType) => {
           :href="service.ctaUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="service-cta"
+          class="btn-fill-hover block w-full py-4 text-center text-brand-terracotta font-semibold font-sans text-lg rounded-full transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg bg-brand-sand/60"
         >
-          {{ getCTAIcon(service.ctaType) }} {{ service.ctaText }}
+          <span> {{ getCTAIcon(service.ctaType) }} {{ service.ctaText }} </span>
         </a>
       </div>
     </div>
 
-    <!-- Opciones adicionales -->
-    <div class="result-actions">
-      <button @click="emit('restart')" class="btn-restart">
-        🔄 Hacer el quiz nuevamente
+    <!-- Acciones -->
+    <div class="mt-8 text-center">
+      <button
+        @click="emit('restart')"
+        class="px-6 py-3 bg-brand-sand border rounded-full font-medium transition text-brand-terracotta"
+      >
+        Hacer el quiz nuevamente
       </button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.quiz-result {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.category-badge {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  color: white;
-  font-weight: 600;
-  font-size: 0.875rem;
-  margin-bottom: 1rem;
-}
-
-.result-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.service-card {
-  background: white;
-  border-radius: 1rem;
+.btn-fill-hover {
+  position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.service-image {
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
-}
-
-.service-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.service-content {
-  padding: 2rem;
-}
-
-.service-name {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.service-description {
-  font-size: 1.125rem;
-  color: #4b5563;
-  line-height: 1.75;
-  margin-bottom: 1.5rem;
-}
-
-.service-benefits,
-.service-ideal {
-  margin-bottom: 1.5rem;
-}
-
-.benefits-title,
-.ideal-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #374151;
-}
-
-.benefits-list,
-.ideal-list {
-  list-style: none;
-  padding: 0;
-}
-
-.benefits-list li,
-.ideal-list li {
-  padding: 0.5rem 0;
-  color: #6b7280;
-  line-height: 1.5;
-}
-
-.service-metadata {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: #f9fafb;
-  border-radius: 0.5rem;
-}
-
-.metadata-item {
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.service-match-info {
-  padding: 1rem;
-  background: #fef3c7;
-  border-radius: 0.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.875rem;
-}
-
-.match-score {
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.match-tags {
-  color: #92400e;
-}
-
-.service-cta {
-  display: block;
-  width: 100%;
-  padding: 1rem;
-  text-align: center;
-  color: white;
-  font-weight: 600;
-  font-size: 1.125rem;
-  border-radius: 0.75rem;
-  text-decoration: none;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.service-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-}
-
-.result-actions {
-  margin-top: 2rem;
-  text-align: center;
-}
-
-.btn-restart {
-  padding: 0.75rem 1.5rem;
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  background-color: white;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
+  border-radius: 9999px;
+  transition: border-color 0.6s ease, box-shadow 0.6s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
 }
-
-.btn-restart:hover {
-  background: #e5e7eb;
+.btn-fill-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #fcf2ed 0%, #e1cfba 100%);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 0;
+}
+.btn-fill-hover:hover::before {
+  transform: scaleY(1);
+}
+.btn-fill-hover span,
+.btn-fill-hover svg {
+  position: relative;
+  z-index: 1;
+  color: #3e1404;
+  transition: color 0.6s ease;
+}
+.btn-fill-hover:hover {
+  border-color: #480f03;
+  box-shadow: 0 12px 32px rgba(246, 204, 196, 0.3);
 }
 </style>
