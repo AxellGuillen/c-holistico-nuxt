@@ -67,6 +67,12 @@ useHead({
         :urlFor="urlFor"
         :urlForPlaceholder="urlForPlaceholder"
       />
+      <FooterBlock
+        v-else-if="block._type === 'footerBlock'"
+        :block="block"
+        :urlFor="urlFor"
+        :urlForPlaceholder="urlForPlaceholder"
+      />
     </section>
   </main>
 </template>
