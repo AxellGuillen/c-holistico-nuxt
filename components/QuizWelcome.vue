@@ -28,13 +28,15 @@ const handleStart = () => {
     <div class="w-full max-w-3xl flex flex-col items-center">
       <!-- Título -->
       <h1
-        class="text-[48px] md:text-[70px] font-headlines font-light text-brand-terracotta leading-tight"
+        class="text-[45px] text-center md:text-[77px] font-headlines font-bold text-brand-terracotta leading-tight"
       >
         {{ config?.welcomeScreen?.headline || "Descubre tu Servicio Ideal" }}
       </h1>
 
       <!-- Subtítulo -->
-      <p class="font-sans text-[16px] md:text-[20px] mt-4">
+      <p
+        class="font-sans text-brand-terracotta/60 text-[13px] md:text-[15px] mt-4"
+      >
         {{
           config?.welcomeScreen?.subtitle ||
           "Responde algunas preguntas y te recomendaremos el servicio perfecto para ti."
@@ -44,7 +46,7 @@ const handleStart = () => {
       <!-- Metadata -->
       <div class="mt-3">
         <span
-          class="text-brand-terracotta font-sans text-[14px] md:text-[15px]"
+          class="text-brand-terracotta/60 font-sans text-[12px] md:text-[15px]"
         >
           {{ config?.welcomeScreen?.estimatedTime || "Menos de 3 minutos" }}
         </span>
@@ -54,14 +56,14 @@ const handleStart = () => {
       <div class="flex justify-center w-full pt-6">
         <button
           @click="handleStart"
-          class="border border-white/90 px-4 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-sand text-brand-terracotta w-[200px]"
+          class="border border-brand-terracotta/90 px-4 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-sand text-brand-terracotta w-[200px]"
         >
           {{ config?.welcomeScreen?.startButtonText || "Comenzar Quiz" }} →
         </button>
       </div>
 
       <!-- Información adicional -->
-      <p class="pt-5 text-[14px] md:text-[10px] max-w-md text-gray-500">
+      <p class="pt-8 text-[12px] md:text-[10px] max-w-md text-gray-500">
         Tu información es confidencial y solo se usa para recomendarte el
         servicio ideal.
       </p>

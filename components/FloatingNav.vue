@@ -37,8 +37,7 @@ function handleScroll() {
 }
 
 onMounted(() => {
-  const logoEl = document.querySelector("#logo-root");
-  gsap.from(logoEl, {
+  gsap.from(logo.value.$el, {
     rotation: 360,
     transformOrigin: "50% 50%",
     duration: 6,
@@ -84,7 +83,8 @@ onBeforeUnmount(() => {
         <NuxtLink to="" class="inline-flex items-center justify-center">
           <Logo
             ref="logo"
-            class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1 text-white"
+            class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1 text-brand-terracotta"
+            :class="[isScrolled ? 'text-brand-terracotta' : 'text-white']"
           />
         </NuxtLink>
       </div>

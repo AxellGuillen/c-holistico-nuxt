@@ -95,7 +95,7 @@ const handleRestart = () => {
 </script>
 
 <template>
-  <div class="w-full min-h-screen bg-brand-soft/100 flex justify-center">
+  <div class="w-full min-h-screen bg-transparent flex justify-center">
     <div
       class="fixed bottom-4 right-4 bg-black/80 text-white text-xs p-4 rounded-lg z-50 space-y-2"
     >
