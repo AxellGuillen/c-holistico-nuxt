@@ -33,7 +33,7 @@ useHead({
           // Solo el Hero ocupa altura completa
           'h-screen md:h-screen': block._type === 'heroBlock',
           // Otros bloques usan padding natural
-          ' md:py-0': block._type !== 'heroBlock',
+          'md:py-2': block._type !== 'heroBlock',
         },
       ]"
     >

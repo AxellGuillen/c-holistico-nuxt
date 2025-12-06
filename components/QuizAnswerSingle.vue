@@ -3,8 +3,6 @@ const props = defineProps({
   answers: Array,
   selected: Object,
 });
-console.log("🟢 QuizAnswerSingle.vue props.answers:", props.answers);
-console.log("🟢 QuizAnswerSingle.vue props.selected:", props.selected);
 
 const emit = defineEmits(["select"]);
 
@@ -19,7 +17,7 @@ const isSelected = (answer) => {
       v-for="answer in answers"
       :key="answer.answerValue"
       @click="emit('select', answer)"
-      class="flex items-start gap-4 p-5 border-2 border-brand-terracotta rounded-full text-left cursor-pointer transition-all h-20 md:h-auto"
+      class="flex items-center gap-4 p-5 border-2 border-brand-terracotta rounded-full text-left cursor-pointer transition-all h-20 md:h-auto"
       :class="{
         'border-brand-terracotta bg-brand-sand': isSelected(answer),
         'hover:shadow-md hover:shadow-blue-500/10': true,
@@ -27,7 +25,7 @@ const isSelected = (answer) => {
     >
       <!-- Radio -->
       <span
-        class="w-6 h-6 shrink-0 border-2 rounded-full flex items-center justify-center transition-all bg-white"
+        class="w-6 h-6 shrink-0 border-2 rounded-full flex items-center justify-center transition-all bg-white border-brand-terracotta"
         :class="{
           'border-brand-terracotta ': isSelected(answer),
         }"

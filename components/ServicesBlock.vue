@@ -83,7 +83,7 @@ onMounted(async () => {
         trigger: boxes.value[0],
         start: "top 90%",
         once: true,
-        markers: true,
+        markers: false,
       },
     });
   }
@@ -105,7 +105,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="py-1 md:py-24">
+  <section class="py-1 md:py-2">
     <div class="max-w-[1600px] mx-auto px-4 md:px-0">
       <ClientOnly>
         <div class="md:hidden">

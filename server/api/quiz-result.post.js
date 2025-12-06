@@ -13,8 +13,6 @@ export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
 
-    console.log("Recibiendo resultado del quiz:");
-
     // Validar datos mínimos
     if (!body.quizConfigId || !body.recommendedServiceId) {
       throw createError({
@@ -58,8 +56,6 @@ export default defineEventHandler(async (event) => {
 
       sessionDuration: body.sessionDuration || 0,
     });
-
-    console.log("Resultado guardado:", result._id);
 
     return {
       success: true,
