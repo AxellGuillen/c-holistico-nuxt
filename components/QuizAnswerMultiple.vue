@@ -25,7 +25,7 @@ const isSelected = (answer) => {
     >
       <!-- Caja del checkbox -->
       <span
-        class="w-6 h-6 shrink-0 border-2 rounded-full flex items-center justify-center transition-all bg-white"
+        class="w-6 h-6 shrink-0 border-2 rounded-full flex items-center justify-center transition-all bg-white border-brand-terracotta"
         :class="{
           'border-brand-terracotta ': isSelected(answer),
         }"

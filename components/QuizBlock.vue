@@ -35,26 +35,6 @@ onMounted(async () => {
     currentView.value = "welcome";
   }
 });
-watch(
-  currentQuestion,
-  (q) => {
-    console.log("🎯 PREGUNTA ACTUAL COMPLETA:", JSON.stringify(q, null, 2));
-  },
-  { immediate: true, deep: true }
-);
-
-watch(
-  recommendedService,
-  (service) => {
-    console.log("🎁 SERVICIO RECOMENDADO COMPLETO:", service);
-    console.log("🎁 ¿Es null?", service === null);
-    console.log("🎁 ¿Es undefined?", service === undefined);
-    console.log("🎁 ¿Tiene .name?", service?.name);
-    console.log("🎁 ¿Tiene .categoryInfo?", service?.categoryInfo);
-    console.log("🎁 ¿Tiene .thumbnail?", service?.thumbnail);
-  },
-  { deep: true, immediate: true }
-);
 
 // ===== MÉTODOS =====
 const startQuiz = () => {
@@ -96,18 +76,6 @@ const handleRestart = () => {
 
 <template>
   <div class="w-full min-h-screen bg-transparent flex justify-center">
-    <div
-      class="fixed bottom-4 right-4 bg-black/80 text-white text-xs p-4 rounded-lg z-50 space-y-2"
-    >
-      <p><strong>view:</strong> {{ currentView }}</p>
-      <p>
-        <strong>currentQuestion:</strong>
-        {{ currentQuestion?.questionText || "null" }}
-      </p>
-      <p><strong>categories:</strong> {{ categories?.length || 0 }}</p>
-      <p><strong>isLoading:</strong> {{ isLoading }}</p>
-      <p><strong>error:</strong> {{ error }}</p>
-    </div>
     <!-- Loading -->
     <div
       class="w-full max-w-6xl mx-auto flex flex-col items-center justify-center"

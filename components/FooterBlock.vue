@@ -1,5 +1,6 @@
 <script setup>
 import { NuxtImg } from "#components";
+import { Icon } from "@iconify/vue";
 
 defineProps(["block", "urlFor", "urlForPlaceholder"]);
 </script>
@@ -22,37 +23,65 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
         <div
           class="flex flex-col items-center md:items-start gap-3 text-sm font-sans flex-1 text-center md:text-left"
         >
-          <div class="space-y-2">
-            <a
-              :href="`mailto:${block.email}`"
-              class="block hover:opacity-70 transition-opacity"
+          <!-- CONTACTO -->
+          <div class="flex flex-col gap-4 w-full">
+            <div class="flex items-center gap-5">
+              <Icon
+                icon="ph:clock-light"
+                width="20"
+                height="20"
+                class="text-brand-terracotta"
+              />
+              <p class="text-brand-terracotta font-headlines text-[15px]">
+                {{ block.schedule }}
+              </p>
+            </div>
+            <div class="flex items-center gap-5">
+              <Icon
+                icon="material-symbols-light:mail-outline-rounded"
+                width="20"
+                height="20"
+                class="text-brand-terracotta"
+              />
+              <a
+                :href="`mailto:${block.email}`"
+                class="text-brand-terracotta font-headlines text-[15px]"
+              >
+                {{ block.email }}
+              </a>
+            </div>
+            <div class="flex items-start md:items-center gap-5">
+              <Icon
+                icon="material-symbols-light:location-on-outline-rounded"
+                width="26"
+                height="26"
+                class="text-brand-terracotta"
+              />
+              <p
+                class="text-brand-terracotta font-headlines text-[15px] text-start"
+              >
+                {{ block.studioAddress }}
+              </p>
+            </div>
+            <div
+              class="flex gap-3 mt-4 w-full justify-evenly bg-brand-terracotta px-5 mx-auto"
             >
-              {{ block.email }}
-            </a>
-            <p class="opacity-80">{{ block.schedule }}</p>
+              <Icon
+                icon="ei:sc-instagram"
+                width="35"
+                height="35"
+                class="text-brand-sand transition-all hover:scale-110 hover:opacity-70"
+              />
+              <Icon
+                icon="mdi:facebook"
+                width="30"
+                height="30"
+                class="text-brand-sand transition-all hover:scale-110 hover:opacity-70 pt-1"
+              />
+            </div>
           </div>
-
-          <p class="opacity-80 leading-relaxed max-w-xs">
-            {{ block.studioAddress }}
-          </p>
 
           <!-- Socials inline with contact -->
-          <div class="flex gap-3 mt-4">
-            <a
-              v-if="block.socials?.instagram"
-              :href="block.socials.instagram.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="transition-all hover:scale-110 hover:opacity-70"
-              aria-label="Instagram"
-            >
-              <img
-                :src="block.socials.instagram.icon.url"
-                :alt="block.socials.instagram.icon.alt || 'Instagram'"
-                class="w-5 h-5"
-              />
-            </a>
-          </div>
         </div>
       </div>
 

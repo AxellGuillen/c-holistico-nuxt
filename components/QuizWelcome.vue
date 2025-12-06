@@ -11,13 +11,14 @@ const props = defineProps({
 const emit = defineEmits(["start"]);
 
 const handleStart = () => {
-  console.log("▶️ Usuario hizo click en Comenzar");
   emit("start");
 };
 </script>
 
 <template>
-  <div class="w-full flex flex-col items-center text-center px-4">
+  <div
+    class="w-full mx-2 flex flex-col items-center text-center px-4 border border-brand-terracotta pb-10 bg-brand-sand rounded-xl"
+  >
     <!-- Espacio para SVG del texto -->
     <div class="w-full flex justify-center pt-14 pb-6">
       <slot name="top-graphic"></slot>
@@ -25,7 +26,7 @@ const handleStart = () => {
     </div>
 
     <!-- Contenido principal -->
-    <div class="w-full max-w-3xl flex flex-col items-center">
+    <div class="w-full max-w-3xl flex flex-col items-center md:px-0 px-4">
       <!-- Título -->
       <h1
         class="text-[45px] text-center md:text-[77px] font-headlines font-bold text-brand-terracotta leading-tight"

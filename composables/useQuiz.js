@@ -114,8 +114,6 @@ export const useQuiz = () => {
         sessionDuration,
       };
 
-      console.log("📤 Enviando resultado a servidor:", payload);
-
       const response = await $fetch("/api/quiz-result", {
         method: "POST",
         body: payload,
@@ -148,9 +146,6 @@ export const useQuiz = () => {
 
       config.value = quizConfig;
       categories.value = categoriesData;
-
-      console.log("Quiz config cargada:", quizConfig);
-      console.log("Categorías cargadas:", categoriesData);
     } catch (err) {
       console.error("Error al cargar quiz:", err);
       error.value = "No se pudo cargar el quiz. Por favor recarga la página.";
@@ -168,8 +163,6 @@ export const useQuiz = () => {
     const answersArray = Array.isArray(selectedAnswer)
       ? selectedAnswer
       : [selectedAnswer];
-
-    console.log("📝 Procesando respuesta(s):", answersArray);
 
     // Guardar respuestas
     answers.value.push({
@@ -195,9 +188,6 @@ export const useQuiz = () => {
         userTags.value.push(answer.answerValue);
       }
     });
-
-    console.log("Scores actualizados:", scores.value);
-    console.log("Tags acumulados:", userTags.value);
   };
 
   /**
@@ -251,10 +241,6 @@ export const useQuiz = () => {
     isLoading.value = true;
 
     try {
-      console.log("Calculando resultado...");
-      console.log("Scores finales:", scores.value);
-      console.log("Tags del usuario:", userTags.value);
-
       // 1. Identificar categoría ganadora
       const winningCategory = Object.keys(scores.value).reduce((a, b) =>
         scores.value[a] > scores.value[b] ? a : b
@@ -262,19 +248,11 @@ export const useQuiz = () => {
 
       const winningScore = scores.value[winningCategory];
 
-      console.log(
-        `Categoría ganadora: ${winningCategory} con ${winningScore} puntos`
-      );
-
       // 2. Fetch servicios candidatos de esa categoría
       const candidateServices = await sanity.fetch(CANDIDATE_SERVICES_QUERY, {
         categoryIdentifier: winningCategory,
         userScore: winningScore,
       });
-
-      console.log(
-        `Servicios candidatos encontrados: ${candidateServices.length}`
-      );
 
       if (candidateServices.length === 0) {
         throw new Error(
@@ -291,7 +269,6 @@ export const useQuiz = () => {
           );
 
           if (hasExcludedTag) {
-            console.log(`${service.name} excluido por tag`);
             return null;
           }
 
@@ -312,15 +289,9 @@ export const useQuiz = () => {
             const { tag, newPriority } =
               service.matchCriteria.overridePriorityIfTag;
             if (userTags.value.includes(tag)) {
-              console.log(`${service.name} recibe OVERRIDE por tag "${tag}"`);
               finalScore = newPriority;
             }
           }
-
-          console.log(
-            `${service.name} - Score: ${finalScore} (${matchingTags.length} tags coinciden)`
-          );
-
           return {
             ...service,
             matchingTags,
@@ -339,8 +310,6 @@ export const useQuiz = () => {
       // 4. Seleccionar el ganador
       const winner = scoredServices[0];
       recommendedService.value = winner;
-
-      console.log(`GANADOR: ${winner.name} con score ${winner.finalScore}`);
 
       await saveResult();
 
