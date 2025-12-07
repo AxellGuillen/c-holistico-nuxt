@@ -239,7 +239,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
 .btn-fill-hover {
   position: relative;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid #3e1404;
   background-color: white;
   font-weight: 500;
   border-radius: 9999px;
@@ -270,7 +270,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
   transition: color 0.6s ease;
 }
 .btn-fill-hover:hover {
-  border-color: #f6ccc4;
+  border-color: #3e1404;
   box-shadow: 0 12px 32px rgba(246, 204, 196, 0.3);
 }
 </style>

@@ -163,7 +163,7 @@ h1 {
 }
 
 .btn-fill-hover:hover {
-  border-color: #f6ccc4;
+  border-color: #3e1404;
   box-shadow: 0 12px 32px rgba(246, 204, 196, 0.3);
 }
 

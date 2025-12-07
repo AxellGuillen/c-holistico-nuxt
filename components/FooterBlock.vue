@@ -7,13 +7,13 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
 
 <template>
   <footer class="w-full bg-brand-sand text-brand-terracotta">
-    <div class="max-w-7xl mx-auto px-6 py-16 md:py-20 text-center md:text-left">
+    <div class="max-w-7xl mx-auto px-6 py-16 md:py-20 text-center">
       <!-- Main content grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
         <!-- Seasonal message section -->
         <div class="lg:col-span-2">
           <p
-            class="text-2xl md:text-3xl font-headlines leading-relaxed max-w-2xl text-center"
+            class="text-[24px] md:text-[30px] font-headlines leading-relaxed max-w-2xl text-center"
           >
             {{ block.seasonalMessage }}
           </p>
@@ -21,7 +21,7 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
 
         <!-- Contact info section -->
         <div
-          class="flex flex-col items-center md:items-start gap-3 text-sm font-sans flex-1 text-center md:text-left"
+          class="flex flex-col items-center md:items-start gap-3 text-sm font-sans flex-1 text-center md:text-left pr-10"
         >
           <!-- CONTACTO -->
           <div class="flex flex-col gap-4 w-full">

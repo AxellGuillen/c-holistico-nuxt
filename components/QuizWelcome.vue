@@ -57,7 +57,7 @@ const handleStart = () => {
       <div class="flex justify-center w-full pt-6">
         <button
           @click="handleStart"
-          class="border border-brand-terracotta/90 px-4 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-sand text-brand-terracotta w-[200px]"
+          class="border border-brand-terracotta/90 px-4 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-soft text-brand-terracotta w-[200px]"
         >
           {{ config?.welcomeScreen?.startButtonText || "Comenzar Quiz" }} →
         </button>
