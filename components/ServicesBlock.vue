@@ -237,7 +237,7 @@ onUnmounted(() => {
               </h3>
 
               <span
-                class="border border-white/90 px-4 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-sand text-brand-terracotta flex items-center justify-center gap-3 w-[200px]"
+                class="border border-white/90 px-4 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-soft text-brand-terracotta flex items-center justify-center gap-3 w-[200px]"
               >
                 <span class="text-left">{{ cat.ctaText }}</span>
                 <svg
