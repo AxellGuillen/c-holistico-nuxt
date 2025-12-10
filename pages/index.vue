@@ -73,6 +73,12 @@ useHead({
         :urlFor="urlFor"
         :urlForPlaceholder="urlForPlaceholder"
       />
+      <TherapistBlock
+        v-else-if="block._type === 'therapistBlock'"
+        :block="block"
+        :urlFor="urlFor"
+        :urlForPlaceholder="urlForPlaceholder"
+      />
     </section>
   </main>
 </template>

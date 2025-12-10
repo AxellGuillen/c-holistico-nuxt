@@ -47,7 +47,7 @@ onMounted(async () => {
           trigger: textTitleDesktop.value,
           start: "top 80%",
           once: true,
-          markers: true,
+          markers: false,
         },
       });
     }
