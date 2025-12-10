@@ -1,5 +1,3 @@
-<!-- components/quiz/QuizWelcome.vue -->
-
 <script setup>
 const props = defineProps({
   config: {
