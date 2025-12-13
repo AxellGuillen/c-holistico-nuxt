@@ -118,10 +118,7 @@ export const useQuiz = () => {
         method: "POST",
         body: payload,
       });
-
-      console.log("✅ Resultado guardado en Sanity:", response.resultId);
     } catch (err) {
-      console.error("❌ Error al guardar resultado:", err);
       // No hacer fail del quiz si falla el guardado
     }
   };

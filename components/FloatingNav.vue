@@ -1,13 +1,20 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useRoute } from "#app";
+
 import Logo from "~/assets/icons/logo.svg?component";
 import { gsap } from "gsap";
 
 const { links } = useNavigation();
+const route = useRoute();
 
 const nav = ref(null);
 const logo = ref(null);
 const isScrolled = ref(false);
+
+const isServicePage = computed(() => {
+  return route.path.startsWith("/servicios");
+});
 
 let lastScroll = 0;
 
@@ -59,7 +66,7 @@ onBeforeUnmount(() => {
       :class="[
         'relative flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-xs sm:text-sm text-white tracking-wide w-full border-b transition-all duration-700 ease-out',
         isScrolled
-          ? 'bg-brand-sand/80 backdrop-blur-xs border-brand-terracotta/20 shadow-lg'
+          ? 'bg-brand-sand border-brand-terracotta/20 shadow-lg'
           : 'backdrop-blur-md bg-white/[0.02] border-white/10',
       ]"
     >
@@ -72,7 +79,11 @@ onBeforeUnmount(() => {
             :key="link.path"
             :to="link.path"
             class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
-            :class="[isScrolled ? 'text-brand-terracotta' : 'text-white']"
+            :class="[
+              isScrolled || isServicePage
+                ? 'text-brand-terracotta'
+                : 'text-white',
+            ]"
           >
             {{ link.label }}
           </NuxtLink>
@@ -84,7 +95,11 @@ onBeforeUnmount(() => {
           <Logo
             ref="logo"
             class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1 text-brand-terracotta"
-            :class="[isScrolled ? 'text-brand-terracotta' : 'text-white']"
+            :class="[
+              isScrolled || isServicePage
+                ? 'text-brand-terracotta'
+                : 'text-white',
+            ]"
           />
         </NuxtLink>
       </div>
@@ -101,7 +116,11 @@ onBeforeUnmount(() => {
               :key="link.path"
               :to="link.path"
               class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
-              :class="[isScrolled ? 'text-brand-terracotta' : 'text-white']"
+              :class="[
+                isScrolled || isServicePage
+                  ? 'text-brand-terracotta'
+                  : 'text-white',
+              ]"
             >
               {{ link.label }}
             </NuxtLink>

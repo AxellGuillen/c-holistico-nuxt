@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { useQuiz } from "~/composables/useQuiz";
 
 // Estado del flujo

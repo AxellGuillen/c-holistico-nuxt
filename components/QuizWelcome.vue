@@ -15,7 +15,7 @@ const handleStart = () => {
 
 <template>
   <div
-    class="w-full mx-2 flex flex-col items-center text-center px-4 border border-brand-terracotta pb-10 bg-brand-sand rounded-xl"
+    class="w-full mx-2 flex flex-col items-center text-center px-4 border border-brand-terracotta pb-10 bg-brand-soft rounded-xl"
   >
     <!-- Espacio para SVG del texto -->
     <div class="w-full flex justify-center pt-14 pb-6">
