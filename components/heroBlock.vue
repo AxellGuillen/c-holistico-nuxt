@@ -34,7 +34,7 @@ onMounted(async () => {
     <video
       v-if="block.backgroundVideo?.url"
       class="absolute inset-0 w-full h-full object-cover"
-      preload="none"
+      preload="auto"
       autoplay
       muted
       loop
@@ -56,11 +56,11 @@ onMounted(async () => {
     </div>
 
     <div
-      class="absolute inset-0 flex flex-col justify-start md:justify-center z-20 md:px-[100px] text-left md:pt-20 pt-[100px]"
+      class="absolute inset-0 flex flex-col justify-center z-20 px-6 md:px-[100px] text-center md:text-left"
     >
       <div class="max-w-screen">
         <h1
-          class="font-headlines font-black text-white leading-[0.9] md:text-left text-[9vw] md:text-[110px] text-center"
+          class="font-headlines font-black text-white leading-[0.9] text-[9vw] sm:text-[10vw] md:text-[110px] md:text-left"
         >
           <span
             v-for="(char, index) in chars"
@@ -74,13 +74,13 @@ onMounted(async () => {
 
         <p
           v-if="block.subtitle"
-          class="md:mt-6 mt-[30px] text-white/80 font-sans text-sm text-center sm:text-lg md:text-xl md:max-w-[600px] md:text-left max-w-[250px] mx-auto md:mx-0"
+          class="mt-5 md:mt-6 text-white/80 font-sans text-base sm:text-lg md:text-xl max-w-[320px] md:max-w-[600px] mx-auto md:mx-0"
         >
           {{ block.subtitle }}
         </p>
 
         <div
-          class="md:mt-10 md:flex md:justify-start md:w-[600px] justify-center mt-[80px] flex"
+          class="mt-8 md:mt-10 flex justify-center md:justify-start md:w-[600px]"
         >
           <NuxtLink
             to="/contact"
