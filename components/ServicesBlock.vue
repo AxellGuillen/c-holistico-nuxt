@@ -109,12 +109,12 @@ onUnmounted(() => {
     <div class="max-w-[1600px] mx-auto px-4 md:px-0">
       <ClientOnly>
         <div class="md:hidden">
-          <div class="flex flex-col gap-10 text-center font-headlines mb-8">
+          <div class="flex flex-col gap-6 text-center font-headlines mb-8">
             <!-- Título animado -->
             <div>
               <h2
                 ref="textTitleMobile"
-                class="text-5xl font-light transform-gpu will-change-transform"
+                class="text-[11vw] font-medium text-brand-terracotta transform-gpu will-change-transform leading-[1.1]"
               >
                 {{ block.title }}
               </h2>
@@ -122,11 +122,11 @@ onUnmounted(() => {
 
             <!-- Subtítulo -->
             <div>
-              <h3
-                class="text-base font-sans leading-relaxed text-brand-terracotta/90 max-w-[320px] mx-auto"
+              <p
+                class="text-base font-sans font-normal leading-relaxed text-brand-terracotta/70 max-w-[280px] mx-auto"
               >
                 {{ block.subtitle }}
-              </h3>
+              </p>
             </div>
           </div>
 
@@ -193,18 +193,18 @@ onUnmounted(() => {
         <div class="w-full px-6">
           <h2
             ref="textTitleDesktop"
-            class="font-headlines text-5xl sm:text-7xl lg:text-9xl font-light leading-[0.95] tracking-tight text-brand-terracotta/90 text-center will-change-transform"
+            class="font-headlines text-6xl sm:text-7xl lg:text-[120px] font-medium leading-[1] tracking-tight text-brand-terracotta text-center will-change-transform"
           >
             {{ block.title }}
           </h2>
         </div>
 
-        <div class="w-full max-w-[800px] pt-5 pb-7 px-4">
-          <h3
-            class="text-[20px] font-black leading-[1.8] text-brand-terracotta/90 text-center font-sans tracking-[0.02em] will-change-transform"
+        <div class="w-full max-w-[600px] pt-4 pb-6 px-4">
+          <p
+            class="text-lg font-normal leading-relaxed text-brand-terracotta/60 text-center font-sans tracking-wide will-change-transform"
           >
             {{ block.subtitle }}
-          </h3>
+          </p>
         </div>
       </div>
 
@@ -231,7 +231,7 @@ onUnmounted(() => {
               class="absolute inset-0 bg-black/25 text-white flex flex-col justify-end items-center px-6 pb-6 gap-5 group-hover:bg-black/40 transition-colors duration-500"
             >
               <h3
-                class="text-4xl font-headlines tracking-wide drop-shadow-lg font-light text-center leading-tight w-[300px]"
+                class="text-4xl font-headlines tracking-wide drop-shadow-lg font-medium text-center leading-[1.15] max-w-[280px]"
               >
                 {{ cat.title }}
               </h3>

@@ -33,13 +33,9 @@ function closeModal() {
     onComplete: () => {
       isModalOpen.value = false;
       selectedImage.value = null;
+      document.body.style.overflow = "auto";
     },
   });
-
-  isModalOpen.value = false;
-  selectedImage.value = null;
-  document.body.style.overflow = "auto";
-  document.body.style.overflow = "hidden";
 }
 </script>
 
