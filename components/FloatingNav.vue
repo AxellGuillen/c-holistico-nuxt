@@ -16,6 +16,10 @@ const isServicePage = computed(() => {
   return route.path.startsWith("/servicios");
 });
 
+const isAboutPage = computed(() => {
+  return route.path.startsWith("/about");
+});
+
 let lastScroll = 0;
 
 function handleScroll() {
@@ -65,9 +69,11 @@ onBeforeUnmount(() => {
     <nav
       :class="[
         'relative flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-xs sm:text-sm text-white tracking-wide w-full border-b transition-all duration-700 ease-out',
-        isScrolled
-          ? 'bg-brand-sand border-brand-terracotta/20 shadow-lg'
-          : 'backdrop-blur-md bg-white/[0.02] border-white/10',
+        isServicePage || isAboutPage
+          ? 'bg-transparent backdrop-blur-xl border-white/10'
+          : isScrolled
+            ? 'bg-brand-sand border-brand-terracotta/20 shadow-lg'
+            : 'backdrop-blur-md bg-white/[0.02] border-white/10',
       ]"
     >
       <div class="flex justify-end w-[600px]">
@@ -80,7 +86,7 @@ onBeforeUnmount(() => {
             :to="link.path"
             class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
             :class="[
-              isScrolled || isServicePage
+              !isServicePage && !isAboutPage && isScrolled
                 ? 'text-brand-terracotta'
                 : 'text-white',
             ]"
@@ -96,9 +102,9 @@ onBeforeUnmount(() => {
             ref="logo"
             class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1 text-brand-terracotta"
             :class="[
-              isScrolled || isServicePage
-                ? 'text-brand-terracotta'
-                : 'text-white',
+              isScrolled || isServicePage || isAboutPage
+                ? 'text-white'
+                : 'text-brand-terracotta',
             ]"
           />
         </NuxtLink>
@@ -117,9 +123,9 @@ onBeforeUnmount(() => {
               :to="link.path"
               class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
               :class="[
-                isScrolled || isServicePage
-                  ? 'text-brand-terracotta'
-                  : 'text-white',
+                isScrolled || isServicePage || isAboutPage
+                  ? 'text-white'
+                  : 'text-brand-terracotta',
               ]"
             >
               {{ link.label }}

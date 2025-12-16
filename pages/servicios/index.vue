@@ -79,31 +79,33 @@ useHead({
 </script>
 
 <template>
-  <div class="min-h-screen bg-brand-base">
+  <div class="relative min-h-screen bg-brand-sand text-white overflow-hidden">
+    <!-- Background with Overlay (matching about page) -->
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/60 via-[#1a1a1a]/80 to-[#1a1a1a]/95"></div>
+    </div>
+
     <!-- ============================================ -->
     <!-- HERO SECTION -->
     <!-- ============================================ -->
-    <section class="container mx-auto px-4 py-24 text-center relative z-10">
-      <h1 class="text-6xl md:text-[100px] leading-none text-brand-terracotta mb-6 font-headlines">
+    <section class="container mx-auto px-8 py-20 text-center relative z-10">
+      <h1 class="font-headlines text-8xl md:text-9xl font-light leading-none mb-4 tracking-tight md:text-start text-center text-white">
         Nuestros Servicios
       </h1>
-      <p class="text-xl md:text-2xl text-brand-terracotta/70 max-w-2xl mx-auto font-sans font-light leading-relaxed">
-        Descubre las experiencias de sanación y bienestar diseñadas para ti.
-      </p>
+      <div class="h-px w-32 bg-white/30 mt-8"></div>
     </section>
 
-
-    <nav class=" top-0 z-50 transition-all duration-300">
-      <div class="bg-brand-base/95 backdrop-blur-xl border-y border-brand-clay/10 py-4 shadow-sm">
+    <nav class="top-0 z-50 transition-all duration-300">
+      <div class="backdrop-blur-xl py-4">
         <div class="container mx-auto px-4">
-          <div class="flex gap-4 overflow-x-auto scrollbar-hide justify-start md:justify-center items-center pb-1">
+          <div class="flex gap-4 overflow-x-auto scrollbar-hide justify-start md:justify-start items-center pb-8 pl-3">
             <button
               @click="changeCategory('all')"
               :class="[
                 'px-6 py-2 rounded-full whitespace-nowrap transition-all duration-300 font-medium text-sm tracking-wide border',
                 activeCategory === 'all'
-                  ? 'bg-brand-terracotta text-white border-brand-terracotta shadow-md hover:bg-brand-terracotta/90'
-                  : 'bg-white text-brand-terracotta/80 border-brand-clay/20 hover:border-brand-terracotta hover:text-brand-terracotta',
+                  ? 'bg-brand-sand text-brand-terracotta border-brand-sand shadow-md hover:bg-brand-sand/90'
+                  : 'bg-transparent text-white border-white/40 hover:border-white hover:bg-white/10',
               ]"
             >
               Todos
@@ -116,8 +118,8 @@ useHead({
               :class="[
                 'px-6 py-2 rounded-full whitespace-nowrap transition-all duration-300 font-medium text-sm tracking-wide border',
                 activeCategory === cat.slug.current
-                  ? 'bg-brand-terracotta text-white border-brand-terracotta shadow-md hover:bg-brand-terracotta/90'
-                  : 'bg-white text-brand-terracotta/80 border-brand-clay/20 hover:border-brand-terracotta hover:text-brand-terracotta',
+                  ? 'bg-brand-sand text-brand-terracotta border-brand-sand shadow-md hover:bg-brand-sand/90'
+                  : 'bg-transparent text-white border-white/40 hover:border-white hover:bg-white/10',
               ]"
             >
               {{ cat.name }}
@@ -130,67 +132,50 @@ useHead({
     <!-- ============================================ -->
     <!-- HEADER DE CATEGORÍA -->
     <!-- ============================================ -->
-    <section
-      v-if="activeCategory !== 'all' && selectedCategory"
-      class="container mx-auto px-4 py-10"
-    >
-      <div class="flex flex-col items-center justify-center text-center">
-        <div class="w-16 h-1 bg-brand-terracotta/20 mb-6 rounded-full"></div>
-        <h2 class="text-4xl font-bold text-brand-terracotta mb-3 font-headlines">
-          {{ selectedCategory.name }}
-        </h2>
-        <p class="text-brand-terracotta/60 font-sans">
-          Mostrando {{ filteredServices.length }} experiencia{{ filteredServices.length !== 1 ? "s" : "" }}
-        </p>
-      </div>
-    </section>
-    <div v-else class="h-10"></div> <!-- Spacer for 'all' view -->
-
-    <!-- ============================================ -->
-    <!-- GRID DE SERVICIOS -->
-    <!-- ============================================ -->
-    <section class="container mx-auto px-4 pb-24">
-      <!-- LOADING -->
-      <div v-if="!services" class="min-h-[40vh] flex items-center justify-center">
-        <p class="text-xl text-brand-terracotta/50 font-light animate-pulse">Cargando experiencias...</p>
-      </div>
-
-      <!-- GRID -->
-      <div
-        v-else-if="filteredServices.length > 0"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 gap-y-12"
-      >
-        <ServiceCard
-          v-for="service in filteredServices"
+    <!-- Product cards grid layout -->
+    <div class="container mx-auto px-5 sm:px-8 py-8 relative z-10">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
+        <NuxtLink 
+          v-for="service in filteredServices" 
           :key="service._id"
-          :service="service"
-        />
-      </div>
-
-      <!-- EMPTY STATE -->
-      <div v-else class="text-center py-20 bg-white/50 rounded-3xl border border-brand-clay/10 mx-auto max-w-2xl">
-        <p class="text-2xl text-brand-terracotta/50 mb-6 font-headlines">
-          No encontramos servicios en esta categoría.
-        </p>
-        <button
-          @click="changeCategory('all')"
-          class="bg-brand-terracotta hover:bg-gray-800 text-white px-8 py-3 rounded-full font-medium transition-colors shadow-lg"
+          :to="`/servicios/${service.slug?.current}`"
+          class="group cursor-pointer bg-transparent border-x border-white/30 px-4 py-6 block"
         >
-          Ver todos los servicios
-        </button>
+          <!-- Title Section -->
+          <div class="mb-6">
+            <h2 class="text-3xl tracking-widest uppercase font-headlines mb-1 text-white"> 
+              {{ service.name }}
+            </h2>
+            <p class="text-sm leading-relaxed text-white mb-4 font-bold font-sans pt-1">
+              {{ service.shortDescription }}
+            </p>
+          </div>
+
+          <!-- Price -->
+          <div class="text-4xl font-light text-white flex justify-end font-sans pt-5">
+            MXN $ {{ service.price }}
+          </div>
+          <div class="relative mb-4 overflow-hidden">
+            <NuxtImg   
+              :src="service.thumbnail?.asset?.url" 
+              :alt="service.name"
+              class="w-full aspect-[4/3] object-contain object-center transition-transform duration-500 group-hover:scale-105"
+            />
+            <!-- Bottom Left Label -->
+            <div class="absolute bottom-4 left-4 backdrop-blur-sm px-4 py-2 rounded-sm">
+              <span class="text-xs tracking-wider uppercase font-medium text-white font-sans">
+                {{ service.duration }}
+              </span>
+            </div>
+          </div>
+        </NuxtLink>
       </div>
-    </section>
+    </div>
 
     <!-- ============================================ -->
     <!-- CTA: QUIZ -->
     <!-- ============================================ -->
-    <section class="py-24 bg-brand-terracotta relative overflow-hidden">
-      <!-- Decorative circles -->
-
-      
-    <!-- FILL WITH THE NEW SVG TO BETTER THE DESIGN -->
-
-
+    <section class="py-24 bg-transparent relative overflow-hidden">
       <div class="container mx-auto px-4 text-center relative z-10">
         <h3 class="text-4xl md:text-5xl font-bold text-brand-base mb-6 font-headlines">
           ¿No estás seguro por dónde empezar?
@@ -209,14 +194,3 @@ useHead({
     </section>
   </div>
 </template>
-
-<style scoped>
-/* Ocultar scrollbar pero mantener funcionalidad */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-</style>

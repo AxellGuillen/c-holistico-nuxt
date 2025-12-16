@@ -52,12 +52,18 @@ defineProps(["block", "urlFor", "urlForPlaceholder"]);
 
         <!-- Social Links -->
         <div class="flex flex-col items-center md:items-start gap-5">
-          <h4 class="text-xs font-bold uppercase tracking-widest text-brand-terracotta/50 font-sans">Síguenos</h4>
+          <h4 class="text-xs font-bold uppercase tracking-widest text-brand-terracotta/50 font-sans">
+            Síguenos
+          </h4>
           <div class="flex items-center gap-4">
-            <a :href="block.socials?.instagram?.url" aria-label="Instagram" class="p-3 bg-brand-terracotta/10 rounded-full transition-all  duration-500 ease-out hover:bg-brand-terracotta hover:text-white ">
+            <a :href="block.socials?.instagram?.url" 
+            aria-label="Instagram"
+            class="p-3 bg-brand-terracotta/10 rounded-full transition-all  duration-500 ease-out hover:bg-brand-terracotta hover:text-white ">
               <Icon icon="mdi:instagram" class="w-5 h-5" />
             </a>
-            <a :href="block.socials?.facebook?.url" aria-label="Facebook" class="p-3 bg-brand-terracotta/10 rounded-full transition-all duration-500 ease-out hover:bg-brand-terracotta hover:text-white ">
+            <a :href="block.socials?.facebook?.url" 
+             aria-label="Facebook" 
+             class="p-3 bg-brand-terracotta/10 rounded-full transition-all duration-500 ease-out hover:bg-brand-terracotta hover:text-white ">
               <Icon icon="mdi:facebook" class="w-5 h-5" />
             </a>
           </div>
