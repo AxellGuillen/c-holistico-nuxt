@@ -82,14 +82,18 @@ useHead({
   <div class="relative min-h-screen bg-brand-sand text-white overflow-hidden">
     <!-- Background with Overlay (matching about page) -->
     <div class="absolute inset-0">
-      <div class="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/60 via-[#1a1a1a]/80 to-[#1a1a1a]/95"></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/60 via-[#1a1a1a]/80 to-[#1a1a1a]/95"
+      ></div>
     </div>
 
     <!-- ============================================ -->
     <!-- HERO SECTION -->
     <!-- ============================================ -->
     <section class="container mx-auto px-8 py-20 text-center relative z-10">
-      <h1 class="font-headlines text-8xl md:text-9xl font-light leading-none mb-4 tracking-tight md:text-start text-center text-white">
+      <h1
+        class="font-headlines text-8xl md:text-9xl font-light leading-none mb-4 tracking-tight md:text-start text-center text-white"
+      >
         Nuestros Servicios
       </h1>
       <div class="h-px w-32 bg-white/30 mt-8"></div>
@@ -98,7 +102,9 @@ useHead({
     <nav class="top-0 z-50 transition-all duration-300">
       <div class="backdrop-blur-xl py-4">
         <div class="container mx-auto px-4">
-          <div class="flex gap-4 overflow-x-auto scrollbar-hide justify-start md:justify-start items-center pb-8 pl-3">
+          <div
+            class="flex gap-4 overflow-x-auto scrollbar-hide justify-start md:justify-start items-center pb-8 pl-3"
+          >
             <button
               @click="changeCategory('all')"
               :class="[
@@ -135,35 +141,45 @@ useHead({
     <!-- Product cards grid layout -->
     <div class="container mx-auto px-5 sm:px-8 py-8 relative z-10">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
-        <NuxtLink 
-          v-for="service in filteredServices" 
+        <NuxtLink
+          v-for="service in filteredServices"
           :key="service._id"
           :to="`/servicios/${service.slug?.current}`"
           class="group cursor-pointer bg-transparent border-x border-white/30 px-4 py-6 block"
         >
           <!-- Title Section -->
           <div class="mb-6">
-            <h2 class="text-3xl tracking-widest uppercase font-headlines mb-1 text-white"> 
+            <h2
+              class="sm:text-3xl text-2xl tracking-widest uppercase font-headlines mb-1 text-white"
+            >
               {{ service.name }}
             </h2>
-            <p class="text-sm leading-relaxed text-white mb-4 font-bold font-sans pt-1">
+            <p
+              class="text-sm leading-relaxed text-white mb-4 font-bold font-sans pt-1"
+            >
               {{ service.shortDescription }}
             </p>
           </div>
 
           <!-- Price -->
-          <div class="text-4xl font-light text-white flex justify-end font-sans pt-5">
+          <div
+            class="text-4xl font-light text-white flex justify-end font-sans pt-5"
+          >
             MXN $ {{ service.price }}
           </div>
           <div class="relative mb-4 overflow-hidden">
-            <NuxtImg   
-              :src="service.thumbnail?.asset?.url" 
+            <NuxtImg
+              :src="service.thumbnail?.asset?.url"
               :alt="service.name"
               class="w-full aspect-[4/3] object-contain object-center transition-transform duration-500 group-hover:scale-105"
             />
             <!-- Bottom Left Label -->
-            <div class="absolute bottom-4 left-4 backdrop-blur-sm px-4 py-2 rounded-sm">
-              <span class="text-xs tracking-wider uppercase font-medium text-white font-sans">
+            <div
+              class="absolute bottom-4 left-4 backdrop-blur-sm px-4 py-2 rounded-sm"
+            >
+              <span
+                class="text-xs tracking-wider uppercase font-medium text-white font-sans"
+              >
                 {{ service.duration }}
               </span>
             </div>
@@ -177,11 +193,16 @@ useHead({
     <!-- ============================================ -->
     <section class="py-24 bg-transparent relative overflow-hidden">
       <div class="container mx-auto px-4 text-center relative z-10">
-        <h3 class="text-4xl md:text-5xl font-bold text-brand-base mb-6 font-headlines">
+        <h3
+          class="font-headlines text-4xl md:text-7xl font-light leading-none mb-4 tracking-tight md:text-center text-center text-white"
+        >
           ¿No estás seguro por dónde empezar?
         </h3>
-        <p class="text-xl text-brand-base/80 mb-10 max-w-2xl mx-auto font-sans font-light">
-          Responde nuestro quiz personalizado y te recomendaremos el servicio ideal para tu momento actual.
+        <p
+          class="md:text-xl text-base text-brand-base/80 mb-10 max-w-2xl mx-auto font-sans font-bold"
+        >
+          Responde nuestro quiz personalizado y te recomendaremos el servicio
+          ideal para tu momento actual.
         </p>
         <NuxtLink to="/quiz">
           <button

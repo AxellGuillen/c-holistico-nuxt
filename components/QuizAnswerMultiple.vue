@@ -17,22 +17,25 @@ const isSelected = (answer) => {
       v-for="answer in answers"
       :key="answer.answerValue"
       @click="emit('select', answer)"
-      class="flex items-center gap-4 p-5 border-2 border-brand-terracotta rounded-full text-left cursor-pointer transition-all h-20 md:h-auto"
-      :class="{
-        'border-brand-terracotta bg-brand-sand': isSelected(answer),
-        'border-brand-terracotta hover:shadow-md hover:shadow-blue-500/10': true,
-      }"
+      class="flex items-center gap-4 p-5 border rounded-full text-left cursor-pointer transition-all min-h-[5rem] md:h-auto group"
+      :class="[
+        isSelected(answer)
+          ? 'bg-brand-sand border-brand-sand'
+          : 'bg-transparent border-white/40 hover:border-white hover:bg-white/5',
+      ]"
     >
       <!-- Caja del checkbox -->
       <span
-        class="w-6 h-6 shrink-0 border-2 rounded-full flex items-center justify-center transition-all bg-white border-brand-terracotta"
-        :class="{
-          'border-brand-terracotta ': isSelected(answer),
-        }"
+        class="w-6 h-6 shrink-0 border rounded-full flex items-center justify-center transition-all"
+        :class="[
+          isSelected(answer)
+            ? 'bg-brand-terracotta border-brand-terracotta'
+            : 'bg-transparent border-white/60 group-hover:border-white',
+        ]"
       >
         <svg
           v-if="isSelected(answer)"
-          class="w-4 h-4 text-brand-terracotta"
+          class="w-3.5 h-3.5 text-white"
           viewBox="0 0 20 20"
           fill="currentColor"
         >
@@ -45,12 +48,15 @@ const isSelected = (answer) => {
       </span>
 
       <!-- Texto -->
-      <span class="font-sans leading-relaxed">
+      <span
+        class="font-sans leading-relaxed text-[15px] md:text-base font-medium"
+        :class="[isSelected(answer) ? 'text-brand-terracotta' : 'text-white']"
+      >
         {{ answer.answerText }}
       </span>
     </button>
 
-    <p class="text-center text-sm text-gray-500 mt-2">
+    <p class="text-center text-sm text-white/60 mt-2 font-sans">
       {{ selected.length }} seleccionada(s)
     </p>
   </div>

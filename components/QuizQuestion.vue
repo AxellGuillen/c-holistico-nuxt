@@ -58,18 +58,18 @@ const canSubmit = computed(() => {
 </script>
 
 <template>
-  <div class="p-8">
+  <div class="px-5 py-8 md:p-8 relative z-10 bg-transparent">
     <!-- Header -->
-    <div class="mb-8">
+    <div class="mb-8 pt-20">
       <h2
-        class="md:text-5xl font-semibold mb-2 font-headlines text-brand-terracotta md:leading-relaxed text-center text-4xl"
+        class="font-headlines text-5xl md:text-7xl font-light leading-none mb-4 tracking-tight md:text-center text-center text-white pt-10"
       >
         {{ question.questionText }}
       </h2>
 
       <p
         v-if="question.subtitle"
-        class="text-gray-600 text-sm leading-relaxed font-sans text-center flex justify-center"
+        class="text-white text-sm leading-relaxed font-sans text-center flex justify-center"
       >
         {{ question.subtitle }}
       </p>
@@ -100,7 +100,7 @@ const canSubmit = computed(() => {
       <button
         v-if="!isFirst"
         @click="emit('back')"
-        class="px-4 py-2 border-brand-terracotta/40 text-brand-terracotta/80 hover:bg-brand-terracotta/10 transition rounded-full text-[15px]"
+        class="px-4 py-2 border-brand-terracotta/40 text-white hover:bg-brand-terracotta/10 transition rounded-full text-[15px] font-sans"
       >
         ← Atrás
       </button>

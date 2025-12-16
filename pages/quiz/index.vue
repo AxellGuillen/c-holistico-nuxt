@@ -2,6 +2,22 @@
 import { ref, onMounted } from "vue";
 import { useQuiz } from "~/composables/useQuiz";
 
+useHead({
+  title: "Quiz | Raices Centro Holístico",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Servicios y experiencias de bienestar holístico. Descubre terapias, viajes terapéuticos y próximos lanzamientos en nuestro centro.",
+    },
+    {
+      name: "keywords",
+      content:
+        "servicios holísticos, terapias, bienestar, viajes terapéuticos, centro holístico",
+    },
+  ],
+});
+
 // Estado del flujo
 const currentView = ref("loading"); // 'loading' | 'welcome' | 'quiz' | 'calculating' | 'result'
 
@@ -75,7 +91,10 @@ const handleRestart = () => {
 </script>
 
 <template>
-  <div class="w-full min-h-screen bg-transparent flex justify-center">
+  <div class="w-full min-h-screen bg-transparent flex justify-center relative">
+    <div
+      class="fixed inset-0 bg-brand-sand bg-gradient-to-b from-[#1a1a1a]/60 via-[#1a1a1a]/80 to-[#1a1a1a]/95 -z-10"
+    ></div>
     <!-- Loading -->
     <div
       class="w-full max-w-6xl mx-auto flex flex-col items-center justify-center"

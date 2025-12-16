@@ -20,6 +20,10 @@ const isAboutPage = computed(() => {
   return route.path.startsWith("/about");
 });
 
+const isQuizPage = computed(() => {
+  return route.path.startsWith("/quiz");
+});
+
 let lastScroll = 0;
 
 function handleScroll() {
@@ -69,11 +73,11 @@ onBeforeUnmount(() => {
     <nav
       :class="[
         'relative flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-xs sm:text-sm text-white tracking-wide w-full border-b transition-all duration-700 ease-out',
-        isServicePage || isAboutPage
+        isServicePage || isAboutPage || isQuizPage
           ? 'bg-transparent backdrop-blur-xl border-white/10'
           : isScrolled
-            ? 'bg-brand-sand border-brand-terracotta/20 shadow-lg'
-            : 'backdrop-blur-md bg-white/[0.02] border-white/10',
+          ? 'bg-brand-sand border-brand-terracotta/20 shadow-lg'
+          : 'backdrop-blur-md bg-white/[0.02] border-white/10',
       ]"
     >
       <div class="flex justify-end w-[600px]">
@@ -84,9 +88,11 @@ onBeforeUnmount(() => {
             v-for="link in links.slice(0, 2)"
             :key="link.path"
             :to="link.path"
-            class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
+            class="text-xs hover:text-brand-sand/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
             :class="[
-              !isServicePage && !isAboutPage && isScrolled
+              isServicePage || isAboutPage || isQuizPage
+                ? 'text-white'
+                : isScrolled
                 ? 'text-brand-terracotta'
                 : 'text-white',
             ]"
@@ -100,11 +106,13 @@ onBeforeUnmount(() => {
         <NuxtLink to="" class="inline-flex items-center justify-center">
           <Logo
             ref="logo"
-            class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1 text-brand-terracotta"
+            class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1"
             :class="[
-              isScrolled || isServicePage || isAboutPage
+              isServicePage || isAboutPage || isQuizPage
                 ? 'text-white'
-                : 'text-brand-terracotta',
+                : isScrolled
+                ? 'text-brand-terracotta'
+                : 'text-white',
             ]"
           />
         </NuxtLink>
@@ -121,11 +129,13 @@ onBeforeUnmount(() => {
               v-for="link in links.slice(2)"
               :key="link.path"
               :to="link.path"
-              class="text-xs hover:text-brand-terracotta/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
+              class="text-xs hover:text-brand-sand/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
               :class="[
-                isScrolled || isServicePage || isAboutPage
+                isServicePage || isAboutPage || isQuizPage
                   ? 'text-white'
-                  : 'text-brand-terracotta',
+                  : isScrolled
+                  ? 'text-brand-terracotta'
+                  : 'text-white',
               ]"
             >
               {{ link.label }}

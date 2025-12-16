@@ -161,18 +161,18 @@ onUnmounted(() => {
             ref="line1"
             :class="[
               'absolute w-7 h-0.5 top-1 transition-all duration-300',
-              isOpen ? 'bg-brand-terracotta' : 'bg-brand-terracotta',
+              isOpen ? 'bg-white' : 'bg-white',
             ]"
           />
           <span
             ref="line2"
-            class="absolute w-7 h-0.5 bg-brand-terracotta top-3 transition-all"
+            class="absolute w-7 h-0.5 bg-white top-3 transition-all"
           />
           <span
             ref="line3"
             :class="[
               'absolute w-7 h-0.5 top-5 transition-all duration-300',
-              isOpen ? 'bg-brand-terracotta' : 'bg-brand-terracotta',
+              isOpen ? 'bg-white' : 'bg-white',
             ]"
           />
         </div>

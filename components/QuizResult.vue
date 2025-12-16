@@ -23,14 +23,14 @@ const getCTAIcon = (ctaType) => {
 </script>
 
 <template>
-  <div class="max-w-[500px] mx-auto px-4 py-8">
+  <div class="max-w-[600px] h-[600px] mx-auto px-4 py-8 pt-20">
     <!-- Badge categoría -->
 
     <!-- Título -->
     <h2
-      class="text-2xl font-bold mb-8 text-center font-headlines text-brand-terracotta"
+      class="font-sans text-4xl md:text-5xl font-bold leading-none mb-4 tracking-tight md:text-center text-center text-white"
     >
-      {{ config?.resultScreen?.resultHeadline || "✨ Tu Servicio Ideal" }}
+      {{ config?.resultScreen?.resultHeadline }}
     </h2>
 
     <!-- Tarjeta -->
@@ -42,23 +42,23 @@ const getCTAIcon = (ctaType) => {
         v-if="service.thumbnail"
         class="w-[200px] h-[200px] overflow-hidden rounded-t-2xl flex justify-center items-center"
       >
-        <img
-          :src="service.thumbnail.asset.url"
+        <NuxtImg
+          :src="service.thumbnail?.asset?.url"
           :alt="service.name"
-          class="object-cover w-full"
+          class="object-contain w-full"
         />
       </div>
 
       <!-- Contenido -->
       <div class="p-8">
         <h3
-          class="md:text-5xl text-4xl font-bold mb-4 font-headlines w-full text-center text-brand-terracotta"
+          class="font-headlines text-6xl md:text-7xl font-light leading-none mb-4 tracking-tight md:text-center text-center text-white"
         >
           {{ service.name }}
         </h3>
 
         <p
-          class="text-lg text-brand-terracotta/60 leading-relaxed mb-6 font-sans"
+          class="text-lg md:text-xl text-white/80 leading-relaxed mb-8 font-sans text-center max-w-2xl mx-auto font-bold"
         >
           {{ service.shortDescription }}
         </p>
@@ -66,7 +66,7 @@ const getCTAIcon = (ctaType) => {
         <!-- Beneficios -->
         <div class="mb-6">
           <h4
-            class="font-headlines mb-3 text-brand-terracotta font-semibold text-[23px]"
+            class="font-headlines mb-4 text-white font-semibold text-2xl tracking-wide"
           >
             Beneficios:
           </h4>
@@ -75,9 +75,9 @@ const getCTAIcon = (ctaType) => {
             <li
               v-for="(benefit, index) in service.benefits"
               :key="index"
-              class="text-brand-terracotta/60 leading-snug font-sans"
+              class="text-white/70 leading-relaxed font-sans text-[15px] pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-brand-terracotta"
             >
-              • {{ benefit }}
+              {{ benefit }}
             </li>
           </ul>
         </div>
@@ -85,7 +85,7 @@ const getCTAIcon = (ctaType) => {
         <!-- Ideal para -->
         <div v-if="service.idealFor" class="mb-6">
           <h4
-            class="font-headlines mb-3 text-brand-terracotta font-semibold text-[23px]"
+            class="font-headlines mb-4 text-white font-semibold text-2xl tracking-wide mt-8"
           >
             Ideal para:
           </h4>
@@ -94,16 +94,16 @@ const getCTAIcon = (ctaType) => {
             <li
               v-for="(profile, index) in service.idealFor"
               :key="index"
-              class="text-brand-terracotta/60 leading-snug font-sans"
+              class="text-white/70 leading-relaxed font-sans text-[15px] pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-brand-terracotta"
             >
-              • {{ profile }}
+              {{ profile }}
             </li>
           </ul>
         </div>
 
         <!-- Metadata -->
         <div
-          class="flex flex-col gap-4 mb-6 p-4 rounded-lg text-sm text-brand-terracotta sm:flex-row sm:items-center sm:justify-between"
+          class="flex flex-col gap-4 mb-8 p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-sm text-white/80 sm:flex-row sm:items-center sm:justify-between mt-8"
         >
           <!-- Duración -->
           <span class="flex items-center gap-2 sm:w-1/3 sm:justify-center">
