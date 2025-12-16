@@ -15,7 +15,7 @@ const handleStart = () => {
 
 <template>
   <div
-    class="w-full mx-2 flex flex-col items-center text-center px-4 border border-brand-terracotta pb-10 bg-brand-soft rounded-xl"
+    class="w-full mx-2 flex flex-col items-center text-center px-4 pb-10 md:min-h-[calc(100dvh+1px)]"
   >
     <!-- Espacio para SVG del texto -->
     <div class="w-full flex justify-center pt-14 pb-6">
@@ -24,60 +24,49 @@ const handleStart = () => {
     </div>
 
     <!-- Contenido principal -->
-    <div class="w-full max-w-3xl flex flex-col items-center md:px-0 px-4">
-      <!-- Título -->
+    <div
+      class="w-full max-w-3xl flex flex-col items-center md:px-0 px-4 relative z-10"
+    >
       <h1
-        class="text-[45px] text-center md:text-[77px] font-headlines font-bold text-brand-terracotta leading-tight"
+        class="font-headlines text-4xl md:text-7xl font-light leading-none mb-4 tracking-tight md:text-center text-center text-white pt-20"
       >
-        {{ config?.welcomeScreen?.headline || "Descubre tu Servicio Ideal" }}
+        {{ config?.welcomeScreen?.headline }}
       </h1>
-
-      <!-- Subtítulo -->
       <p
-        class="font-sans text-brand-terracotta/60 text-[13px] md:text-[15px] mt-4"
+        class="font-sans text-white/50 text-sm md:text-base mt-2 max-w-lg min-h-[3rem]"
       >
-        {{
-          config?.welcomeScreen?.subtitle ||
-          "Responde algunas preguntas y te recomendaremos el servicio perfecto para ti."
-        }}
+        {{ config?.welcomeScreen?.subtitle }}
       </p>
 
-      <!-- Metadata -->
       <div class="mt-3">
         <span
-          class="text-brand-terracotta/60 font-sans text-[12px] md:text-[15px]"
+          class="text-white/70 font-sans text-xs md:text-sm tracking-wide uppercase font-medium"
         >
-          {{ config?.welcomeScreen?.estimatedTime || "Menos de 3 minutos" }}
+          {{ config?.welcomeScreen?.estimatedTime }}
         </span>
       </div>
-
-      <!-- Botón centrado -->
       <div class="flex justify-center w-full pt-6">
         <button
           @click="handleStart"
-          class="border border-brand-terracotta/90 px-4 py-3 rounded-full text-sm tracking-wider font-sans bg-brand-soft text-brand-terracotta w-[200px]"
+          class="bg-brand-sand text-brand-terracotta px-12 py-4 rounded-full text-lg font-bold hover:bg-white transition-all transform hover:scale-105 shadow-2xl hover:shadow-white/10"
         >
-          {{ config?.welcomeScreen?.startButtonText || "Comenzar Quiz" }} →
+          {{ config?.welcomeScreen?.startButtonText }} →
         </button>
       </div>
-
-      <!-- Información adicional -->
-      <p class="pt-8 text-[12px] md:text-[10px] max-w-md text-gray-500">
+      <p class="pt-8 text-[12px] md:text-xs max-w-md text-white/40">
         Tu información es confidencial y solo se usa para recomendarte el
         servicio ideal.
       </p>
     </div>
-
-    <!-- Línea decorativa SVG -->
     <div class="flex justify-center mt-16">
       <svg class="w-32 h-2 opacity-30" viewBox="0 0 120 8">
-        <circle cx="4" cy="4" r="3" fill="#C87B5C" />
-        <circle cx="20" cy="4" r="3" fill="#C87B5C" />
-        <circle cx="36" cy="4" r="3" fill="#C87B5C" />
-        <line x1="44" y1="4" x2="76" y2="4" stroke="#C87B5C" stroke-width="2" />
-        <circle cx="84" cy="4" r="3" fill="#C87B5C" />
-        <circle cx="100" cy="4" r="3" fill="#C87B5C" />
-        <circle cx="116" cy="4" r="3" fill="#C87B5C" />
+        <circle cx="4" cy="4" r="3" fill="#ffffff" />
+        <circle cx="20" cy="4" r="3" fill="#ffffff" />
+        <circle cx="36" cy="4" r="3" fill="#ffffff" />
+        <line x1="44" y1="4" x2="76" y2="4" stroke="#ffffff" stroke-width="2" />
+        <circle cx="84" cy="4" r="3" fill="#ffffff" />
+        <circle cx="100" cy="4" r="3" fill="#ffffff" />
+        <circle cx="116" cy="4" r="3" fill="#ffffff" />
       </svg>
     </div>
   </div>

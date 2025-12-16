@@ -29,10 +29,10 @@ onMounted(() => {
           <div class="relative w-32 h-32">
             <!-- Círculo exterior giratorio -->
             <div
-              class="absolute inset-0 border-8 border-brand-terracotta/70 rounded-full"
+              class="absolute inset-0 border-8 border-white/30 rounded-full"
             ></div>
             <div
-              class="absolute inset-0 border-8 border-transparent border-t-red rounded-full animate-spin"
+              class="absolute inset-0 border-8 border-transparent border-t-white rounded-full animate-spin"
             ></div>
 
             <!-- Círculo interior -->
@@ -46,13 +46,13 @@ onMounted(() => {
 
         <!-- Texto principal -->
         <h2
-          class="text-3xl font-headlines text-brand-terracotta text-center mb-4 font-light"
+          class="text-3xl font-headlines text-white text-center mb-4 font-light"
         >
           Calculando resultados...
         </h2>
 
         <!-- Texto secundario con animación -->
-        <p class="text-brand-terracotta/90 text-center text-lg mb-8">
+        <p class="text-white/80 text-center text-lg mb-8">
           <span class="inline-block animate-pulse font-sans"
             >Analizando tus respuestas</span
           >
@@ -70,14 +70,12 @@ onMounted(() => {
         </p>
 
         <!-- Barra de progreso -->
-        <div class="w-full bg-brand-sand/20 rounded-full h-3 overflow-hidden">
-          <div
-            class="bg-brand-terracotta h-full rounded-full animate-progress"
-          ></div>
+        <div class="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+          <div class="bg-white h-full rounded-full animate-progress"></div>
         </div>
 
         <!-- Mensaje adicional -->
-        <p class="text-brand-terracotta/70 text-center text-sm mt-6 font-sans">
+        <p class="text-white/60 text-center text-sm mt-6 font-sans">
           Esto solo tomará un momento
         </p>
       </div>
