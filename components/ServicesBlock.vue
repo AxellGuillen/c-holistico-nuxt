@@ -134,7 +134,7 @@ onUnmounted(() => {
             <NuxtLink
               v-for="(cat, i) in block.categories"
               :key="cat._key"
-              :to="`/${cat.slug}`"
+              :to="`/servicios?categoria=${cat.slug}`"
               class="block"
             >
               <div
@@ -213,7 +213,7 @@ onUnmounted(() => {
         <NuxtLink
           v-for="(cat, i) in block.categories"
           :key="cat._key"
-          :to="`/${cat.slug}`"
+          :to="`/servicios?categoria=${cat.slug}`"
           class="block flex-shrink-0 w-1/3"
         >
           <div
