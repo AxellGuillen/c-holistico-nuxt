@@ -141,50 +141,51 @@ useHead({
     <!-- Product cards grid layout -->
     <div class="container mx-auto px-5 sm:px-8 py-8 relative z-10">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
-        <NuxtLink
-          v-for="service in filteredServices"
-          :key="service._id"
-          :to="`/servicios/${service.slug?.current}`"
-          class="group cursor-pointer bg-transparent border-x border-white/30 px-4 py-6 block"
-        >
-          <!-- Title Section -->
-          <div class="mb-6">
-            <h2
-              class="sm:text-3xl text-2xl tracking-widest uppercase font-headlines mb-1 text-white"
-            >
-              {{ service.name }}
-            </h2>
-            <p
-              class="text-sm leading-relaxed text-white mb-4 font-bold font-sans pt-1"
-            >
-              {{ service.shortDescription }}
-            </p>
-          </div>
-
-          <!-- Price -->
-          <div
-            class="text-4xl font-light text-white flex justify-end font-sans pt-5"
+        <template v-for="service in filteredServices" :key="service._id">
+          <NuxtLink
+            v-if="service.durations?.length"
+            :to="`/servicios/${service.slug?.current}`"
+            class="group cursor-pointer bg-transparent border-x border-white/30 px-4 py-6 block"
           >
-            MXN $ {{ service.price }}
-          </div>
-          <div class="relative mb-4 overflow-hidden">
-            <NuxtImg
-              :src="service.thumbnail?.asset?.url"
-              :alt="service.name"
-              class="w-full aspect-[4/3] object-contain object-center transition-transform duration-500 group-hover:scale-105"
-            />
-            <!-- Bottom Left Label -->
-            <div
-              class="absolute bottom-4 left-4 backdrop-blur-sm px-4 py-2 rounded-sm"
-            >
-              <span
-                class="text-xs tracking-wider uppercase font-medium text-white font-sans"
+            <!-- Title Section -->
+            <div class="mb-6">
+              <h2
+                class="sm:text-3xl text-2xl tracking-widest uppercase font-headlines mb-1 text-white"
               >
-                {{ service.duration }}
-              </span>
+                {{ service.name }}
+              </h2>
+              <p
+                class="text-sm leading-relaxed text-white mb-4 font-bold font-sans pt-1"
+              >
+                {{ service.shortDescription }}
+              </p>
             </div>
-          </div>
-        </NuxtLink>
+
+            <!-- Price -->
+            <div
+              class="text-4xl font-light text-white flex justify-end font-sans pt-5"
+            >
+              MXN $ {{ service.durations?.[0].price }}
+            </div>
+            <div class="relative mb-4 overflow-hidden">
+              <NuxtImg
+                :src="service.thumbnail?.asset?.url"
+                :alt="service.name"
+                class="w-full aspect-[4/3] object-contain object-center transition-transform duration-500 group-hover:scale-105"
+              />
+              <!-- Bottom Left Label -->
+              <div
+                class="absolute bottom-4 left-4 backdrop-blur-sm px-4 py-2 rounded-sm"
+              >
+                <span
+                  class="text-xs tracking-wider uppercase font-medium text-white font-sans"
+                >
+                  {{ service.durations?.[0].minutes }} mins
+                </span>
+              </div>
+            </div>
+          </NuxtLink>
+        </template>
       </div>
     </div>
 

@@ -60,7 +60,7 @@ onMounted(async () => {
     >
       <div class="max-w-screen">
         <h1
-          class="font-headlines font-black text-white leading-[0.9] text-[9vw] sm:text-[10vw] md:text-[110px] md:text-left"
+          class="font-headlines text-4xl sm:text-9xl md:text-9xl lg:text-10xl font-light leading-none mb-4 tracking-tight sm:text-start md:text-center xl:text-start text-white"
         >
           <span
             v-for="(char, index) in chars"
@@ -74,13 +74,13 @@ onMounted(async () => {
 
         <p
           v-if="block.subtitle"
-          class="mt-5 md:mt-6 text-white/80 font-sans text-base sm:text-lg md:text-xl max-w-[320px] md:max-w-[600px] mx-auto md:mx-0"
+          class="mt-5 md:mt-6 text-white/80 font-sans font-medium tracking-wide text-base sm:text-lg md:text-xl max-w-[320px] md:max-w-[600px] mx-auto xl:mx-0 text-center md:text-center xl:text-left"
         >
           {{ block.subtitle }}
         </p>
 
         <div
-          class="mt-8 md:mt-10 flex justify-center md:justify-start md:w-[600px]"
+          class="mt-8 md:mt-10 flex justify-center md:justify-center xl:justify-start md:w-full xl:w-[600px]"
         >
           <NuxtLink
             to="/contact"
@@ -92,14 +92,16 @@ onMounted(async () => {
           </NuxtLink>
           <NuxtLink
             to="/contact"
-            class="btn-fill-hover hidden md:inline-flex relative items-center h-12 px-10 rounded-full text-white text-base tracking-wide overflow-hidden"
+            class="btn-fill-hover hidden md:inline-flex relative items-center h-12 px-10 rounded-full text-stone-800 text-base tracking-wide overflow-hidden"
             @mouseenter="isHovering = true"
             @mouseleave="isHovering = false"
             @touchstart.prevent="isHovering = true"
             @touchend.prevent="isHovering = false"
             @blur="isHovering = false"
           >
-            <span class="font-sans text-base text-white">
+            <span
+              class="font-sans text-base text-stone-800 transition-colors duration-300"
+            >
               Agenda tu encuentro
             </span>
           </NuxtLink>

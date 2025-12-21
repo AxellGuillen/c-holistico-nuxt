@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import { useRoute } from "#app";
 
 import Logo from "~/assets/icons/logo.svg?component";
@@ -11,6 +11,7 @@ const route = useRoute();
 const nav = ref(null);
 const logo = ref(null);
 const isScrolled = ref(false);
+const isMenuOpen = ref(false);
 
 const isServicePage = computed(() => {
   return route.path.startsWith("/servicios");
@@ -24,6 +25,24 @@ const isQuizPage = computed(() => {
   return route.path.startsWith("/quiz");
 });
 
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+
+  if (isMenuOpen.value) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+};
+
+watch(
+  () => route.fullPath,
+  () => {
+    isMenuOpen.value = false;
+    document.body.style.overflow = "";
+  }
+);
+
 let lastScroll = 0;
 
 function handleScroll() {
@@ -32,7 +51,11 @@ function handleScroll() {
   // Cambiar el estado de isScrolled basado en la posición
   isScrolled.value = currentScroll > 50;
 
-  // Ocultar/mostrar navbar al hacer scroll
+  // Ocultar/mostrar navbar al hacer scroll, pero NO si el menu está abierto
+  if (isMenuOpen.value) {
+    return;
+  }
+
   if (currentScroll > lastScroll && currentScroll > 50) {
     gsap.to(nav.value, {
       y: -100,
@@ -45,6 +68,7 @@ function handleScroll() {
       y: 0,
       duration: 0.4,
       ease: "power2.out",
+      overwrite: "auto", // Added overwrite to be safe
     });
   }
 
@@ -65,6 +89,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", handleScroll);
+  document.body.style.overflow = ""; // Ensure cleanup
 });
 </script>
 
@@ -72,23 +97,68 @@ onBeforeUnmount(() => {
   <header ref="nav" class="fixed inset-x-0 top-0 z-50 font-sans font-bold">
     <nav
       :class="[
-        'relative flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-xs sm:text-sm text-white tracking-wide w-full border-b transition-all duration-700 ease-out',
-        isServicePage || isAboutPage || isQuizPage
+        'relative flex items-center justify-between px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-xs sm:text-sm text-white tracking-wide w-full border-b transition-all duration-700 ease-out ',
+        isMenuOpen ? 'bg-brand-sand border-transparent' : '',
+        !isMenuOpen && (isServicePage || isAboutPage || isQuizPage)
           ? 'bg-transparent backdrop-blur-xl border-white/10'
-          : isScrolled
+          : !isMenuOpen && isScrolled
           ? 'bg-brand-sand border-brand-terracotta/20 shadow-lg'
-          : 'backdrop-blur-md bg-white/[0.02] border-white/10',
+          : !isMenuOpen
+          ? 'backdrop-blur-md bg-white/[0.02] border-white/10'
+          : '',
       ]"
     >
-      <div class="flex justify-end w-[600px]">
+      <!-- Mobile Menu Button -->
+      <button
+        class="md:hidden relative z-50 p-2 text-white hover:text-brand-terracotta transition-colors"
+        :class="{ 'text-brand-terracotta': isMenuOpen || isScrolled }"
+        @click="toggleMenu"
+        aria-label="Toggle menu"
+      >
+        <svg
+          v-if="!isMenuOpen"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      <!-- Left Links (Desktop) -->
+      <div
+        class="hidden md:flex flex-1 justify-end pr-6 md:pr-10 lg:pr-16 xl:pr-20"
+      >
         <div
-          class="hidden md:flex gap-6 lg:pl-10 justify-between w-[200px] lg:w-[300px] md:pr-10"
+          class="flex gap-4 md:gap-6 lg:gap-10 xl:gap-12 justify-end pl-5 md:pl-0 lg:pl-5 xl:pl-10"
         >
           <NuxtLink
             v-for="link in links.slice(0, 2)"
             :key="link.path"
             :to="link.path"
-            class="text-xs hover:text-brand-sand/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:text-base"
+            class="text-xs md:text-sm lg:text-base hover:text-brand-sand/70 transition-colors duration-700 ease-in-out whitespace-nowrap"
             :class="[
               isServicePage || isAboutPage || isQuizPage
                 ? 'text-white'
@@ -102,15 +172,19 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <div class="absolute left-1/2 -translate-x-1/2 z-10">
-        <NuxtLink to="" class="inline-flex items-center justify-center">
+      <!-- Center Logo -->
+      <div
+        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
+      >
+        <NuxtLink to="/" class="inline-flex items-center justify-center">
           <Logo
             ref="logo"
-            class="h-6 sm:h-7 lg:h-8 fill-current ml-auto md:ml-1"
+            class="h-6 sm:h-7 md:h-8 lg:h-9 fill-current transition-colors duration-300"
             :class="[
-              isServicePage || isAboutPage || isQuizPage
+              isMenuOpen ? 'text-brand-terracotta' : '',
+              !isMenuOpen && (isServicePage || isAboutPage || isQuizPage)
                 ? 'text-white'
-                : isScrolled
+                : !isMenuOpen && isScrolled
                 ? 'text-brand-terracotta'
                 : 'text-white',
             ]"
@@ -118,94 +192,58 @@ onBeforeUnmount(() => {
         </NuxtLink>
       </div>
 
+      <!-- Right Links (Desktop) -->
       <div
-        class="flex gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 items-center flex-1 justify-end"
+        class="hidden md:flex flex-1 justify-start pl-6 md:pl-10 lg:pl-16 xl:pl-20"
       >
-        <div class="w-[600px] pl-10">
-          <div
-            class="hidden md:flex gap-6 lg:gap-10 xl:gap-14 justify-start w-[200px lg:w-[300px]"
+        <div
+          class="flex gap-4 md:gap-6 lg:gap-10 xl:gap-12 justify-start pl-5 md:pl-0 lg:pl-5 xl:pl-10"
+        >
+          <NuxtLink
+            v-for="link in links.slice(2)"
+            :key="link.path"
+            :to="link.path"
+            class="text-xs md:text-sm lg:text-base hover:text-brand-sand/70 transition-colors duration-700 ease-in-out whitespace-nowrap"
+            :class="[
+              isServicePage || isAboutPage || isQuizPage
+                ? 'text-white'
+                : isScrolled
+                ? 'text-brand-terracotta'
+                : 'text-white',
+            ]"
           >
-            <NuxtLink
-              v-for="link in links.slice(2)"
-              :key="link.path"
-              :to="link.path"
-              class="text-xs hover:text-brand-sand/70 transition-colors duration-700 ease-in-out whitespace-nowrap lg:font-sans lg:font-bold lg:text-base"
-              :class="[
-                isServicePage || isAboutPage || isQuizPage
-                  ? 'text-white'
-                  : isScrolled
-                  ? 'text-brand-terracotta'
-                  : 'text-white',
-              ]"
-            >
-              {{ link.label }}
-            </NuxtLink>
-          </div>
+            {{ link.label }}
+          </NuxtLink>
         </div>
       </div>
+
+      <!-- Spacer for mobile right side balance -->
+      <div class="md:hidden w-10"></div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <Transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="-translate-y-full opacity-0"
+      enter-to-class="translate-y-0 opacity-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="translate-y-0 opacity-100"
+      leave-to-class="-translate-y-full opacity-0"
+    >
+      <div
+        v-if="isMenuOpen"
+        class="absolute inset-x-0 top-full h-screen bg-brand-sand flex flex-col items-center justify-start pt-24 space-y-8 md:hidden shadow-xl"
+      >
+        <NuxtLink
+          v-for="link in links"
+          :key="link.path"
+          :to="link.path"
+          class="text-2xl font-bold text-brand-terracotta hover:text-white transition-colors duration-300"
+          @click="toggleMenu"
+        >
+          {{ link.label }}
+        </NuxtLink>
+      </div>
+    </Transition>
   </header>
 </template>
-
-<style scoped>
-header {
-  will-change: transform;
-}
-
-nav {
-  will-change: background-color, border-color;
-}
-
-/* Button Fill Hover Effect */
-.btn-fill-hover {
-  background-color: transparent;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  position: relative;
-}
-
-.btn-fill-hover::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(135deg, #f6ccc4 0%, #f0b5a3 100%);
-  z-index: 0;
-  transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border-radius: 9999px;
-}
-
-.btn-fill-hover:hover {
-  border-color: #f6ccc4;
-  box-shadow: 0 8px 24px rgba(246, 204, 196, 0.2);
-}
-
-.btn-fill-hover:hover::before {
-  height: 100%;
-}
-
-.btn-fill-hover span {
-  position: relative;
-  z-index: 10;
-  transition: color 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.btn-fill-hover:hover span {
-  color: #050000;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  nav {
-    padding: 0.75rem 1rem;
-  }
-}
-
-@media (max-width: 640px) {
-  nav {
-    padding: 0.5rem 1rem;
-  }
-}
-</style>
