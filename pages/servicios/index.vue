@@ -92,7 +92,7 @@ useHead({
     <!-- ============================================ -->
     <section class="container mx-auto px-8 py-20 text-center relative z-10">
       <h1
-        class="font-headlines text-8xl md:text-9xl font-light leading-none mb-4 tracking-tight md:text-start text-center text-white"
+        class="font-headlines text-7xl md:text-9xl font-light leading-none mb-4 tracking-tight md:text-start text-center text-white pt-10"
       >
         Nuestros Servicios
       </h1>
@@ -145,17 +145,17 @@ useHead({
           <NuxtLink
             v-if="service.durations?.length"
             :to="`/servicios/${service.slug?.current}`"
-            class="group cursor-pointer bg-transparent border-x border-white/30 px-4 py-6 block"
+            class="group cursor-pointer bg-transparent border-x border-white/30 px-4 py-6 flex flex-col h-full"
           >
             <!-- Title Section -->
-            <div class="mb-6">
+            <div class="mb-6 flex-1 min-h-[8rem]">
               <h2
                 class="sm:text-3xl text-2xl tracking-widest uppercase font-headlines mb-1 text-white"
               >
                 {{ service.name }}
               </h2>
               <p
-                class="text-sm leading-relaxed text-white mb-4 font-bold font-sans pt-1"
+                class="text-sm leading-relaxed text-white mb-4 font-bold font-sans pt-1 line-clamp-4"
               >
                 {{ service.shortDescription }}
               </p>
@@ -167,11 +167,11 @@ useHead({
             >
               MXN $ {{ service.durations?.[0].price }}
             </div>
-            <div class="relative mb-4 overflow-hidden">
+            <div class="relative mb-4 overflow-hidden h-[64] w-full">
               <NuxtImg
                 :src="service.thumbnail?.asset?.url"
                 :alt="service.name"
-                class="w-full aspect-[4/3] object-contain object-center transition-transform duration-500 group-hover:scale-105"
+                class="h-full w-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
               />
               <!-- Bottom Left Label -->
               <div

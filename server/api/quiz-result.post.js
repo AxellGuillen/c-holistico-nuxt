@@ -1,4 +1,3 @@
-// server/api/quiz-result.post.js
 import { createClient } from "@sanity/client";
 
 const sanityServer = createClient({
