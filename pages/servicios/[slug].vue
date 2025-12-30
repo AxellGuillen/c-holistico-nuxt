@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useHead } from "#app";
 import { useRoute } from "#app";
+import { useAvailability } from "~/composables/useAvailability";
 import { SERVICE_BY_SLUG_QUERY } from "~/lib/servicesQuery";
 
 const route = useRoute();
@@ -11,10 +12,135 @@ const { data: service } = await useSanityQuery(SERVICE_BY_SLUG_QUERY, { slug });
 
 const selectedImage = ref(0);
 const selectedDuration = ref(null);
-
 const selectedDate = ref("");
 const selectedTime = ref("");
-const quantity = ref(1);
+
+const fullName = ref("");
+const email = ref("");
+const telephone = ref("");
+
+const isSubmitting = ref(false);
+
+const errors = ref({
+  fullName: "",
+  email: "",
+  phone: "",
+  date: "",
+  time: "",
+  duration: "",
+});
+
+const isValidEmail = (email) => {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+};
+
+const isValidPhone = (phone) => {
+  const cleaned = phone.replace(/\D/g, "");
+  return cleaned.length === 10;
+};
+
+const isValidName = (name) => {
+  const words = name.trim().split(/\s+/);
+  return words.length >= 2 && words.every((word) => word.length >= 2);
+};
+
+const isValidDate = (date) => {
+  if (!date) return false;
+  const selected = new Date(date + "T00:00:00");
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return selected >= today;
+};
+
+const clearErrors = () => {
+  errors.value = {
+    fullName: "",
+    email: "",
+    phone: "",
+    date: "",
+    time: "",
+    duration: "",
+  };
+};
+const isFormComplete = computed(() => {
+  return (
+    selectedDuration.value &&
+    selectedDate.value &&
+    selectedTime.value &&
+    fullName.value.trim().length > 0 &&
+    email.value.trim().length > 0 &&
+    telephone.value.trim().length > 0
+  );
+});
+
+const validateForm = () => {
+  clearErrors();
+  let isValid = true;
+
+  if (!selectedDuration.value) {
+    errors.value.duration = "Selecciona una duración";
+    isValid = false;
+  }
+
+  if (!selectedDate.value) {
+    errors.value.date = "Selecciona una fecha";
+    isValid = false;
+  } else if (!isValidDate(selectedDate.value)) {
+    errors.value.date = "La fecha no puede ser en el pasado";
+    isValid = false;
+  }
+
+  if (!selectedTime.value) {
+    errors.value.time = "Selecciona un horario";
+    isValid = false;
+  }
+
+  if (!fullName.value.trim()) {
+    errors.value.fullName = "El nombre es requerido";
+    isValid = false;
+  } else if (!isValidName(fullName.value)) {
+    errors.value.fullName = "Ingresa nombre y apellido";
+    isValid = false;
+  }
+
+  if (!email.value.trim()) {
+    errors.value.email = "El email es requerido";
+    isValid = false;
+  } else if (!isValidEmail(email.value)) {
+    errors.value.email = "Ingresa un email válido";
+    isValid = false;
+  }
+
+  // ✅ Usar telephone, no phone
+  if (!telephone.value.trim()) {
+    errors.value.phone = "El teléfono es requerido";
+    isValid = false;
+  } else if (!isValidPhone(telephone.value)) {
+    errors.value.phone = "Ingresa 10 dígitos";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+// ============================================
+// AVAILABILITY
+// ============================================
+
+const { slots, loading, error, scheduleInfo, getAvailability, clear } =
+  useAvailability();
+
+watch([selectedDate, selectedDuration], ([newDate, newDuration]) => {
+  if (newDate && newDuration) {
+    selectedTime.value = "";
+    getAvailability(service.value._id, newDate, newDuration);
+  }
+});
+
+// ============================================
+// COMPUTED
+// ============================================
 
 const allImages = computed(() => {
   const images = [];
@@ -51,12 +177,48 @@ onMounted(() => {
   }
 });
 
-const decreaseQuantity = () => {
-  if (quantity.value > 1) quantity.value--;
-};
+// ============================================
+// RESERVE SESSION - CORREGIDO
+// ============================================
 
-const increaseQuantity = () => {
-  quantity.value++;
+const reserveSession = async () => {
+  if (!validateForm()) {
+    return;
+  }
+
+  isSubmitting.value = true;
+
+  const bookingData = {
+    serviceId: service.value._id,
+    serviceName: service.value.name,
+    duration: selectedDuration.value,
+    serviceDescription: service.value.shortDescription,
+    categoryName: service.value.category?.name,
+    price: currentPrice.value.price,
+    date: selectedDate.value,
+    time: selectedTime.value,
+    client: {
+      name: fullName.value.trim(),
+      email: email.value.trim().toLowerCase(),
+      phone: telephone.value.replace(/\D/g, ""),
+    },
+  };
+
+  try {
+    const response = await $fetch("/api/create-checkout", {
+      method: "POST",
+      body: bookingData,
+    });
+
+    if (response.checkoutUrl) {
+      window.location.href = response.checkoutUrl;
+    }
+  } catch (err) {
+    console.error("Error:", err);
+    alert(err.data?.message || "Error al procesar la reserva");
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 
 useHead({
@@ -133,19 +295,6 @@ useHead({
                 </span>
               </div>
 
-              <!-- Rating -->
-              <div class="flex items-center gap-2 mb-8 pl-5 md:pl-0">
-                <div class="flex gap-1">
-                  <span v-for="i in 5" :key="i" class="text-white">★</span>
-                </div>
-                <a
-                  href="#reviews"
-                  class="text-sm text-white underline hover:text-stone-900"
-                >
-                  {{ service.reviewCount }} reviews
-                </a>
-              </div>
-
               <hr class="border-stone-200 mb-8" />
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
@@ -194,13 +343,16 @@ useHead({
                 <h3
                   class="text-sm tracking-widest uppercase font-semibold mb-3"
                 >
-                  Duration
+                  Duración
                 </h3>
                 <div class="flex flex-wrap gap-3">
                   <button
                     v-for="duration in service.durations"
                     :key="duration.minutes"
-                    @click="selectedDuration = duration.minutes"
+                    @click="
+                      selectedDuration = duration.minutes;
+                      errors.duration = '';
+                    "
                     :class="[
                       'px-8 py-3 border-2 rounded-full transition-all text-sm tracking-wider font-medium',
                       selectedDuration === duration.minutes
@@ -211,58 +363,146 @@ useHead({
                     {{ duration.minutes }}
                   </button>
                 </div>
+                <p v-if="errors.duration" class="text-red-400 text-sm mt-2">
+                  {{ errors.duration }}
+                </p>
               </div>
 
-              <!-- Date Picker (Simplified) -->
+              <!-- Date Picker -->
               <div class="mb-6">
                 <h3
                   class="text-sm tracking-widest uppercase font-semibold mb-3"
                 >
-                  Select Date
+                  Fecha
                 </h3>
                 <input
                   v-model="selectedDate"
+                  @input="errors.date = ''"
                   type="date"
-                  class="w-full px-4 py-3 border-2 border-stone-300 focus:border-stone-900 focus:outline-none transition-colors text-black"
+                  :min="new Date().toISOString().split('T')[0]"
+                  :class="[
+                    'w-full px-4 py-3 border-2 focus:outline-none transition-colors text-black',
+                    errors.date
+                      ? 'border-red-400'
+                      : 'border-stone-300 focus:border-stone-900',
+                  ]"
                 />
+                <p v-if="errors.date" class="text-red-400 text-sm mt-2">
+                  {{ errors.date }}
+                </p>
               </div>
 
-              <!-- Time Selector (Simplified) -->
+              <!-- Time Selector -->
               <div class="mb-6">
                 <h3
                   class="text-sm tracking-widest uppercase font-semibold mb-3"
                 >
-                  Select Time
+                  Hora
                 </h3>
-                <select
-                  v-model="selectedTime"
-                  class="w-full px-4 py-3 border-2 border-stone-300 focus:border-stone-900 focus:outline-none transition-colors text-black"
+
+                <!-- Loading -->
+                <div v-if="loading" class="py-4">
+                  <div class="flex items-center gap-2 text-white/60">
+                    <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        fill="none"
+                      />
+                      <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                      />
+                    </svg>
+                    <span>Cargando horarios...</span>
+                  </div>
+                </div>
+
+                <!-- Error -->
+                <div
+                  v-else-if="error"
+                  class="py-4 px-4 bg-red-500/10 border border-red-500/30 rounded"
                 >
-                  <option value="">Choose a time</option>
-                  <option value="09:00">9:00 AM</option>
-                  <option value="10:00">10:00 AM</option>
-                  <option value="11:00">11:00 AM</option>
-                  <option value="13:00">1:00 PM</option>
-                  <option value="14:00">2:00 PM</option>
-                  <option value="15:00">3:00 PM</option>
-                  <option value="16:00">4:00 PM</option>
-                </select>
+                  <p class="text-red-400 text-sm">{{ error }}</p>
+                </div>
+
+                <!-- No hay fecha seleccionada -->
+                <div v-else-if="!selectedDate" class="py-4">
+                  <p class="text-white/50 text-sm">
+                    Selecciona una fecha primero
+                  </p>
+                </div>
+
+                <!-- Sin slots disponibles -->
+                <div v-else-if="slots.length === 0" class="py-4">
+                  <p class="text-white/50 text-sm">
+                    No hay horarios disponibles para esta fecha
+                  </p>
+                </div>
+
+                <!-- Grid de slots disponibles -->
+                <div
+                  v-else
+                  class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2"
+                >
+                  <button
+                    v-for="slot in slots"
+                    :key="slot"
+                    @click="
+                      selectedTime = slot;
+                      errors.time = '';
+                    "
+                    :class="[
+                      'px-3 py-3 border-2 text-sm font-medium transition-all',
+                      selectedTime === slot
+                        ? 'bg-white text-stone-900 border-white'
+                        : 'bg-transparent text-white border-stone-500 hover:border-white',
+                    ]"
+                  >
+                    {{ slot }}
+                  </button>
+                </div>
+
+                <!-- Info del horario -->
+                <p
+                  v-if="scheduleInfo && slots.length > 0"
+                  class="mt-3 text-white/40 text-xs"
+                >
+                  Horario: {{ scheduleInfo.open }} - {{ scheduleInfo.close }}
+                </p>
+
+                <p v-if="errors.time" class="text-red-400 text-sm mt-2">
+                  {{ errors.time }}
+                </p>
               </div>
 
-              <!-- Added contact information fields -->
               <!-- Full Name -->
               <div class="mb-6">
                 <h3
                   class="text-sm tracking-widest uppercase font-semibold mb-3"
                 >
-                  Full Name
+                  Nombre completo
                 </h3>
                 <input
                   v-model="fullName"
+                  @input="errors.fullName = ''"
                   type="text"
                   placeholder="Enter your full name"
-                  class="w-full px-4 py-3 border-2 border-stone-300 focus:border-stone-900 focus:outline-none transition-colors text-black placeholder:text-stone-400"
+                  :class="[
+                    'w-full px-4 py-3 border-2 focus:outline-none transition-colors text-black placeholder:text-stone-400',
+                    errors.fullName
+                      ? 'border-red-400'
+                      : 'border-stone-300 focus:border-stone-900',
+                  ]"
                 />
+                <p v-if="errors.fullName" class="text-red-400 text-sm mt-2">
+                  {{ errors.fullName }}
+                </p>
               </div>
 
               <!-- Email Address -->
@@ -270,14 +510,23 @@ useHead({
                 <h3
                   class="text-sm tracking-widest uppercase font-semibold mb-3"
                 >
-                  Email Address
+                  Correo electrónico
                 </h3>
                 <input
                   v-model="email"
+                  @input="errors.email = ''"
                   type="email"
                   placeholder="Enter your email"
-                  class="w-full px-4 py-3 border-2 border-stone-300 focus:border-stone-900 focus:outline-none transition-colors text-black placeholder:text-stone-400"
+                  :class="[
+                    'w-full px-4 py-3 border-2 focus:outline-none transition-colors text-black placeholder:text-stone-400',
+                    errors.email
+                      ? 'border-red-400'
+                      : 'border-stone-300 focus:border-stone-900',
+                  ]"
                 />
+                <p v-if="errors.email" class="text-red-400 text-sm mt-2">
+                  {{ errors.email }}
+                </p>
               </div>
 
               <!-- Telephone -->
@@ -285,30 +534,24 @@ useHead({
                 <h3
                   class="text-sm tracking-widest uppercase font-semibold mb-3"
                 >
-                  Telephone
+                  Teléfono
                 </h3>
                 <input
                   v-model="telephone"
+                  @input="errors.phone = ''"
                   type="tel"
                   placeholder="Enter your phone number"
-                  class="w-full px-4 py-3 border-2 border-stone-300 focus:border-stone-900 focus:outline-none transition-colors text-black placeholder:text-stone-400"
+                  maxlength="14"
+                  :class="[
+                    'w-full px-4 py-3 border-2 focus:outline-none transition-colors text-black placeholder:text-stone-400',
+                    errors.phone
+                      ? 'border-red-400'
+                      : 'border-stone-300 focus:border-stone-900',
+                  ]"
                 />
-              </div>
-              <!-- End of contact information fields -->
-
-              <!-- Quantity -->
-              <div class="mb-6">
-                <h3
-                  class="text-sm tracking-widest uppercase font-semibold mb-3"
-                >
-                  Quantity
-                </h3>
-                <input
-                  v-model="quantity"
-                  type="number"
-                  min="1"
-                  class="w-full px-4 py-3 border-2 border-stone-300 focus:border-stone-900 focus:outline-none transition-colors text-black"
-                />
+                <p v-if="errors.phone" class="text-red-400 text-sm mt-2">
+                  {{ errors.phone }}
+                </p>
               </div>
 
               <hr class="border-stone-200 mb-8" />
@@ -317,27 +560,15 @@ useHead({
               <div class="flex flex-col sm:flex-row gap-4">
                 <button
                   @click="reserveSession"
-                  class="flex-1 bg-stone-900 text-white py-4 px-8 tracking-widest uppercase text-sm font-semibold hover:bg-stone-800 transition-colors"
+                  :disabled="isSubmitting || !isFormComplete"
+                  :class="[
+                    'flex-1 py-4 px-8 tracking-widest uppercase text-sm font-bold transition-all duration-300 shadow-lg rounded-full',
+                    isSubmitting || !isFormComplete
+                      ? 'bg-stone-700 text-stone-500 cursor-not-allowed'
+                      : 'bg-brand-earth text-brand-terracotta hover:bg-brand-sand hover:shadow-brand-earth/30 hover:-translate-y-1',
+                  ]"
                 >
-                  Reserve Session
-                </button>
-                <button
-                  class="w-14 h-14 border-2 border-stone-300 hover:border-stone-900 transition-colors flex items-center justify-center"
-                  aria-label="Add to favorites"
-                >
-                  <svg
-                    class="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
+                  {{ isSubmitting ? "Procesando..." : "Reservar Sesión" }}
                 </button>
               </div>
             </div>
