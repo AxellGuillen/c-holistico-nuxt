@@ -1,38 +1,149 @@
 <script setup>
-import { computed, ref, onMounted, nextTick } from "vue";
+import { computed, ref, onMounted, onUnmounted, watch, nextTick } from "vue";
 import { gsap } from "gsap";
 
 const props = defineProps(["block", "urlFor", "urlForPlaceholder"]);
 
+const { isHeroReady, setVideoPreloaded } = useAppLoader();
+
+const videoRef = ref(null);
+const titleRefs = ref([]);
+const subtitleRef = ref(null);
+const ctaRef = ref(null);
+
 const title = computed(() => props.block?.title || "");
 const chars = computed(() => title.value.split(""));
-
-const titleRefs = ref([]);
-
 const isHovering = ref(false);
+
+let ctx;
 
 onMounted(async () => {
   await nextTick();
-  gsap.from(titleRefs.value, {
-    opacity: 0,
-    y: 40,
-    stagger: 0.04,
-    ease: "power3.out",
-    duration: 1.2,
+
+  // 1. Precargar video y notificar al loader
+  preloadVideo();
+
+  // 2. Preparar elementos (ocultos hasta que isHeroReady)
+  ctx = gsap.context(() => {
+    // Si ya pasó el loader (navegación de regreso), mostrar directo
+    if (isHeroReady.value) {
+      gsap.set(titleRefs.value, { opacity: 1, y: 0 });
+      gsap.set([subtitleRef.value, ctaRef.value], { opacity: 1, y: 0 });
+    } else {
+      // Primera carga: ocultar para animar después
+      gsap.set(titleRefs.value, { opacity: 0, y: 40 });
+      gsap.set([subtitleRef.value, ctaRef.value], { opacity: 0, y: 20 });
+    }
   });
+});
+
+// 3. Cuando el loader termine, animar entrada (solo primera carga)
+watch(isHeroReady, (ready) => {
+  if (ready) {
+    animateIn();
+  }
+});
+
+/**
+ * Precarga el video y notifica al composable
+ */
+function preloadVideo() {
+  const video = videoRef.value;
+  if (!video) {
+    // No hay video, notificar inmediatamente
+    setVideoPreloaded();
+    return;
+  }
+
+  // Si ya está cargado
+  if (video.readyState >= 3) {
+    setVideoPreloaded();
+    return;
+  }
+
+  // Escuchar evento canplaythrough (suficiente buffer)
+  video.addEventListener(
+    "canplaythrough",
+    () => {
+      setVideoPreloaded();
+    },
+    { once: true }
+  );
+
+  // Fallback por si el evento no dispara
+  video.addEventListener(
+    "loadeddata",
+    () => {
+      setTimeout(setVideoPreloaded, 500);
+    },
+    { once: true }
+  );
+}
+
+/**
+ * Animación de entrada del Hero
+ */
+function animateIn() {
+  if (!ctx) return;
+
+  ctx.add(() => {
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.out" },
+    });
+
+    // Título letra por letra
+    tl.to(titleRefs.value, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.04,
+      duration: 1.2,
+    });
+
+    // Subtítulo
+    if (subtitleRef.value) {
+      tl.to(
+        subtitleRef.value,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        },
+        "-=0.6"
+      );
+    }
+
+    // CTA Button
+    if (ctaRef.value) {
+      tl.to(
+        ctaRef.value,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+        },
+        "-=0.4"
+      );
+    }
+  });
+}
+
+onUnmounted(() => {
+  ctx?.revert();
 });
 </script>
 
 <template>
   <div
     :class="[
-      ' hero-wrapper relative overflow-hidden',
+      'hero-wrapper relative overflow-hidden',
       'h-[calc(100vh-64px)] md:h-screen mt-16 md:mt-0',
       isHovering ? 'blur-active' : '',
     ]"
   >
+    <!-- Video Background con preload -->
     <video
       v-if="block.backgroundVideo?.url"
+      ref="videoRef"
       class="absolute inset-0 w-full h-full object-cover"
       preload="auto"
       autoplay
@@ -44,6 +155,7 @@ onMounted(async () => {
       <source :src="block.backgroundVideo.url" type="video/mp4" />
     </video>
 
+    <!-- Fallback Image -->
     <NuxtImg
       v-else-if="block.backgroundImage?.url"
       :src="block.backgroundImage.url"
@@ -51,16 +163,17 @@ onMounted(async () => {
       loading="eager"
     />
 
-    <div class="hero-blur-layer absolute inset-0 z-10 pointer-events-none">
-      .
-    </div>
+    <!-- Blur Layer -->
+    <div class="hero-blur-layer absolute inset-0 z-10 pointer-events-none" />
 
+    <!-- Content -->
     <div
       class="absolute inset-0 flex flex-col justify-center z-20 px-6 md:px-[100px] text-center md:text-left"
     >
       <div class="max-w-screen">
+        <!-- Title -->
         <h1
-          class="font-headlines text-4xl sm:text-9xl md:text-9xl lg:text-10xl font-light leading-none mb-4 tracking-tight sm:text-start md:text-center xl:text-start text-white"
+          class="font-headlines text-4xl sm:text-6xl md:text-5xl lg:text-9xl font-light leading-none mb-4 tracking-tight sm:text-start md:text-center xl:text-start text-white"
         >
           <span
             v-for="(char, index) in chars"
@@ -72,14 +185,18 @@ onMounted(async () => {
           </span>
         </h1>
 
+        <!-- Subtitle -->
         <p
           v-if="block.subtitle"
+          ref="subtitleRef"
           class="mt-5 md:mt-6 text-white/80 font-sans font-medium tracking-wide text-base sm:text-lg md:text-xl max-w-[320px] md:max-w-[600px] mx-auto xl:mx-0 text-center md:text-center xl:text-left"
         >
           {{ block.subtitle }}
         </p>
 
+        <!-- CTA -->
         <div
+          ref="ctaRef"
           class="mt-8 md:mt-10 flex justify-center md:justify-center xl:justify-start md:w-full xl:w-[600px]"
         >
           <NuxtLink
@@ -114,41 +231,35 @@ onMounted(async () => {
 <style scoped>
 .hero-wrapper {
   will-change: transform, opacity;
-  /* fallback gradient */
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   position: relative;
 }
 
-/* BLUR LAYER - inicia sin blur */
 .hero-blur-layer {
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
-  background: rgba(0, 0, 0, 0); /* transparente inicial */
+  background: rgba(0, 0, 0, 0);
   transition: backdrop-filter 0.8s ease, -webkit-backdrop-filter 0.8s ease,
     background 0.6s ease;
 }
 
-/* CUANDO isHovering = true se activa esta regla porque se agregó la clase .blur-active al wrapper */
 .hero-wrapper.blur-active .hero-blur-layer {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  /* overlay ligero para contraste */
   background: rgba(0, 0, 0, 0.18);
 }
 
-/* H1 y botón como antes */
 h1 {
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   letter-spacing: -0.02em;
 }
 
-/* Botón fill */
 .btn-fill-hover {
   background-color: transparent;
   border: 2px solid rgba(255, 255, 255, 0.4);
   position: relative;
   font-weight: 500;
-  z-index: 30; /* por encima del blur */
+  z-index: 30;
 }
 
 .btn-fill-hover::before {
@@ -173,7 +284,6 @@ h1 {
   height: 100%;
 }
 
-/* color del texto en hover */
 .btn-fill-hover span {
   position: relative;
   z-index: 10;
@@ -184,7 +294,6 @@ h1 {
   color: #3e1404;
 }
 
-/* para accesibilidad: si reduce motion, desacopla transiciones fuertes */
 @media (prefers-reduced-motion: reduce) {
   .hero-blur-layer,
   .btn-fill-hover::before,

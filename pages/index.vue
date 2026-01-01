@@ -8,6 +8,8 @@ const { urlFor, urlForPlaceholder } = useSanityImage();
 const { data } = await useSanityQuery(query);
 const blocks = computed(() => data.value?.blocks || []);
 
+defineOptions({ name: "index" });
+
 useHead({
   title: data.value?.title || "Centro Holístico",
   meta: [
