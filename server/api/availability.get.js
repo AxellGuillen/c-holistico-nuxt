@@ -265,15 +265,6 @@ export default defineEventHandler(async (event) => {
     config.bufferTime
   );
 
-  // DEBUG (opcional - quitar después)
-  console.log("=== DEBUG ===");
-  console.log("1. Fecha:", date);
-  console.log("2. Día:", dayName);
-  console.log("3. daySchedule:", daySchedule);
-  console.log("4. allSlots:", allSlots);
-  console.log("5. existingBookings:", existingBookings);
-  console.log("6. availableSlots:", availableSlots);
-
   // 10. RETORNAR
   return {
     available: availableSlots.length > 0,

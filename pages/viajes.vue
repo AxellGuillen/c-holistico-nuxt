@@ -14,133 +14,92 @@ useHead({
 </script>
 
 <template>
-  <div
-    class="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-brand-soft px-6"
-  >
-    <!-- Background Texture/Gradient Overlay -->
-    <div class="absolute inset-0 pointer-events-none opacity-40">
+  <div class="relative min-h-screen bg-brand-sand text-white overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0">
       <div
-        class="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-brand-blush rounded-full mix-blend-multiply filter blur-[100px] animate-blob"
-      ></div>
-      <div
-        class="absolute bottom-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-sand rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-2000"
-      ></div>
-      <div
-        class="absolute top-[40%] left-[20%] w-[50%] h-[50%] bg-brand-clay/30 rounded-full mix-blend-multiply filter blur-[80px] animate-blob animation-delay-4000"
+        class="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/60 via-[#1a1a1a]/80 to-[#1a1a1a]/95"
       ></div>
     </div>
 
-    <!-- Main Content -->
-    <div
-      class="relative z-10 text-center max-w-5xl mx-auto space-y-10 animate-fade-in-up"
-    >
-      <!-- Tagline -->
-      <div class="flex justify-center">
-        <span
-          class="inline-block py-1.5 px-5 rounded-full border border-brand-earth/40 text-brand-terracotta/80 text-xs tracking-[0.25em] uppercase font-bold bg-white/20 backdrop-blur-sm shadow-sm"
-        >
-          Coming Soon
-        </span>
+    <!-- Content -->
+    <div class="relative z-10">
+      <div class="container mx-auto px-8 py-20 flex justify-center">
+        <!-- BLOQUE CENTRAL -->
+        <div class="w-full max-w-3xl text-center">
+          <!-- Hero -->
+          <div class="min-h-[70vh] flex flex-col justify-center items-center">
+            <!-- Badge -->
+            <div class="mb-8 md:mb-12">
+              <span
+                class="inline-block px-6 py-2 rounded-full border border-white/30 text-white/80 text-xs tracking-[0.3em] uppercase font-medium font-sans"
+              >
+                Próximamente
+              </span>
+            </div>
+
+            <!-- Title -->
+            <h1
+              class="font-headlines text-7xl md:text-9xl font-light leading-none mb-6 tracking-tight text-white"
+            >
+              Viajes
+              <br />
+              <span class="text-6xl md:text-8xl">Terapéuticos</span>
+            </h1>
+
+            <!-- Divider -->
+            <div class="h-px w-32 bg-white/30 mb-12"></div>
+
+            <!-- Description -->
+            <div class="max-w-2xl mb-16">
+              <p
+                class="font-sans text-lg md:text-xl leading-relaxed text-white/80 font-bold mb-6"
+              >
+                Estamos curando experiencias inmersivas en destinos sagrados.
+              </p>
+              <p class="font-sans text-base leading-relaxed text-white/60">
+                Un viaje para reconectar, sanar y expandir tu consciencia.
+                Espacios diseñados para tu transformación profunda.
+              </p>
+            </div>
+
+            <!-- CTA -->
+            <div class="mb-12">
+              <NuxtLink
+                to="/"
+                class="inline-flex items-center gap-3 bg-brand-base text-brand-terracotta px-10 py-4 rounded-full text-sm font-bold hover:bg-white transition-all transform hover:scale-105 shadow-2xl hover:shadow-white/20 tracking-widest uppercase font-sans"
+              >
+                <span>Volver al Inicio</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </NuxtLink>
+            </div>
+          </div>
+
+          <!-- Footer Info ✅ ahora sí centrado -->
+          <div class="border-t border-white/10 pt-8 mt-20">
+            <p class="font-sans text-sm text-white/50 tracking-wide">
+              Holistic Wellness Center • Experiencias transformadoras
+            </p>
+          </div>
+        </div>
       </div>
-
-      <!-- Hero Title -->
-      <div class="space-y-2">
-        <h1
-          class="font-headlines text-6xl md:text-8xl lg:text-9xl text-brand-terracotta leading-none tracking-tight"
-        >
-          VIAJES
-        </h1>
-        <p
-          class="font-serif italic text-3xl md:text-5xl lg:text-6xl text-brand-earth font-light"
-        >
-          terapéuticos
-        </p>
-      </div>
-
-      <!-- Description -->
-      <p
-        class="text-brand-terracotta/80 text-lg md:text-xl font-body font-light max-w-2xl mx-auto leading-relaxed"
-      >
-        Estamos curando experiencias inmersivas en destinos sagrados. <br />
-        Un viaje para reconectar, sanar y expandir tu consciencia.
-      </p>
-
-      <!-- CTA Button -->
-      <div class="pt-8">
-        <NuxtLink
-          to="/"
-          class="group relative inline-flex items-center gap-3 px-10 py-5 bg-brand-terracotta text-brand-base rounded-full overflow-hidden transition-all duration-300 hover:bg-brand-earth hover:shadow-xl hover:shadow-brand-earth/20 hover:-translate-y-1"
-        >
-          <span
-            class="relative z-10 font-sans tracking-widest uppercase text-sm font-bold"
-          >
-            Volver al Inicio
-          </span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1 relative z-10"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
-        </NuxtLink>
-      </div>
-    </div>
-
-    <!-- Decorative Footer Text -->
-    <div
-      class="absolute bottom-8 text-brand-earth/40 text-xs tracking-widest uppercase font-sans"
-    >
-      Holistic Wellness Center
     </div>
   </div>
 </template>
 
 <style scoped>
-.animate-fade-in-up {
-  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Optional gentle blob animation if not in global css */
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-}
-.animate-blob {
-  animation: blob 7s infinite;
-}
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
+/* Clean design matching brand aesthetic */
 </style>
