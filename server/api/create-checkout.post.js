@@ -37,13 +37,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  if (!serviceId || !date || !time || !price || !client?.email) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Missing required fields",
-    });
-  }
-
   const existingBooking = await sanity.fetch(
     `
     *[_type == "booking" 
@@ -53,8 +46,15 @@ export default defineEventHandler(async (event) => {
       && status != "cancelled"
     ][0]
   `,
-    { serviceId, date, time }
+    { serviceId, date, time },
   );
+
+  if (existingBooking) {
+    throw createError({
+      statusCode: 409,
+      message: "Este horario ya está reservado. Por favor selecciona otro.",
+    });
+  }
 
   const preference = new Preference(mpClient);
 
@@ -112,10 +112,6 @@ export default defineEventHandler(async (event) => {
       preferenceId: response.id,
     };
   } catch (error) {
-    console.error("=== ERROR MERCADOPAGO ===");
-    console.error("Message:", error.message);
-    console.error("Cause:", error.cause);
-    console.error("Full error:", JSON.stringify(error, null, 2));
     throw createError({
       statusCode: 500,
       message: "Error al crear el checkout",

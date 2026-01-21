@@ -1,8 +1,30 @@
+/**
+ * main.css - Raíces Centro Holístico
+ *
+ * ESTRUCTURA:
+ * ===========
+ * 1. IMPORTS - Fuentes
+ * 2. TAILWIND LAYERS
+ * 3. LENIS - Smooth scroll
+ * 4. BASE - Reset y estilos fundamentales
+ * 5. LAYOUT - Canvas y Site Container
+ * 6. COMPONENTS - Clases reutilizables
+ * 7. UTILITIES - Helpers
+ * 8. ACCESSIBILITY
+ *
+ * REGLA CLAVE:
+ * Si puede ser una utilidad de Tailwind, NO va aquí.
+ */
+
 @import url("../fonts/fonts.css");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ============================================
+   LENIS - Smooth Scroll
+   ============================================ */
 
 html.lenis {
   height: auto;
@@ -24,83 +46,343 @@ html.lenis {
   pointer-events: none;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+/* ============================================
+   BASE - Reset y estilos fundamentales
+   ============================================ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  ::selection {
+    background-color: theme("colors.accent.soft");
+    color: theme("colors.content.DEFAULT");
+  }
+
+  ::-moz-selection {
+    background-color: theme("colors.accent.soft");
+    color: theme("colors.content.DEFAULT");
+  }
+
+  html,
+  body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: theme("fontFamily.sans");
+    font-size: 1rem;
+    line-height: 1.75;
+    color: theme("colors.content.DEFAULT");
+    background-color: theme("colors.surface.emphasis");
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: theme("fontFamily.headlines");
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid theme("colors.content.DEFAULT");
+    outline-offset: 2px;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: none;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: theme("colors.surface.muted");
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: theme("colors.surface.emphasis");
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme("colors.accent.DEFAULT");
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme("colors.surface.emphasis")
+      theme("colors.surface.muted");
+  }
 }
 
-*::selection {
-  background-color: black;
-  color: white;
+/* ============================================
+   LAYOUT - Canvas y Site Container
+   ============================================ */
+
+@layer components {
+  /**
+   * LAYOUT ROOT (Canvas)
+   * El fondo visual del sitio con patrón de puntos.
+   */
+  .layout-root {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: theme("colors.surface.emphasis");
+    background-image: radial-gradient(
+      theme("colors.content.DEFAULT / 4%") 1px,
+      transparent 1px
+    );
+    background-size: 4px 4px;
+  }
+
+  /**
+   * LAYOUT ROOT - Variante oscura
+   * Para páginas internas (servicios, quiz, about).
+   */
+  .layout-root--dark::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgb(26 26 26 / 0.6) 0%,
+      rgb(26 26 26 / 0.75) 40%,
+      rgb(26 26 26 / 0.88) 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .layout-root--dark .site-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  /**
+   * SITE CONTAINER
+   * La "caja" principal que contiene todo el contenido.
+   *
+   * USA TOKENS:
+   * - spacing.gutter → margin
+   * - spacing.gutter-md → margin en md:
+   * - borderRadius.container → border-radius
+   */
+  .site-container {
+    /* CAMBIO AQUÍ: Definimos los márgenes por separado para mobile */
+    margin-top: 0; /* Pegado al techo */
+    margin-left: theme("spacing.gutter"); /* Aire izquierda */
+    margin-right: theme("spacing.gutter"); /* Aire derecha */
+    margin-bottom: theme("spacing.gutter"); /* Aire abajo */
+
+    border-radius: theme("borderRadius.container");
+    background-color: theme("colors.surface.DEFAULT");
+    /* Ajustamos el min-height para que solo reste el gutter de abajo */
+    min-height: calc(100dvh - theme("spacing.gutter"));
+    overflow: hidden;
+    position: relative;
+  }
+
+  @media (min-width: 768px) {
+    .site-container {
+      /* CAMBIO AQUÍ: Lo mismo para desktop */
+      margin-top: 0;
+      margin-left: theme("spacing.gutter-md");
+      margin-right: theme("spacing.gutter-md");
+      margin-bottom: theme("spacing.gutter-md");
+      min-height: calc(100dvh - theme("spacing.gutter-md"));
+    }
+  }
+
+  /**
+   * SITE CONTAINER - Variante transparente
+   */
+  .site-container--transparent {
+    background-color: transparent;
+  }
+
+  /**
+   * SITE CONTAINER - Variante muted
+   */
+  .site-container--muted {
+    background-color: theme("colors.surface.muted");
+  }
 }
 
-html,
-body {
-  background-color: transparent;
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-}
+/* ============================================
+   COMPONENTS - Clases reutilizables
+   ============================================ */
 
-@keyframes grain {
-  0% {
-    transform: translate(20%, -15%);
+@layer components {
+  .section {
+    @apply relative w-full;
   }
 
-  10% {
-    transform: translate(-20%, -15%);
+  .section-content {
+    @apply max-w-wide mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  20% {
-    transform: translate(20%, -5%);
+  .section-content--left {
+    padding-left: max(1rem, calc((100vw - 72rem) / 2 + 1rem));
   }
 
-  30% {
-    transform: translate(-20%, -5%);
+  .section-content--narrow {
+    @apply max-w-content mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  40% {
-    transform: translate(20%, 5%);
+  .section-content--full {
+    @apply w-full px-0;
   }
 
-  50% {
-    transform: translate(-20%, 5%);
+  .focus-ring {
+    @apply focus-visible:ring-2 
+           focus-visible:ring-content 
+           focus-visible:ring-offset-2 
+           focus-visible:ring-offset-surface;
   }
 
-  60% {
-    transform: translate(20%, 15%);
+  .prose-raices {
+    @apply text-body-md text-content-muted leading-relaxed;
   }
 
-  70% {
-    transform: translate(-20%, 15%);
+  .prose-raices strong {
+    @apply text-content font-semibold;
   }
 
-  80% {
-    transform: translate(20%, 5%);
-  }
-
-  90% {
-    transform: translate(-20%, 5%);
-  }
-
-  to {
-    transform: translate(20%, -5%);
+  .prose-raices a {
+    @apply text-content underline underline-offset-2 
+           hover:text-accent transition-colors;
   }
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+/* ============================================
+   UTILITIES - Helpers adicionales
+   ============================================ */
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .aspect-portrait {
+    aspect-ratio: 3 / 4;
+  }
+
+  .aspect-landscape {
+    aspect-ratio: 4 / 3;
+  }
+
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
 }
 
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
+@media print {
+  .layout-root,
+  .site-container {
+    background: white !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
 
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
+  .layout-root--dark::before {
+    display: none !important;
+  }
+
+  body {
+    color: black !important;
+  }
+
+  nav,
+  .no-print {
+    display: none !important;
+  }
 }

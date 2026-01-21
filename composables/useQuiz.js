@@ -46,7 +46,7 @@ export const useQuiz = () => {
   const progress = computed(() => {
     if (!config.value?.questions) return 0;
     return Math.round(
-      (currentQuestionIndex.value / config.value.questions.length) * 100
+      (currentQuestionIndex.value / config.value.questions.length) * 100,
     );
   });
 
@@ -66,10 +66,10 @@ export const useQuiz = () => {
 
     return {
       equilibrioEmocional: Math.round(
-        (scores.value.equilibrioEmocional / total) * 100
+        (scores.value.equilibrioEmocional / total) * 100,
       ),
       sanacionEspiritual: Math.round(
-        (scores.value.sanacionEspiritual / total) * 100
+        (scores.value.sanacionEspiritual / total) * 100,
       ),
       bienestarFisico: Math.round((scores.value.bienestarFisico / total) * 100),
     };
@@ -104,7 +104,7 @@ export const useQuiz = () => {
         scores: scores.value,
 
         winningCategory: Object.keys(scores.value).reduce((a, b) =>
-          scores.value[a] > scores.value[b] ? a : b
+          scores.value[a] > scores.value[b] ? a : b,
         ),
 
         userTags: userTags.value,
@@ -144,7 +144,6 @@ export const useQuiz = () => {
       config.value = quizConfig;
       categories.value = categoriesData;
     } catch (err) {
-      console.error("Error al cargar quiz:", err);
       error.value = "No se pudo cargar el quiz. Por favor recarga la página.";
     } finally {
       isLoading.value = false;
@@ -240,7 +239,7 @@ export const useQuiz = () => {
     try {
       // 1. Identificar categoría ganadora
       const winningCategory = Object.keys(scores.value).reduce((a, b) =>
-        scores.value[a] > scores.value[b] ? a : b
+        scores.value[a] > scores.value[b] ? a : b,
       );
 
       const winningScore = scores.value[winningCategory];
@@ -253,7 +252,7 @@ export const useQuiz = () => {
 
       if (candidateServices.length === 0) {
         throw new Error(
-          "No se encontraron servicios que cumplan los criterios"
+          "No se encontraron servicios que cumplan los criterios",
         );
       }
 
@@ -262,7 +261,7 @@ export const useQuiz = () => {
         .map((service) => {
           // a) Verificar exclusiones
           const hasExcludedTag = service.matchCriteria.excludeTags?.some(
-            (tag) => userTags.value.includes(tag)
+            (tag) => userTags.value.includes(tag),
           );
 
           if (hasExcludedTag) {
@@ -272,7 +271,7 @@ export const useQuiz = () => {
           // b) Contar coincidencias de tags preferidos
           const matchingTags =
             service.matchCriteria.preferredTags?.filter((tag) =>
-              userTags.value.includes(tag)
+              userTags.value.includes(tag),
             ) || [];
 
           // c) Calcular score base
@@ -300,7 +299,7 @@ export const useQuiz = () => {
 
       if (scoredServices.length === 0) {
         throw new Error(
-          "Todos los servicios fueron excluidos por tus preferencias"
+          "Todos los servicios fueron excluidos por tus preferencias",
         );
       }
 
@@ -312,7 +311,6 @@ export const useQuiz = () => {
 
       return winner;
     } catch (err) {
-      console.error("Error al calcular resultado:", err);
       error.value =
         "No se pudo calcular el resultado. Por favor intenta de nuevo.";
       throw err;

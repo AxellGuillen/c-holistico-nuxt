@@ -1,7 +1,9 @@
 <script setup>
-import ServicesBlock from "~/components/ServicesBlock.vue";
-import MonthService from "~/components/MonthService.vue";
-import GalleryMarquee from "~/components/GalleryMarquee.vue";
+import FeaturedServicesSection from "~/components/FeaturedServicesSection.vue";
+import HeroSection from "~/components/HeroSection.vue";
+import TeamMemberSection from "~/components/TeamMemberSection.vue";
+import TestimonialSection from "~/components/TestimonialSection.vue";
+
 import { query } from "~/lib/queries";
 
 const { urlFor, urlForPlaceholder } = useSanityImage();
@@ -9,6 +11,44 @@ const { data } = await useSanityQuery(query);
 const blocks = computed(() => data.value?.blocks || []);
 
 defineOptions({ name: "index" });
+
+/**
+ * Sistema de spacing por tipo de bloque
+ * Esto crea ritmo visual consistente
+ */
+const getSpacing = (blockType) => {
+  const spacingMap = {
+    heroBlock: "pt-[65px]", // Hero maneja su propia altura
+    servicesBlock: "pt-2", // Espaciado generoso
+    therapistBlock: "pt-2", // Espaciado generoso
+    testimonialBlock: "pt-2", // Espaciado generoso
+    ctaBlock: "pt-2", // Espaciado generoso
+  };
+
+  return spacingMap[blockType] || "py-16 md:py-24";
+};
+
+/**
+ * Determina si mostrar divisor después de un bloque
+ * Solo entre secciones que necesitan separación visual
+ */
+const getDividerConfig = (blockType, nextBlockType) => {
+  // No mostrar divisor después del hero (tiene su propia transición)
+  if (blockType === "heroBlock") return null;
+
+  // No mostrar antes del footer
+  if (nextBlockType === "footerBlock") return null;
+
+  // Configuración por tipo
+  const dividerMap = {
+    servicesBlock: { variant: "dots", spacing: "md" },
+    monthServiceBlock: { variant: "line", spacing: "lg" },
+    carouselBlock: { variant: "dots", spacing: "md" },
+    therapistBlock: null, // Sin divisor después
+  };
+
+  return dividerMap[blockType] || null;
+};
 
 useHead({
   title: data.value?.title || "Centro Holístico",
@@ -22,59 +62,46 @@ useHead({
 </script>
 
 <template>
-  <main class="home-container bg-brand-sand">
-    <section
-      v-for="block in blocks"
-      :key="block._key"
-      :id="block.id"
-      :data-block-type="block._type"
-      :class="[
-        'block-section relative w-full',
-        {
-          // Solo el Hero ocupa altura completa
-          'h-screen md:h-screen': block._type === 'heroBlock',
-          // Otros bloques usan padding natural
-          'md:py-2': block._type !== 'heroBlock',
-        },
-      ]"
-    >
-      <HeroBlock
-        v-if="block._type === 'heroBlock'"
-        :block="block"
-        :urlFor="urlFor"
-        :urlForPlaceholder="urlForPlaceholder"
-      />
-      <ServicesBlock
-        v-else-if="block._type === 'servicesBlock'"
-        :block="block"
-        :urlFor="urlFor"
-        :urlForPlaceholder="urlForPlaceholder"
-      />
-      <MonthService
-        v-else-if="block._type === 'monthServiceBlock'"
-        :block="block"
-        :urlFor="urlFor"
-        :urlForPlaceholder="urlForPlaceholder"
-      />
-      <GalleryMarquee
-        v-else-if="block._type === 'carouselBlock'"
-        :block="block"
-        :urlFor="urlFor"
-        :urlForPlaceholder="urlForPlaceholder"
-      />
-      <FooterBlock
-        v-else-if="block._type === 'footerBlock'"
-        :block="block"
-        :urlFor="urlFor"
-        :urlForPlaceholder="urlForPlaceholder"
-      />
-      <TherapistBlock
-        v-else-if="block._type === 'therapistBlock'"
-        :block="block"
-        :urlFor="urlFor"
-        :urlForPlaceholder="urlForPlaceholder"
-      />
-    </section>
+  <main class="home-container">
+    <template v-for="(block, index) in blocks" :key="block._key">
+      <!-- Sección principal -->
+      <section
+        :id="block.id"
+        :data-block-type="block._type"
+        :class="['block-section relative w-full', getSpacing(block._type)]"
+      >
+        <HeroSection
+          v-if="block._type === 'heroBlock'"
+          :block="block"
+          :urlFor="urlFor"
+          :urlForPlaceholder="urlForPlaceholder"
+        />
+
+        <FeaturedServicesSection
+          v-else-if="block._type === 'servicesBlock'"
+          :block="block"
+          :urlFor="urlFor"
+          :urlForPlaceholder="urlForPlaceholder"
+        />
+
+        <TeamMemberSection
+          v-else-if="block._type === 'therapistBlock'"
+          :block="block"
+          :urlFor="urlFor"
+          :urlForPlaceholder="urlForPlaceholder"
+        />
+        <TestimonialSection
+          v-else-if="block._type === 'testimonialBlock'"
+          :block="block"
+        />
+        <CTASection
+          v-else-if="block._type === 'ctaBlock'"
+          :block="block"
+          :urlFor="urlFor"
+          :urlForPlaceholder="urlForPlaceholder"
+        />
+      </section>
+    </template>
   </main>
 </template>
 
@@ -84,12 +111,18 @@ useHead({
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
-  background-color: #e1cfba;
+
+  /* ================================
+     Fondo base con patrón de puntos
+     Este es el "canvas" de toda la página
+     ================================ */
+  background-color: #e1cfba; /* brand-sand */
   background-image: radial-gradient(
-    rgba(201, 20, 20, 0.05) 1px,
-    transparent 1px
+    rgba(62, 20, 4, 0.04) 1px,
+    /* brand-terracotta con baja opacidad */ transparent 1px
   );
-  background-size: 3px 3px;
+  background-size: 4px 4px;
+  background-attachment: fixed; /* Efecto parallax sutil */
 }
 
 .block-section {
@@ -97,7 +130,9 @@ useHead({
   width: 100%;
 }
 
-/* Asegura que el scroll sea suave */
+/* ================================
+   Smooth scrolling
+   ================================ */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;

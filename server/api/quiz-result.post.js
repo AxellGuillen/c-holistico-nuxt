@@ -61,8 +61,6 @@ export default defineEventHandler(async (event) => {
       resultId: result._id,
     };
   } catch (error) {
-    console.error("Error al guardar resultado:", error);
-
     throw createError({
       statusCode: 500,
       message: "Error al guardar resultado del quiz",

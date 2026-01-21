@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
         headers: {
           Authorization: `Bearer ${config.mercadoPagoAccessToken}`,
         },
-      }
+      },
     );
 
     const payment = await paymentResponse.json();
@@ -51,7 +51,6 @@ export default defineEventHandler(async (event) => {
     const metadata = payment.metadata;
 
     if (!metadata) {
-      console.error("No metadata en el pago");
       return { success: false, message: "No metadata" };
     }
 
@@ -70,7 +69,7 @@ export default defineEventHandler(async (event) => {
       `
       *[_type == "booking" && paymentId == $paymentId][0]
     `,
-      { paymentId: String(paymentId) }
+      { paymentId: String(paymentId) },
     );
 
     if (existingBooking) {
@@ -84,7 +83,7 @@ export default defineEventHandler(async (event) => {
         _id
       }
     `,
-      { email: client_email }
+      { email: client_email },
     );
 
     if (!client) {
@@ -127,9 +126,6 @@ export default defineEventHandler(async (event) => {
       bookingId: booking._id,
     };
   } catch (error) {
-    console.error("=== ERROR EN WEBHOOK ===");
-    console.error(error);
-
     // Siempre retornar 200 para que MercadoPago no reintente
     return {
       success: false,

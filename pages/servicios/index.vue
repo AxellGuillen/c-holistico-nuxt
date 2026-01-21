@@ -1,218 +1,281 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-import { useRoute, useRouter } from "#app";
+import { ref, computed } from "vue";
 import { CATEGORIES_QUERY, SERVICES_QUERY } from "~/lib/servicesQuery";
-
-const route = useRoute();
-const router = useRouter();
 
 const { data: services } = await useSanityQuery(SERVICES_QUERY);
 const { data: categories } = await useSanityQuery(CATEGORIES_QUERY);
 
-const categorys = computed(() => {
-  return categories.value || [];
+const route = useRoute();
+const router = useRouter();
+
+// ========== ESTADO ==========
+const currentView = ref("services"); // 'services' | 'schedule'
+const selectedService = ref(null);
+const showExitModal = ref(false); // Modal de confirmación
+
+// ========== COMPUTED ==========
+const categoriesList = computed(() => categories.value || []);
+const servicesList = computed(() => services.value || []);
+
+// Texto dinámico para panel izquierdo
+const leftPanelContent = computed(() => {
+  if (currentView.value === "services") {
+    return {
+      title: "Descubre nuestros servicios",
+      subtitle: "de bienestar holístico",
+    };
+  }
+  return {
+    title: "Agenda tu cita",
+    subtitle: selectedService.value?.name || "para tu bienestar",
+  };
 });
 
-const activeCategory = ref(route.query.categoria || "all");
+const preselectedServiceSlug = computed(() => route.query.service || null);
 
-const filteredServices = computed(() => {
-  if (!services.value) {
-    return [];
-  }
+// Imagen dinámica del panel izquierdo
+const leftPanelImage = ref(null);
 
-  if (activeCategory.value === "all") {
-    return services.value;
-  }
-
-  // LIST OF SLUGS BY SERVICE
-  const filtered = services.value.filter((service) => {
-    const categorySlug = service?.category?.slug?.current;
-
-    if (!categorySlug) {
-      return false;
-    }
-    return categorySlug === activeCategory.value;
-  });
-
-  return filtered;
+// Imagen por defecto o la del servicio seleccionado
+const currentImage = computed(() => {
+  return leftPanelImage.value || "/images/services-hero.jpg";
 });
 
-const changeCategory = (slug) => {
-  activeCategory.value = slug;
-
-  if (slug === "all") {
-    router.push("/servicios");
-  } else {
-    router.push(`/servicios?categoria=${slug}`);
-  }
+// ========== HANDLERS ==========
+const handleServiceSelected = (service) => {
+  selectedService.value = service;
+  currentView.value = "schedule";
 };
 
-watch(
-  () => route.query.categoria,
-  (newCategory) => {
-    activeCategory.value = newCategory || "all";
-  }
-);
+// Handler para cuando cambia la imagen al hacer hover/click en un servicio
+const handleImageChange = (imageUrl) => {
+  leftPanelImage.value = imageUrl;
+};
 
-const selectedCategory = computed(() => {
-  if (!categories.value) return null;
+const handleBack = () => {
+  currentView.value = "services";
+};
 
-  return categories.value.find(
-    (cat) => cat?.slug?.current === activeCategory.value
-  );
-});
+const handleSuccess = () => {
+  console.log("✅ Reserva exitosa");
+};
 
+// ========== EXIT MODAL ==========
+const handleExit = () => {
+  showExitModal.value = true;
+};
+
+const confirmExit = () => {
+  showExitModal.value = false;
+  router.push("/");
+};
+
+const cancelExit = () => {
+  showExitModal.value = false;
+};
+
+// ========== SEO ==========
 useHead({
-  title:
-    activeCategory.value === "all"
-      ? "Nuestros Servicios - Raíces Centro Holístico"
-      : `${selectedCategory.value?.name || "Servicios"} - Raíces`,
+  title: "Nuestros Servicios - Raíces Centro Holístico",
   meta: [
     {
       name: "description",
-      content: `Descubre nuestros servicios de ${
-        selectedCategory.value?.name?.toLowerCase() || "bienestar holístico"
-      }`,
+      content: "Descubre nuestros servicios de bienestar holístico.",
     },
   ],
+});
+
+definePageMeta({
+  layout: "services",
 });
 </script>
 
 <template>
-  <div class="relative min-h-screen bg-brand-sand text-white overflow-hidden">
-    <!-- Background with Overlay (matching about page) -->
-    <div class="absolute inset-0">
-      <div
-        class="absolute inset-0 bg-gradient-to-b from-[#1a1a1a]/60 via-[#1a1a1a]/80 to-[#1a1a1a]/95"
-      ></div>
-    </div>
+  <!-- h-screen + overflow-hidden para contener todo en el viewport -->
+  <div class="h-screen w-full overflow-hidden bg-brand-base">
+    <div class="grid grid-cols-1 lg:grid-cols-2 h-full">
+      <!-- ========== PANEL IZQUIERDO (Desktop) ========== -->
+      <div class="relative hidden lg:block h-full overflow-hidden">
+        <!-- Imagen dinámica con transición -->
+        <Transition name="fade" mode="out-in">
+          <NuxtImg
+            :key="currentImage"
+            :src="currentImage"
+            alt="Raíces Centro Holístico"
+            format="webp"
+            quality="80"
+            placeholder
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+        </Transition>
 
-    <!-- ============================================ -->
-    <!-- HERO SECTION -->
-    <!-- ============================================ -->
-    <section class="container mx-auto px-8 py-20 text-center relative z-10">
-      <h1
-        class="font-headlines text-7xl md:text-9xl font-light leading-none mb-4 tracking-tight md:text-start text-center text-white pt-10"
-      >
-        Nuestros Servicios
-      </h1>
-      <div class="h-px w-32 bg-white/30 mt-8"></div>
-    </section>
+        <!-- Overlay gradiente -->
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"
+        />
 
-    <nav class="top-0 z-50 transition-all duration-300">
-      <div class="backdrop-blur-xl py-4">
-        <div class="container mx-auto px-4">
-          <div
-            class="flex gap-4 overflow-x-auto scrollbar-hide justify-start md:justify-start items-center pb-8 pl-3"
+        <!-- Texto superpuesto -->
+        <div class="absolute bottom-12 left-12 right-12">
+          <p
+            class="text-white/80 text-4xl xl:text-5xl font-sans font-light leading-tight"
           >
-            <button
-              @click="changeCategory('all')"
-              :class="[
-                'px-6 py-2 rounded-full whitespace-nowrap transition-all duration-300 font-medium text-sm tracking-wide border',
-                activeCategory === 'all'
-                  ? 'bg-brand-sand text-brand-terracotta border-brand-sand shadow-md hover:bg-brand-sand/90'
-                  : 'bg-transparent text-white border-white/40 hover:border-white hover:bg-white/10',
-              ]"
-            >
-              Todos
-            </button>
-
-            <button
-              v-for="cat in categorys"
-              :key="cat._id"
-              @click="changeCategory(cat.slug.current)"
-              :class="[
-                'px-6 py-2 rounded-full whitespace-nowrap transition-all duration-300 font-medium text-sm tracking-wide border',
-                activeCategory === cat.slug.current
-                  ? 'bg-brand-sand text-brand-terracotta border-brand-sand shadow-md hover:bg-brand-sand/90'
-                  : 'bg-transparent text-white border-white/40 hover:border-white hover:bg-white/10',
-              ]"
-            >
-              {{ cat.name }}
-            </button>
-          </div>
+            {{ leftPanelContent.title }}
+          </p>
+          <p
+            class="text-white text-4xl xl:text-5xl font-headlines italic leading-tight"
+          >
+            {{ leftPanelContent.subtitle }}
+          </p>
         </div>
       </div>
-    </nav>
 
-    <!-- ============================================ -->
-    <!-- HEADER DE CATEGORÍA -->
-    <!-- ============================================ -->
-    <!-- Product cards grid layout -->
-    <div class="container mx-auto px-5 sm:px-8 py-8 relative z-10">
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
-        <template v-for="service in filteredServices" :key="service._id">
-          <NuxtLink
-            v-if="service.durations?.length"
-            :to="`/servicios/${service.slug?.current}`"
-            class="group cursor-pointer bg-transparent border-x border-white/30 px-4 py-6 flex flex-col h-full"
+      <!-- ========== PANEL DERECHO ========== -->
+      <div
+        class="relative flex flex-col h-full bg-brand-base overflow-hidden"
+        data-lenis-prevent
+      >
+        <!-- Botón de escape (X) -->
+        <button
+          @click="handleExit"
+          class="absolute top-3 right-4 z-50 p-2 rounded-full bg-brand-sand/50 hover:bg-brand-sand text-brand-terracotta transition-all"
+          aria-label="Salir"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
           >
-            <!-- Title Section -->
-            <div class="mb-6 flex-1 min-h-[8rem]">
-              <h2
-                class="sm:text-3xl text-2xl tracking-widest uppercase font-headlines mb-1 text-white"
-              >
-                {{ service.name }}
-              </h2>
-              <p
-                class="text-sm leading-relaxed text-white mb-4 font-bold font-sans pt-1 line-clamp-4"
-              >
-                {{ service.shortDescription }}
-              </p>
-            </div>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
 
-            <!-- Price -->
-            <div
-              class="text-4xl font-light text-white flex justify-end font-sans pt-5"
-            >
-              MXN $ {{ service.durations?.[0].price }}
-            </div>
-            <div class="relative mb-4 overflow-hidden h-[64] w-full">
-              <NuxtImg
-                :src="service.thumbnail?.asset?.url"
-                :alt="service.name"
-                class="h-full w-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
-              />
-              <!-- Bottom Left Label -->
-              <div
-                class="absolute bottom-4 left-4 backdrop-blur-sm px-4 py-2 rounded-sm"
-              >
-                <span
-                  class="text-xs tracking-wider uppercase font-medium text-white font-sans"
-                >
-                  {{ service.durations?.[0].minutes }} mins
-                </span>
-              </div>
-            </div>
-          </NuxtLink>
-        </template>
+        <ServicesSelector
+          v-if="currentView === 'services'"
+          :categories="categoriesList"
+          :services="servicesList"
+          :preselected-slug="preselectedServiceSlug"
+          @continue="handleServiceSelected"
+          @image-change="handleImageChange"
+        />
+
+        <ScheduleAppointment
+          v-else-if="currentView === 'schedule'"
+          :service="selectedService"
+          @back="handleBack"
+          @success="handleSuccess"
+        />
       </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- CTA: QUIZ -->
-    <!-- ============================================ -->
-    <section class="py-24 bg-transparent relative overflow-hidden">
-      <div class="container mx-auto px-4 text-center relative z-10">
-        <h3
-          class="font-headlines text-4xl md:text-7xl font-light leading-none mb-4 tracking-tight md:text-center text-center text-white"
+    <!-- ========== MODAL DE CONFIRMACIÓN ========== -->
+    <Teleport to="body">
+      <Transition name="modal">
+        <div
+          v-if="showExitModal"
+          class="fixed inset-0 z-[100] flex items-center justify-center"
         >
-          ¿No estás seguro por dónde empezar?
-        </h3>
-        <p
-          class="md:text-xl text-base text-brand-base/80 mb-10 max-w-2xl mx-auto font-sans font-bold"
-        >
-          Responde nuestro quiz personalizado y te recomendaremos el servicio
-          ideal para tu momento actual.
-        </p>
-        <NuxtLink to="/quiz">
-          <button
-            class="bg-brand-base text-brand-terracotta px-10 py-4 rounded-full text-lg font-bold hover:bg-white transition-all transform hover:scale-105 shadow-2xl hover:shadow-white/20"
+          <!-- Backdrop -->
+          <div
+            class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            @click="cancelExit"
+          />
+
+          <!-- Modal -->
+          <div
+            class="relative bg-brand-base rounded-2xl shadow-2xl p-6 mx-4 max-w-sm w-full"
           >
-            Descubre tu Camino
-          </button>
-        </NuxtLink>
-      </div>
-    </section>
+            <!-- Icono -->
+            <div class="flex justify-center mb-4">
+              <div
+                class="w-12 h-12 rounded-full bg-brand-sand flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-brand-terracotta"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Texto -->
+            <h3
+              class="text-lg font-headlines text-brand-terracotta text-center mb-2"
+            >
+              ¿Estás seguro que deseas salir?
+            </h3>
+            <p class="text-sm text-brand-terracotta/60 text-center mb-6">
+              Tu progreso no será guardado.
+            </p>
+
+            <!-- Botones -->
+            <div class="flex gap-3">
+              <button
+                @click="cancelExit"
+                class="flex-1 px-4 py-3 rounded-full border-2 border-brand-sand text-brand-terracotta font-medium text-sm hover:bg-brand-sand transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                @click="confirmExit"
+                class="flex-1 px-4 py-3 rounded-full bg-brand-terracotta text-brand-base font-medium text-sm hover:bg-brand-terracotta/90 transition-colors"
+              >
+                Sí, salir
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
+
+<style scoped>
+/* Transición suave para cambio de imagen */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Transición del modal */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-active .relative,
+.modal-leave-active .relative {
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.modal-enter-from .relative,
+.modal-leave-to .relative {
+  transform: scale(0.95);
+  opacity: 0;
+}
+</style>
