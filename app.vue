@@ -2,16 +2,10 @@
 
 <template>
   <div>
-    <RaicesLoader />
-
     <NuxtLayout>
-      <NuxtPage :keepalive="{ include: ['index'] }" />
+      <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
 
-<style>
-html:has(.loader-container) {
-  overflow: hidden;
-}
-</style>
+<style></style>

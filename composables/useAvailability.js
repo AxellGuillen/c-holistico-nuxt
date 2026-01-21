@@ -1,4 +1,5 @@
 // composables/useAvailability.js
+import { ref } from "vue";
 
 export const useAvailability = () => {
   const slots = ref([]);

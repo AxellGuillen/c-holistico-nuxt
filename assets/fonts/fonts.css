@@ -39,7 +39,7 @@
 @font-face {
   font-family: "PPMori";
   src: url("./mori/PPMori-Extralight.otf") format("opentype");
-  font-weight: 600;
+  font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
@@ -47,7 +47,7 @@
 @font-face {
   font-family: "PPMori";
   src: url("./mori/PPMori-SemiBold.otf") format("opentype");
-  font-weight: 200;
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }

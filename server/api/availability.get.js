@@ -13,8 +13,6 @@ export const getSanityClient = () => {
   });
 };
 
-const sanityClient = getSanityClient();
-
 // ============================================
 // FUNCIONES AUXILIARES
 // ============================================
@@ -113,6 +111,7 @@ function validateAdvance(date, minAdvanceHours, maxAdvanceDays) {
 // HANDLER PRINCIPAL
 // ============================================
 export default defineEventHandler(async (event) => {
+  const sanityClient = getSanityClient();
   const query = getQuery(event);
 
   const serviceId = query.serviceId;
@@ -149,7 +148,7 @@ export default defineEventHandler(async (event) => {
   const validation = validateAdvance(
     date,
     config.minAdvanceHours,
-    config.maxAdvanceDays
+    config.maxAdvanceDays,
   );
 
   if (!validation.valid) {
@@ -180,7 +179,7 @@ export default defineEventHandler(async (event) => {
       customAvailability
     }
   `,
-    { id: serviceId }
+    { id: serviceId },
   );
 
   if (!service) {
@@ -196,7 +195,7 @@ export default defineEventHandler(async (event) => {
 
   if (service.customAvailability?.useCustomAvailability) {
     const customDay = service.customAvailability.days?.find(
-      (d) => d.day === dayName
+      (d) => d.day === dayName,
     );
 
     if (customDay) {
@@ -239,7 +238,7 @@ export default defineEventHandler(async (event) => {
     daySchedule.start,
     daySchedule.end,
     duration,
-    duration
+    duration,
   );
 
   // 8. OBTENER RESERVAS EXISTENTES
@@ -254,7 +253,7 @@ export default defineEventHandler(async (event) => {
       duration
     }
   `,
-    { serviceId, date }
+    { serviceId, date },
   );
 
   // 9. FILTRAR SLOTS DISPONIBLES
@@ -262,7 +261,7 @@ export default defineEventHandler(async (event) => {
     allSlots,
     existingBookings,
     duration,
-    config.bufferTime
+    config.bufferTime,
   );
 
   // 10. RETORNAR
